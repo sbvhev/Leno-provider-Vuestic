@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import Plan from '../auth/signup/steps/Step2'
+import Plan from '../auth/signup/steps/Step4'
 import Proxy from '@/proxies/Proxy'
 
 export default {

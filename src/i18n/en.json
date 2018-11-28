@@ -9,7 +9,8 @@
     "password": "Password",
     "signUp": "Sign Up",
     "termsOfUse": "Terms of Use.",
-    "welcome": "Welcome!"
+		"welcome": "Welcome!",
+		"newProviderAccount": "New Provider Account"
   },
   "breadcrumbs": {
     "home": "Home"

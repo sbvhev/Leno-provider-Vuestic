@@ -2,15 +2,35 @@
   <div class="form-wizard-page">
     <div class="row">
       <div class="col-md-12">
-        <vuestic-wizard ref="wizard" :steps="hsSteps">
-          <div slot="page1" class="form-wizard-tab-content">
+        <vuestic-wizard
+          ref="wizard"
+          wizard-layout="vertical"
+          wizard-type="rich"
+          :steps="hsSteps"
+        >
+          <div
+            slot="page1"
+            class="form-wizard-tab-content"
+          >
             <Step1 ref="registerStepOne"></Step1>
           </div>
-          <div slot="page2" class="form-wizard-tab-content">
+          <div
+            slot="page2"
+            class="form-wizard-tab-content"
+          >
             <Step2 ref="registerStepTwo"></Step2>
           </div>
-          <div slot="page3" class="form-wizard-tab-content">
-            <Step3 ref="registerStepThree"></Step3>
+          <div
+            slot="page3"
+            class="form-wizard-tab-content"
+          >
+            <Step4 ref="registerStepThree"></Step4>
+          </div>
+          <div
+            slot="page4"
+            class="form-wizard-tab-content"
+          >
+            <Step5 ref="registerStepFour"></Step5>
           </div>
         </vuestic-wizard>
       </div>
@@ -21,7 +41,8 @@
 <script>
 import Step1 from './steps/Step1'
 import Step2 from './steps/Step2'
-import Step3 from './steps/Step3'
+import Step4 from './steps/Step4'
+import Step5 from './steps/Step5'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -29,7 +50,8 @@ export default {
   components: {
     Step1,
     Step2,
-    Step3
+    Step4,
+    Step5
   },
   computed: {
     hsSteps () {
@@ -57,8 +79,52 @@ export default {
           }
         },
         {
-          label: 'Employee Stipend',
+          label: 'Activate MINDBODY',
           slot: 'page2',
+          onNext: () => {
+            // manual validation occur
+            const that = this.$refs.registerStepOne
+            Object.keys(that.formFields).map(field => {
+              that.validateFormField(field)
+            })
+          },
+          isValid: () => {
+            // validation check
+            const that = this.$refs.registerStepOne
+            const validOk = Object.keys(that.formFields).every(field => {
+              return that.isFormFieldValid(field)
+            })
+
+            // integration step's data
+            validOk && this.mergePartialModels(that.completedData())
+            return validOk
+          }
+        },
+        {
+          label: 'MINDBODY location',
+          slot: 'page7',
+          onNext: () => {
+            // manual validation occur
+            const that = this.$refs.registerStepOne
+            Object.keys(that.formFields).map(field => {
+              that.validateFormField(field)
+            })
+          },
+          isValid: () => {
+            // validation check
+            const that = this.$refs.registerStepOne
+            const validOk = Object.keys(that.formFields).every(field => {
+              return that.isFormFieldValid(field)
+            })
+
+            // integration step's data
+            validOk && this.mergePartialModels(that.completedData())
+            return validOk
+          }
+        },
+        {
+          label: 'Employee Stipend',
+          slot: 'page4',
           isValid: () => {
             // integration step's data
             const that = this.$refs.registerStepTwo
@@ -68,7 +134,7 @@ export default {
         },
         {
           label: 'Credit Card',
-          slot: 'page3',
+          slot: 'page5',
           onNext: () => {
             // manual validation occur
             const that = this.$refs.registerStepOne
@@ -153,7 +219,8 @@ export default {
 }
 
 .form-wizard-page {
-  width: 100%;
+  margin-top: -5.625rem;
+  width: 80%;
   .form-group {
     min-width: 200px;
     width: 100%;
@@ -169,5 +236,4 @@ export default {
   padding-top: 10.7%;
   padding-bottom: 11%;
 }
-
 </style>

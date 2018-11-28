@@ -1,46 +1,68 @@
 <template>
-  <div class="row">
-    <div class="col-md-12">
-      <fieldset>
-        <h6><span class="badge badge-pill badge-success">Free</span>NO SERVICE CHARGE</h6>
-        <vuestic-radio-button label="$100/mo" :id="'radio1'" :value="'100'" :name="'radio'" v-model="planChoice" />
-        <vuestic-radio-button label="$50/mo" :id="'radio2'" :value="'50'" :name="'radio'" v-model="planChoice" />
-        <vuestic-radio-button label="$25/mo" :id="'radio3'" :value="'25'" :name="'radio'" v-model="planChoice" />
-      </fieldset>
-      <fieldset>
-        <h6><span class="badge badge-pill badge-success">$50/mo</span>SERVICE CHARGE</h6>
-        <vuestic-radio-button label="No stipend" :id="'radio4'" :value="'0'" :name="'radio'" v-model="planChoice" />
-      </fieldset>
+  <form class="register-step1-form">
+    <h2 class="text-center">Activate MINDBODY</h2>
+    <div class="row justify-center align-center">
+      <div class="col-md-1">
+        <p class="h4 bold">1)</p>
+      </div>
+      <div class="col-md-11">
+        <p class="h4">Click below to automatically activate MINDBODY account. You'll see a green checkmark(opens in new window).</p>
+        <br>
+        <p class="h4"><span><b>Note:</b></span>must be logged in as the <span style="background-color: #f9d867;">Site Owner</span> to activate account.</p>
+        <button
+          class="btn btn-info mt-4 mb-5"
+          @click.capture="activateAccount()"
+        >
+          Activate Account
+        </button>
+      </div>
     </div>
-  </div>
+    <div class="row justify-center align-center">
+      <div class="col-md-1">
+        <p class="h4 bold">2)</p>
+      </div>
+      <div class="col-md-11">
+        <p class="h4">Verify account activation. Email <b>bryan@myleon.co</b> if you have any issues.</p>
+        <br>
+        <button
+          class="btn btn-info mt-2 mb-4"
+          @click="verifyActivation()"
+        >
+          Verify Activation
+        </button>
+      </div>
+    </div>
+  </form>
 </template>
 
 <script>
-
 export default {
-  name: 'step2',
+  name: 'step1',
+  components: {
+  },
   data () {
     return {
-      planChoice: this.$store.getters['account/myself'].planChoice,
+      isActivate: false
     }
   },
   methods: {
+    activateAccount () {
+      window.open('https://www.google.com', '_blank', 'height=570,width=520,scrollbars=yes,status=yes')
+    },
+    verifyActivation () {
+      alert('OK')
+      this.isActivate = true
+    },
     completedData () {
       return this.$data
     }
   }
 }
 </script>
-<style lang="scss" scoped>
 
-.badge {
-  font-size: 1.225rem;
-  letter-spacing: 0.125rem;
-  margin: 21px;
-}
-
-.abc-radio {
-  margin-bottom: 11.5%;
-  padding-left: 80px;
+<style lang="scss">
+.register-step1-form {
+  width: 100%;
+  height: 500px;
 }
 </style>

@@ -31,7 +31,7 @@
 
 <script>
 import AchPayment from './options/ach-payment'
-import CardPayment from '../auth/signup/steps/Step3'
+import CardPayment from '../auth/signup/steps/Step5'
 import Proxy from '@/proxies/Proxy'
 
 export default {
