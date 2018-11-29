@@ -42,6 +42,28 @@ export default {
     Step4,
     Step5
   },
+  watch: {
+    notification: function (newVal, oldVal) {
+      if (newVal.title !== 'CARD ERROR') {
+        this.$refs.wizard.resetWizard()
+        let that = this.$refs.registerStepOne
+        that.$data.companyName = ''
+        that.$data.userEmailAddress = ''
+        Object.keys(that.formFields).map(field => {
+          that.validateFormField(field)
+        })
+      }
+      this.$store.dispatch('auth/notificationClear')
+    }
+  },
+  data () {
+    return {
+      nextBtn: null
+    }
+  },
+  mounted () {
+    this.nextBtn = this.$refs.wizard.nextBtn
+  },
   computed: {
     hsSteps () {
       return [
@@ -64,12 +86,15 @@ export default {
 
             // integration step's data
             if (validOk) {
+              this.nextBtn.loading = true
               const { passwordConfirm, ...info } = that.$data
               const res = await new Proxy('createAccount.php?', info).submit('post')
               if (res.success) {
                 this.$store.commit('auth/SET_FORMDATA', {'provider': res.provider})
+                this.nextBtn.loading = false
                 return true
               } else {
+                this.nextBtn.loading = false
                 return false
               }
             } else {
@@ -81,15 +106,19 @@ export default {
           label: 'Activate MINDBODY',
           slot: 'page2',
           isValid: async () => {
+            this.nextBtn.loading = true
             // validation check
-            const {success} = await new Proxy('checkSiteActivation.php?', {'siteId': '-99'}).submit('post')
-            if (success) return true
-            else {
+            const {success} = await new Proxy('checkSiteActivation.php?', this.$route.params).submit('post')
+            if (success) {
+              this.nextBtn.loading = false
+              return true
+            } else {
               this.$store.dispatch('auth/notification', {
                 type: 'ERROR',
                 title: 'Not found Account',
                 message: 'Please try Activate Account again.'
               })
+              this.nextBtn.loading = false
               return false
             }
           }
@@ -148,7 +177,7 @@ export default {
             let wizard = this.$refs.wizard
             if (validOk) {
               try {
-                wizard.signupBtn.loading = true
+                wizard.nextBtn.loading = true
                 const stripeToken = await that.completedData()
                 const { stripePaymentToken } = stripeToken
                 if (stripePaymentToken) {
@@ -156,14 +185,14 @@ export default {
                   await this.$store.dispatch('auth/register', this.finalModel)
                   this.finalModel = []
                 }
-                wizard.signupBtn.loading = false
+                wizard.nextBtn.loading = false
               } catch (err) {
                 this.$store.dispatch('auth/notification', {
                   type: 'ERROR',
                   title: 'SERVER ERROR',
                   message: 'Oops, Please try again later.'
                 })
-                wizard.signupBtn.loading = false
+                wizard.nextBtn.loading = false
               }
             }
             return false
@@ -175,25 +204,6 @@ export default {
       notification: 'auth/notificationInfo',
       formData: 'auth/getFormData'
     })
-  },
-  watch: {
-    notification: function (newVal, oldVal) {
-      if (newVal.title !== 'CARD ERROR') {
-        this.$refs.wizard.resetWizard()
-        let that = this.$refs.registerStepOne
-        that.$data.companyName = ''
-        that.$data.userEmailAddress = ''
-        Object.keys(that.formFields).map(field => {
-          that.validateFormField(field)
-        })
-      }
-      this.$store.dispatch('auth/notificationClear')
-    }
-  },
-  data () {
-    return {
-      finalModel: []
-    }
   },
   methods: {
     mergePartialModels (model) {

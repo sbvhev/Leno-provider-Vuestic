@@ -46,7 +46,7 @@
           >{{'auth.login' | translate}}</button>
           <router-link
             class="link"
-            :to="{name: 'signup'}"
+            :to="{path: 'signup/-99'}"
           >{{'auth.createAccount' | translate}}</router-link>
         </div>
       </form>

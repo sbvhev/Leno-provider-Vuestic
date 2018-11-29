@@ -27,7 +27,7 @@ export default new Router({
       redirect: { name: 'dashboard' },
     },
     {
-      path: '/auth',
+      path: '/',
       component: AuthLayout,
       children: [
         {
@@ -37,7 +37,7 @@ export default new Router({
         },
         {
           name: 'signup',
-          path: 'signup',
+          path: 'signup/:siteId',
           component: lazyLoading('auth/signup/Signup'),
         },
         {

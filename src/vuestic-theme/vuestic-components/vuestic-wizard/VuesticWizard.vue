@@ -63,10 +63,13 @@
         </div>
 
         <div class="btn-container" v-if="!isLastStep()">
-          <button
+          <vue-ladda
+            :loading="nextBtn.loading"
+            :key="nextBtn.dataStyle"
+            :data-style="nextBtn.dataStyle"
             class="btn btn-primary wizard-next pull-right"
             @click.prevent="goNext()"
-          >Next</button>
+          >Next</vue-ladda>
         </div>
 
         <div class="btn-container" v-if="currentStep == steps.length - 1">
@@ -74,9 +77,9 @@
             {{lastStepLabel}}
           </button>-->
           <vue-ladda
-            :loading="signupBtn.loading"
-            :key="signupBtn.dataStyle"
-            :data-style="signupBtn.dataStyle"
+            :loading="nextBtn.loading"
+            :key="nextBtn.dataStyle"
+            :data-style="nextBtn.dataStyle"
             class="btn btn-primary wizard-next pull-right final-step"
             @click.prevent="goNext()"
           >{{lastStepLabel}}</vue-ladda>
@@ -117,11 +120,11 @@
         wizardCompletedSlotName: 'wizardCompleted',
         orientationBreakPoint: 767, // TODO: into config,
         computedLayout: this.wizardLayout,
-        signupBtn: {
+        nextBtn: {
           loading: false,
           dataStyle: 'zoom-in',
           progress: 0
-        }
+        },
       }
     },
     components: {
