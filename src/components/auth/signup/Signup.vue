@@ -8,28 +8,16 @@
           wizard-type="rich"
           :steps="hsSteps"
         >
-          <div
-            slot="page1"
-            class="form-wizard-tab-content"
-          >
+          <div slot="page1" class="form-wizard-tab-content">
             <Step1 ref="registerStepOne"></Step1>
           </div>
-          <div
-            slot="page2"
-            class="form-wizard-tab-content"
-          >
+          <div slot="page2" class="form-wizard-tab-content">
             <Step2 ref="registerStepTwo"></Step2>
           </div>
-          <div
-            slot="page3"
-            class="form-wizard-tab-content"
-          >
+          <div slot="page3" class="form-wizard-tab-content">
             <Step4 ref="registerStepThree"></Step4>
           </div>
-          <div
-            slot="page4"
-            class="form-wizard-tab-content"
-          >
+          <div slot="page4" class="form-wizard-tab-content">
             <Step5 ref="registerStepFour"></Step5>
           </div>
         </vuestic-wizard>
@@ -44,6 +32,7 @@ import Step2 from './steps/Step2'
 import Step4 from './steps/Step4'
 import Step5 from './steps/Step5'
 import { mapGetters } from 'vuex'
+import Proxy from '@/proxies/Proxy'
 
 export default {
   name: 'signup',
@@ -66,7 +55,7 @@ export default {
               that.validateFormField(field)
             })
           },
-          isValid: () => {
+          isValid: async () => {
             // validation check
             const that = this.$refs.registerStepOne
             const validOk = Object.keys(that.formFields).every(field => {
@@ -74,30 +63,35 @@ export default {
             })
 
             // integration step's data
-            validOk && this.mergePartialModels(that.completedData())
-            return validOk
+            if (validOk) {
+              const { passwordConfirm, ...info } = that.$data
+              const res = await new Proxy('createAccount.php?', info).submit('post')
+              if (res.success) {
+                this.$store.commit('auth/SET_FORMDATA', {'provider': res.provider})
+                return true
+              } else {
+                return false
+              }
+            } else {
+              return false
+            }
           }
         },
         {
           label: 'Activate MINDBODY',
           slot: 'page2',
-          onNext: () => {
-            // manual validation occur
-            const that = this.$refs.registerStepOne
-            Object.keys(that.formFields).map(field => {
-              that.validateFormField(field)
-            })
-          },
-          isValid: () => {
+          isValid: async () => {
             // validation check
-            const that = this.$refs.registerStepOne
-            const validOk = Object.keys(that.formFields).every(field => {
-              return that.isFormFieldValid(field)
-            })
-
-            // integration step's data
-            validOk && this.mergePartialModels(that.completedData())
-            return validOk
+            const {success} = await new Proxy('checkSiteActivation.php?', {'siteId': '-99'}).submit('post')
+            if (success) return true
+            else {
+              this.$store.dispatch('auth/notification', {
+                type: 'ERROR',
+                title: 'Not found Account',
+                message: 'Please try Activate Account again.'
+              })
+              return false
+            }
           }
         },
         {
@@ -178,7 +172,8 @@ export default {
       ]
     },
     ...mapGetters({
-      notification: 'auth/notificationInfo'
+      notification: 'auth/notificationInfo',
+      formData: 'auth/getFormData'
     })
   },
   watch: {

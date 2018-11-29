@@ -13,6 +13,7 @@ export const LOGOUT = 'LOGOUT'
 export const NOTIFICATION = 'NOTIFICATION'
 export const PROCESSING = 'PROCESSING'
 export const CLEAR = 'CLEAR'
+export const SET_FORMDATA = 'SET_FORMDATA'
 
 export default {
   CHECK,
@@ -21,5 +22,6 @@ export default {
   LOGOUT,
   NOTIFICATION,
   PROCESSING,
-  CLEAR
+  CLEAR,
+  SET_FORMDATA
 }

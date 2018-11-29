@@ -14,7 +14,8 @@ import {
   LOGOUT,
   NOTIFICATION,
   PROCESSING,
-  CLEAR
+  CLEAR,
+  SET_FORMDATA
 } from './mutation-types'
 
 /* eslint-disable no-param-reassign */
@@ -55,5 +56,9 @@ export default {
   [CLEAR] (state) {
     state.notificationInfo.title = ''
     state.notificationInfo.message = ''
+  },
+
+  [SET_FORMDATA] (state, payload) {
+    state.formData = payload
   }
 }

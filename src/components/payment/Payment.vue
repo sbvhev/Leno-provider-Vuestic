@@ -2,10 +2,14 @@
   <div class="row">
     <div class="col-md-12 d-flex">
       <vuestic-pre-loader v-show="isLoading" class="pre-loader"></vuestic-pre-loader>
-      <vuestic-widget :headerText="'Please choose one of below payments...'" class="chat-widget">
+      <vuestic-widget
+        :headerText="'Please choose one of below payments...'"
+        class="chat-widget"
+      >
         <vuestic-tabs
           :names="['Credit card payment', 'ACH payment']"
-          ref="tabs">
+          ref="tabs"
+        >
           <div :slot="'Credit card payment'">
             <CardPayment ref="card_payment"></CardPayment>
           </div>
@@ -13,15 +17,13 @@
             <AchPayment ref="ach_payment"></AchPayment>
           </div>
         </vuestic-tabs>
-        <br />
+        <br>
         <div class="row">
           <div class="col-md-3"></div>
           <div class="col-md-3"></div>
           <div class="col-md-3"></div>
-          <div class="col-md-3  d-flex justify-center-center">
-            <button class="btn btn-primary" @click="handleUpdate">
-              Update
-            </button>
+          <div class="col-md-3 d-flex justify-center-center">
+            <button class="btn btn-primary" @click="handleUpdate">Update</button>
           </div>
         </div>
       </vuestic-widget>

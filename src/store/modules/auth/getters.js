@@ -21,5 +21,8 @@ export default {
   },
   loading: state => {
     return state.isProcessing
+  },
+  getFormData: state => {
+    return state.formData
   }
 }

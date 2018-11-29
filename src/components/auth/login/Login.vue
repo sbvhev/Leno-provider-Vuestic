@@ -3,37 +3,51 @@
     <div>
       <h2>{{'auth.welcome' | translate}}</h2>
       <form @submit.prevent="handleSubmit" name="login">
-        <div class="form-group with-icon-right" :class="{'has-error': errors.has('email')}">
+        <div
+          class="form-group with-icon-right"
+          :class="{'has-error': errors.has('email')}"
+        >
           <div class="input-group">
             <input
-                          id="email"
-                          name="email"
-                          v-model="user.userEmailAddress"
-                          v-validate="'required|email'"
-                          required/>
-            <label class="control-label" for="email">Email</label><i class="bar"></i>
-            <small v-show="errors.has('email')" class="help text-danger">{{
+              id="email"
+              name="email"
+              v-model="user.userEmailAddress"
+              v-validate="'required|email'"
+              required
+            >
+            <label class="control-label" for="email">Email</label>
+            <i class="bar"></i>
+            <small v-show="errors.has('email')" class="help text-danger">
+              {{
               errors.first('email')
               }}
             </small>
           </div>
         </div>
         <div class="form-group with-icon-right">
-          <div class=" input-group">
+          <div class="input-group">
             <input
-                          id="password"
-                          name="password"
-                          type="password"
-                          v-model="user.userPassword"
-                          required/>
-            <label class="control-label" for="password">Password</label><i class="bar"></i>
+              id="password"
+              name="password"
+              type="password"
+              v-model="user.userPassword"
+              required
+            >
+            <label class="control-label" for="password">Password</label>
+            <i class="bar"></i>
           </div>
         </div>
-        <div class="d-flex flex-column flex-lg-row align-items-center justify-content-between down-container">
-          <button class="btn btn-primary" type="submit">
-            {{'auth.login' | translate}}
-          </button>
-          <router-link class='link' :to="{name: 'signup'}">{{'auth.createAccount' | translate}}</router-link>
+        <div
+          class="d-flex flex-column flex-lg-row align-items-center justify-content-between down-container"
+        >
+          <button
+            class="btn btn-primary"
+            type="submit"
+          >{{'auth.login' | translate}}</button>
+          <router-link
+            class="link"
+            :to="{name: 'signup'}"
+          >{{'auth.createAccount' | translate}}</router-link>
         </div>
       </form>
     </div>
@@ -47,8 +61,8 @@ export default {
   data () {
     return {
       user: {
-        userEmailAddress: '',
-        userPassword: ''
+        emailAddress: '',
+        password: ''
       },
       isLoading: false,
     }
