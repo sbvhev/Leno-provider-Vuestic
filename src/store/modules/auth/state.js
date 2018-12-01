@@ -13,7 +13,8 @@ export default {
     title: ''
   },
   formData: {
-    provider: {}
+    provider: {},
+    locations: null
   },
   isProcessing: false
 }

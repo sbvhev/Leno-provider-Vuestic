@@ -1,5 +1,5 @@
 <template>
-  <form class="register-step1-form">
+  <form class="register-form step1">
     <h2 class="text-center">New Provider Account</h2>
     <div class="row mt-5">
       <div class="col-md-6">
@@ -208,8 +208,8 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
-.register-step1-form {
-  width: 100%;
+<style lang="scss">
+.step1 {
+  padding: 2.25rem 7%;
 }
 </style>

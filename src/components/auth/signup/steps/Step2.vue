@@ -1,5 +1,5 @@
 <template>
-  <form class="register-step1-form">
+  <form class="register-form step2">
     <h2 class="text-center">Activate MINDBODY</h2>
     <div class="row justify-center align-center mt-5">
       <div class="col-md-1">
@@ -20,7 +20,7 @@
         </p>
         <button
           class="btn btn-info my-5"
-          @click="activateAccount()"
+          @click.prevent="activateAccount()"
         >Activate Account</button>
       </div>
     </div>
@@ -43,7 +43,7 @@
 // import Proxy from '@/proxies/Proxy'
 
 export default {
-  name: 'step1',
+  name: 'step2',
   components: {
   },
   methods: {
@@ -58,4 +58,7 @@ export default {
 </script>
 
 <style lang="scss">
+.step1 {
+  padding: 2.25rem 7%;
+}
 </style>

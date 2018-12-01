@@ -80,7 +80,10 @@ class Proxy {
    */
   submit (requestType, url, data = null) {
     return new Promise((resolve, reject) => {
-      Vue.$http[requestType](this.endpoint + this.getParameterString() + '', data)
+      Vue.$http[requestType](
+        this.endpoint + this.getParameterString() + '',
+        data
+      )
         .then(response => {
           resolve(response.data)
         })
@@ -154,7 +157,8 @@ class Proxy {
    * @returns {string} The parameter string.
    */
   getParameterString () {
-    return `data=${JSON.stringify(this.parameters)}`
+    if (this.parameters.length) return `data=${JSON.stringify(this.parameters)}`
+    else return ''
     // const keys = Object.keys(this.parameters);
 
     // const parameterStrings = keys

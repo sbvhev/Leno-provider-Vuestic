@@ -59,6 +59,6 @@ export default {
   },
 
   [SET_FORMDATA] (state, payload) {
-    state.formData = payload
+    state.formData[payload.key] = payload.value
   }
 }

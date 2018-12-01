@@ -15,10 +15,13 @@
             <Step2 ref="registerStepTwo"></Step2>
           </div>
           <div slot="page3" class="form-wizard-tab-content">
-            <Step4 ref="registerStepThree"></Step4>
+            <Step3 ref="registerStepThree"></Step3>
           </div>
           <div slot="page4" class="form-wizard-tab-content">
-            <Step5 ref="registerStepFour"></Step5>
+            <Step4 ref="registerStepFour"></Step4>
+          </div>
+          <div slot="page5" class="form-wizard-tab-content">
+            <Step5 ref="registerStepFive"></Step5>
           </div>
         </vuestic-wizard>
       </div>
@@ -29,6 +32,7 @@
 <script>
 import Step1 from './steps/Step1'
 import Step2 from './steps/Step2'
+import Step3 from './steps/Step3'
 import Step4 from './steps/Step4'
 import Step5 from './steps/Step5'
 import { mapGetters } from 'vuex'
@@ -39,6 +43,7 @@ export default {
   components: {
     Step1,
     Step2,
+    Step3,
     Step4,
     Step5
   },
@@ -90,7 +95,7 @@ export default {
               const { passwordConfirm, ...info } = that.$data
               const res = await new Proxy('createAccount.php?', info).submit('post')
               if (res.success) {
-                this.$store.commit('auth/SET_FORMDATA', {'provider': res.provider})
+                this.$store.commit('auth/SET_FORMDATA', {'key': 'provider', 'value': res.provider})
                 this.nextBtn.loading = false
                 return true
               } else {
@@ -110,6 +115,12 @@ export default {
             // validation check
             const {success} = await new Proxy('checkSiteActivation.php?', this.$route.params).submit('post')
             if (success) {
+              const {providerAccessToken, providerId} = this.formData.provider
+              const locations = await new Proxy('getLocations.php?', {
+                providerId,
+                providerAccessToken
+              }).submit('post')
+              this.$store.commit('auth/SET_FORMDATA', {'key': 'locations', 'value': locations})
               this.nextBtn.loading = false
               return true
             } else {
@@ -125,24 +136,31 @@ export default {
         },
         {
           label: 'MINDBODY location',
-          slot: 'page7',
-          onNext: () => {
-            // manual validation occur
-            const that = this.$refs.registerStepOne
-            Object.keys(that.formFields).map(field => {
-              that.validateFormField(field)
-            })
-          },
-          isValid: () => {
-            // validation check
-            const that = this.$refs.registerStepOne
-            const validOk = Object.keys(that.formFields).every(field => {
-              return that.isFormFieldValid(field)
-            })
+          slot: 'page3',
+          isValid: async () => {
+            this.nextBtn.loading = true
+            const {success} = await new Proxy('saveLocations.php').submit('post')
+            if (success === 'false') {
+              this.$store.dispatch('auth/notification', {
+                type: 'ERROR',
+                title: 'Setting location error',
+                message: 'Please try to set location again.'
+              })
+              this.nextBtn.loading = false
+              return false
+            } else {
+              this.nextBtn.loading = false
+              return true
+            }
+            // // validation check
+            // const that = this.$refs.registerStepOne
+            // const validOk = Object.keys(that.formFields).every(field => {
+            //   return that.isFormFieldValid(field)
+            // })
 
-            // integration step's data
-            validOk && this.mergePartialModels(that.completedData())
-            return validOk
+            // // integration step's data
+            // validOk && this.mergePartialModels(that.completedData())
+            // // return validOk
           }
         },
         {
@@ -223,12 +241,31 @@ export default {
   }
 }
 
-.form-wizard-page {
+/deep/.form-wizard-page {
   margin-top: -5.625rem;
   width: 80%;
   .form-group {
     min-width: 200px;
     width: 100%;
+  }
+  @media screen and (max-width: 992px) {
+    margin-top: 0;
+  }
+  .wizard {
+    @media screen and (max-width: 769px) {
+      .wizard-steps {
+        height: 100%;
+      }
+    }
+    @media screen and (min-width: 769px) {
+      .wizard-steps {
+        height: 500px;
+      }
+      .wizard-body {
+        padding: 0;
+        min-height: 500px;
+      }
+    }
   }
 }
 
@@ -236,9 +273,8 @@ export default {
   width: 100%; // IE11 only
 }
 
-.register-step3-form {
+/deep/.register-form {
+  min-height: 500px;
   width: 100%;
-  padding-top: 10.7%;
-  padding-bottom: 11%;
 }
 </style>

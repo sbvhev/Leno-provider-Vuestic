@@ -13,7 +13,7 @@ import Vue from 'vue'
 import Axios from 'axios'
 import store from '@/store'
 
-Axios.defaults.baseURL = 'http://test-api.myleon.co/provider/'
+Axios.defaults.baseURL = 'https://test-api.myleon.co/provider/'
 Axios.defaults.headers.common.Accept = 'application/json'
 Axios.interceptors.response.use(
   response => response,
