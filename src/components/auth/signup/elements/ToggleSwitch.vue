@@ -18,10 +18,7 @@ export default {
     isOn: function (val) {
       this.$emit('checkChange')
     }
-  },
-  mounted () {
-    console.log(this.locationIsOn)
-  },
+  }
 }
 </script>
 

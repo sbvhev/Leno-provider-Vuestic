@@ -39,9 +39,11 @@ export default {
     formData: {
       handler (val) {
         this.locations = []
-        let originLocations = val.locations.slice(0)
-        while (originLocations.length) {
-          this.locations.push(originLocations.splice(0, 2))
+        if (val.locations) {
+          let originLocations = val.locations.slice(0)
+          while (originLocations.length) {
+            this.locations.push(originLocations.splice(0, 2))
+          }
         }
       },
       deep: true

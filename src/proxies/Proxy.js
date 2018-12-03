@@ -1,5 +1,5 @@
 import Vue from 'vue'
-
+import BrowserInfo from '@/helpers/BrowserInfo'
 class Proxy {
   /**
    * The constructor of the BaseProxy.
@@ -8,8 +8,18 @@ class Proxy {
    * @param {Object} parameters The parameters for the request.
    */
   constructor (endpoint, parameters = {}) {
+    const BSInfoInstance = new BrowserInfo()
+    const allBSInfo = BSInfoInstance.init()
     this.endpoint = endpoint
     this.parameters = parameters
+    this.browserInfo = {
+      osType: allBSInfo.browser.name,
+      osVersion: allBSInfo.browser.version
+    }
+    this.appInfo = {
+      appVersion: process.env.APP_VERSION,
+      appBuild: process.env.APP_BUILD
+    }
   }
 
   /**
@@ -157,8 +167,12 @@ class Proxy {
    * @returns {string} The parameter string.
    */
   getParameterString () {
-    if (this.parameters.length) return `data=${JSON.stringify(this.parameters)}`
-    else return ''
+    if (
+      Object.keys(this.parameters).length === 0 &&
+      this.parameters.constructor === Object
+    ) {
+      return ''
+    } else return `data=${JSON.stringify(this.parameters)}`
     // const keys = Object.keys(this.parameters);
 
     // const parameterStrings = keys
