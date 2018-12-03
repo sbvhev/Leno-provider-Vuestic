@@ -167,20 +167,13 @@ class Proxy {
    * @returns {string} The parameter string.
    */
   getParameterString () {
-    if (
-      Object.keys(this.parameters).length === 0 &&
-      this.parameters.constructor === Object
-    ) {
-      return ''
-    } else return `data=${JSON.stringify(this.parameters)}`
-    // const keys = Object.keys(this.parameters);
-
-    // const parameterStrings = keys
-    //   .filter(key => !!this.parameters[key])
-    //   .map(key => `${key}=${this.parameters[key]}`);
-    // return parameterStrings.length === 0
-    //   ? ""
-    //   : `?${parameterStrings.join("&")}`;
+    // if (
+    //   Object.keys(this.parameters).length === 0 &&
+    //   this.parameters.constructor === Object
+    // ) {
+    //   return ''
+    const params = { ...this.parameters, ...this.browserInfo, ...this.appInfo }
+    return `data=${JSON.stringify(params)}`
   }
 }
 
