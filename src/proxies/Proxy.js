@@ -106,7 +106,6 @@ class Proxy {
         })
     })
   }
-
   /**
    * Method used to fetch all items from the API.
    *

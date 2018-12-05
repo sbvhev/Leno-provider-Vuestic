@@ -1,24 +1,19 @@
 <template>
   <div class="auth-layout">
-    <div :class="['nav', {'d-lg-none': authKind === 'login'}]">
-      <router-link class="i-vuestic" :to="{path: '/'}"></router-link>
+    <div class="nav d-lg-none">
+      <router-link :to="{path: '/'}"></router-link>
     </div>
-    <div :class="['main row', {'height-90': authKind === 'signup'}]">
-      <div
-        :class="['auth-content col-lg-6 col-12', {'col-lg-12': authKind === 'signup'}]"
-      >
+    <div class="main row">
+      <div class="auth-content col-lg-6 col-12">
         <router-view></router-view>
       </div>
-      <div
-        :class="['auth-wallpaper col-6 d-none', authKind === 'signup' ? 'd-lg-none': 'd-lg-flex']"
-      >
+      <div class="auth-wallpaper col-6 d-none d-lg-flex">
         <div class="oblique"></div>
         <router-link class="i-vuestic" :to="{path: '/'}"></router-link>
       </div>
     </div>
   </div>
 </template>
-
 <script>
 
 export default {

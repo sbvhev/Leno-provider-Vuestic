@@ -12,19 +12,19 @@ if (process.env.NODE_ENV === 'development') {
 
   demoRoutes.push(
     VueBook(require.context('./..', true, /.demo.vue$/), '/demo'),
-    VueBook(require.context('./../components', true, /.vue$/), '/presentation'),
+    VueBook(require.context('./../components', true, /.vue$/), '/presentation')
   )
 }
 
 export default new Router({
   mode: 'hash',
   linkActiveClass: 'open active',
-  scrollBehavior: () => ({y: 0}),
+  scrollBehavior: () => ({ y: 0 }),
   routes: [
     ...demoRoutes,
     {
       path: '*',
-      redirect: { name: 'dashboard' },
+      redirect: { name: 'dashboard' }
     },
     {
       path: '/',
@@ -33,17 +33,17 @@ export default new Router({
         {
           name: 'login',
           path: 'login',
-          component: lazyLoading('auth/login/Login'),
+          component: lazyLoading('auth/login/Login')
         },
         {
           name: 'signup',
           path: 'signup/:siteId',
-          component: lazyLoading('auth/signup/Signup'),
+          component: lazyLoading('auth/signup/Signup')
         },
         {
           path: '',
-          redirect: { name: 'login' },
-        },
+          redirect: { name: 'login' }
+        }
       ],
       // If the user needs to be a guest to view this page.
       meta: {
@@ -59,28 +59,28 @@ export default new Router({
           name: 'dashboard',
           path: 'dashboard',
           component: lazyLoading('dashboard/Dashboard'),
-          default: true,
+          default: true
         },
         {
           name: 'users',
           path: 'users',
-          component: lazyLoading('users/Users'),
+          component: lazyLoading('users/Users')
         },
         {
           name: 'payment',
           path: 'payment',
-          component: lazyLoading('payment/Payment'),
+          component: lazyLoading('payment/Payment')
         },
         {
           name: 'plan',
           path: 'plan',
-          component: lazyLoading('plan/Plan'),
-        },
+          component: lazyLoading('plan/Plan')
+        }
       ],
       // If the user needs to be authenticated to view this page.
       meta: {
         auth: true
       }
-    },
-  ],
+    }
+  ]
 })

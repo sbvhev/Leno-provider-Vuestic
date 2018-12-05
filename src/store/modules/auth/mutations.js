@@ -15,7 +15,10 @@ import {
   NOTIFICATION,
   PROCESSING,
   CLEAR,
-  SET_FORMDATA
+  FORMDATA,
+  PROVIDER,
+  CHANGEISON,
+  CHANGEPRICING
 } from './mutation-types'
 
 /* eslint-disable no-param-reassign */
@@ -33,14 +36,17 @@ export default {
     //
   },
 
-  [LOGIN] (state, { accessToken }) {
+  [LOGIN] (state, { providerAccessToken }) {
     state.authenticated = true
-    localStorage.setItem('id_token', accessToken)
-    Vue.$http.defaults.headers.common.Authorization = `Bearer ${accessToken}`
+    localStorage.setItem('id_token', providerAccessToken)
+    Vue.$http.defaults.headers.common.Authorization = `Bearer ${providerAccessToken}`
   },
 
   [LOGOUT] (state) {
     state.authenticated = false
+    state.provider = []
+    state.formData.locations = []
+    state.formData.pricings = []
     localStorage.removeItem('id_token')
     delete Vue.$http.defaults.headers.common.Authorization
   },
@@ -58,7 +64,27 @@ export default {
     state.notificationInfo.message = ''
   },
 
-  [SET_FORMDATA] (state, payload) {
+  [PROVIDER] (state, payload) {
+    state.provider = payload
+  },
+
+  [FORMDATA] (state, payload) {
     state.formData[payload.key] = payload.value
+  },
+
+  [CHANGEISON] (state, payload) {
+    const { locations } = state.formData
+    const newLocations = locations.map(ele => {
+      if (ele.id === payload.id) {
+        ele.isOn = payload.isOn
+      }
+      return ele
+    })
+    state.formData.locations = newLocations
+  },
+
+  [CHANGEPRICING] (state, payload) {
+    state.formData.pricings[payload.key].options = payload.value
+    console.log(this.formData)
   }
 }

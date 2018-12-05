@@ -33,13 +33,16 @@
         <div class="info-widget-inner">
           <div class="info-widget-inner has-chart">
             <div class="stats">
-              <div class="stats-number">
-                {{ statsDatas[2]['value'] }}
-              </div>
+              <div class="stats-number">{{ statsDatas[2]['value'] }}</div>
               <div class="stats-title">{{ statsDatas[2]['description'] }}</div>
             </div>
             <div class="chart-container">
-              <vuestic-progress-bar type="circle" :value="70" theme="Gray" backgroundTheme="Primary" />
+              <vuestic-progress-bar
+                type="circle"
+                :value="70"
+                theme="Gray"
+                backgroundTheme="Primary"
+              />
             </div>
           </div>
         </div>
@@ -62,7 +65,7 @@
 </template>
 
 <script>
-import Proxy from '@/proxies/Proxy'
+// import Proxy from '@/proxies/Proxy'
 
 export default {
   name: 'dashboard-info-widgets',
@@ -77,26 +80,26 @@ export default {
   },
   methods: {
     async initalization () {
-      const me = this.$store.getters['account/myself']
-      try {
-        const { userId, accessToken } = me
-        const { error, stats } = await new Proxy('getStats.php?', {
-          userId,
-          accessToken
-        }).submit('get')
-        if (error) {
-          this.statsDatas = []
-        } else {
-          this.statsDatas = stats
-          this.isLoaded = true
-        }
-      } catch (error) {
-        this.$store.dispatch('auth/notification', {
-          type: 'ERROR',
-          title: 'SERVER ERROR',
-          message: 'Oops, Please try again later.'
-        })
-      }
+      // const me = this.$store.getters['account/myself']
+      // try {
+      //   const { userId, accessToken } = me
+      //   const { error, stats } = await new Proxy('getStats.php?', {
+      //     userId,
+      //     accessToken
+      //   }).submit('get')
+      //   if (error) {
+      //     this.statsDatas = []
+      //   } else {
+      //     this.statsDatas = stats
+      //     this.isLoaded = true
+      //   }
+      // } catch (error) {
+      //   this.$store.dispatch('auth/notification', {
+      //     type: 'ERROR',
+      //     title: 'SERVER ERROR',
+      //     message: 'Oops, Please try again later.'
+      //   })
+      // }
     },
   }
 }

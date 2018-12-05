@@ -1,280 +1,284 @@
 <template>
-  <div class="form-wizard-page">
-    <div class="row">
-      <div class="col-md-12">
-        <vuestic-wizard
-          ref="wizard"
-          wizard-layout="vertical"
-          wizard-type="rich"
-          :steps="hsSteps"
-        >
-          <div slot="page1" class="form-wizard-tab-content">
-            <Step1 ref="registerStepOne"></Step1>
+  <form class="register-form signup">
+    <h2 class="text-center">New Provider Account</h2>
+    <div class="row mt-5">
+      <div class="col-md-6">
+        <fieldset>
+          <div
+            class="form-group with-icon-right"
+            :class="{'has-error': errors.has('firstName'), 'valid': isFormFieldValid('firstName')}"
+          >
+            <div class="input-group">
+              <input
+                autofocus
+                id="firstName"
+                name="firstName"
+                data-vv-as="First Name"
+                v-model="firstName"
+                v-validate="'required'"
+                required
+                title
+              >
+              <i class="fa fa-check valid-icon icon-right input-icon"></i>
+              <label class="control-label" for="firstName">First Name</label>
+              <i class="bar"></i>
+              <small
+                v-show="errors.has('firstName')"
+                class="help text-danger"
+              >{{ errors.first('firstName') }}</small>
+            </div>
           </div>
-          <div slot="page2" class="form-wizard-tab-content">
-            <Step2 ref="registerStepTwo"></Step2>
+        </fieldset>
+      </div>
+
+      <div class="col-md-6">
+        <fieldset>
+          <div
+            class="form-group with-icon-right"
+            :class="{'has-error': errors.has('lastName'), 'valid': isFormFieldValid('lastName')}"
+          >
+            <div class="input-group">
+              <input
+                id="lastName"
+                name="lastName"
+                data-vv-as="Last Name"
+                v-model="lastName"
+                v-validate="'required'"
+                required
+                title
+              >
+              <i class="fa fa-check valid-icon icon-right input-icon"></i>
+              <label class="control-label" for="lastName">Last Name</label>
+              <i class="bar"></i>
+              <small
+                v-show="errors.has('lastName')"
+                class="help text-danger"
+              >{{ errors.first('lastName') }}</small>
+            </div>
           </div>
-          <div slot="page3" class="form-wizard-tab-content">
-            <Step3 ref="registerStepThree"></Step3>
-          </div>
-          <div slot="page4" class="form-wizard-tab-content">
-            <Step4 ref="registerStepFour"></Step4>
-          </div>
-          <div slot="page5" class="form-wizard-tab-content">
-            <Step5 ref="registerStepFive"></Step5>
-          </div>
-        </vuestic-wizard>
+        </fieldset>
       </div>
     </div>
-  </div>
+    <div class="row">
+      <div class="col-md-12">
+        <fieldset>
+          <div
+            class="form-group with-icon-right"
+            :class="{'has-error': errors.has('emailAddress'), 'valid': isFormFieldValid('emailAddress')}"
+          >
+            <div class="input-group">
+              <input
+                id="emailAddress"
+                name="emailAddress"
+                data-vv-as="Email"
+                v-model="emailAddress"
+                v-validate="'required|email'"
+                required
+              >
+              <i class="fa fa-check valid-icon icon-right input-icon"></i>
+              <label class="control-label" for="emailAddress">Email</label>
+              <i class="bar"></i>
+              <small
+                v-show="errors.has('emailAddress')"
+                class="help text-danger"
+              >{{ errors.first('emailAddress') }}</small>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <fieldset>
+          <div
+            class="form-group with-icon-right"
+            :class="{'has-error': errors.has('phoneNumber'), 'valid': isFormFieldValid('phoneNumber')}"
+          >
+            <div class="input-group">
+              <input
+                id="phoneNumber"
+                name="phoneNumber"
+                data-vv-as="Phone number"
+                v-model="phoneNumber"
+                v-validate="'required|phoneRules'"
+                required
+                title
+              >
+              <i class="fa fa-check valid-icon icon-right input-icon"></i>
+              <label class="control-label" for="phoneNumber">Phone Number</label>
+              <i class="bar"></i>
+              <small
+                v-show="errors.has('phoneNumber')"
+                class="help text-danger"
+              >{{ errors.first('phoneNumber') }}</small>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <fieldset>
+          <div
+            class="form-group with-icon-right"
+            :class="{'has-error': errors.has('password1'), 'valid': isFormFieldValid('password1')}"
+          >
+            <div class="input-group">
+              <input
+                id="password1"
+                name="password1"
+                data-vv-as="password"
+                v-model="password1"
+                v-validate="'required|min:6|passwordRules'"
+                type="password"
+                required
+              >
+              <i class="fa fa-check valid-icon icon-right input-icon"></i>
+              <label class="control-label" for="password1">Password</label>
+              <i class="bar"></i>
+              <small
+                v-show="errors.has('password1')"
+                class="help text-danger"
+              >{{ errors.first('password1') }}</small>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <fieldset>
+          <div
+            class="form-group with-icon-right"
+            :class="{'has-error': errors.has('password2'), 'valid': isFormFieldValid('password2')}"
+          >
+            <div class="input-group">
+              <input
+                id="password2"
+                name="password2"
+                data-vv-as="password"
+                v-model="password2"
+                v-validate="'required|confirmed:password1'"
+                type="password"
+                required
+              >
+              <i class="fa fa-check valid-icon icon-right input-icon"></i>
+              <label class="control-label" for="password2">Password, again</label>
+              <i class="bar"></i>
+              <small
+                v-show="errors.has('password2')"
+                class="help text-danger"
+              >{{ errors.first('password2') }}</small>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+    <div
+      class="px-4 mt-3 d-flex flex-column flex-lg-row align-items-center justify-content-between down-container"
+    >
+      <vue-ladda
+        :loading="asyncBtn.loading"
+        :key="asyncBtn.dataStyle"
+        :data-style="asyncBtn.dataStyle"
+        type="submit"
+        class="btn btn-primary"
+        @click.prevent="createAccount()"
+      >{{'auth.signUp' | translate}}</vue-ladda>
+      <router-link
+        class="link"
+        :to="{name: 'login'}"
+      >{{'auth.alreadyJoined' | translate}}</router-link>
+    </div>
+  </form>
 </template>
 
 <script>
-import Step1 from './steps/Step1'
-import Step2 from './steps/Step2'
-import Step3 from './steps/Step3'
-import Step4 from './steps/Step4'
-import Step5 from './steps/Step5'
-import { mapGetters } from 'vuex'
 import Proxy from '@/proxies/Proxy'
+import VueLadda from 'vue-ladda'
 
 export default {
   name: 'signup',
   components: {
-    Step1,
-    Step2,
-    Step3,
-    Step4,
-    Step5
-  },
-  watch: {
-    notification: function (newVal, oldVal) {
-      if (newVal.title !== 'CARD ERROR') {
-        this.$refs.wizard.resetWizard()
-        let that = this.$refs.registerStepOne
-        that.$data.companyName = ''
-        that.$data.userEmailAddress = ''
-        Object.keys(that.formFields).map(field => {
-          that.validateFormField(field)
-        })
-      }
-      this.$store.dispatch('auth/notificationClear')
-    }
+    VueLadda
   },
   data () {
     return {
-      nextBtn: null
+      phoneNumber: '832-543-1974',
+      firstName: 'test',
+      lastName: 'test',
+      emailAddress: 'devraj@gmail.com',
+      password1: 'Password@63',
+      password2: 'Password@63',
+      asyncBtn: {
+        loading: false,
+        dataStyle: 'zoom-in',
+        progress: 0
+      },
     }
   },
-  mounted () {
-    this.nextBtn = this.$refs.wizard.nextBtn
-  },
-  computed: {
-    hsSteps () {
-      return [
-        {
-          label: 'Personal Details',
-          slot: 'page1',
-          onNext: () => {
-            // manual validation occur
-            const that = this.$refs.registerStepOne
-            Object.keys(that.formFields).map(field => {
-              that.validateFormField(field)
-            })
-          },
-          isValid: async () => {
-            // validation check
-            const that = this.$refs.registerStepOne
-            const validOk = Object.keys(that.formFields).every(field => {
-              return that.isFormFieldValid(field)
-            })
-
-            // integration step's data
-            if (validOk) {
-              this.nextBtn.loading = true
-              const { passwordConfirm, ...info } = that.$data
-              const res = await new Proxy('createAccount.php?', info).submit('post')
-              if (res.success) {
-                this.$store.commit('auth/SET_FORMDATA', {'key': 'provider', 'value': res.provider})
-                this.nextBtn.loading = false
-                return true
-              } else {
-                this.nextBtn.loading = false
-                return false
-              }
-            } else {
-              return false
-            }
-          }
-        },
-        {
-          label: 'Activate MINDBODY',
-          slot: 'page2',
-          isValid: async () => {
-            this.nextBtn.loading = true
-            // validation check
-            const {success} = await new Proxy('checkSiteActivation.php?', this.$route.params).submit('post')
-            if (success) {
-              const {providerAccessToken, providerId} = this.formData.provider
-              const locations = await new Proxy('getLocations.php?', {
-                providerId,
-                providerAccessToken
-              }).submit('post')
-              this.$store.commit('auth/SET_FORMDATA', {'key': 'locations', 'value': locations})
-              this.nextBtn.loading = false
-              return true
-            } else {
-              this.$store.dispatch('auth/notification', {
-                type: 'ERROR',
-                title: 'Not found Account',
-                message: 'Please try Activate Account again.'
-              })
-              this.nextBtn.loading = false
-              return false
-            }
-          }
-        },
-        {
-          label: 'MINDBODY location',
-          slot: 'page3',
-          isValid: async () => {
-            this.nextBtn.loading = true
-            const {success} = await new Proxy('saveLocations.php').submit('post')
-            if (success === 'false') {
-              this.$store.dispatch('auth/notification', {
-                type: 'ERROR',
-                title: 'Setting location error',
-                message: 'Please try to set location again.'
-              })
-              this.nextBtn.loading = false
-              return false
-            } else {
-              this.nextBtn.loading = false
-              return true
-            }
-            // // validation check
-            // const that = this.$refs.registerStepOne
-            // const validOk = Object.keys(that.formFields).every(field => {
-            //   return that.isFormFieldValid(field)
-            // })
-
-            // // integration step's data
-            // validOk && this.mergePartialModels(that.completedData())
-            // // return validOk
-          }
-        },
-        {
-          label: 'Employee Stipend',
-          slot: 'page4',
-          isValid: () => {
-            // integration step's data
-            const that = this.$refs.registerStepTwo
-            this.mergePartialModels(that.completedData())
-            return true
-          }
-        },
-        {
-          label: 'Credit Card',
-          slot: 'page5',
-          onNext: () => {
-            // manual validation occur
-            const that = this.$refs.registerStepOne
-            Object.keys(that.formFields).map(field => {
-              that.validateFormField(field)
-            })
-          },
-          isValid: async () => {
-            let that = this.$refs.registerStepThree
-            Object.keys(that.formFields).map(field => {
-              that.validateFormField(field)
-            })
-            // validation check
-            const validOk = Object.keys(that.formFields).every(field => {
-              return that.isFormFieldValid(field)
-            })
-            let wizard = this.$refs.wizard
-            if (validOk) {
-              try {
-                wizard.nextBtn.loading = true
-                const stripeToken = await that.completedData()
-                const { stripePaymentToken } = stripeToken
-                if (stripePaymentToken) {
-                  this.mergePartialModels(stripeToken)
-                  await this.$store.dispatch('auth/register', this.finalModel)
-                  this.finalModel = []
-                }
-                wizard.nextBtn.loading = false
-              } catch (err) {
-                this.$store.dispatch('auth/notification', {
-                  type: 'ERROR',
-                  title: 'SERVER ERROR',
-                  message: 'Oops, Please try again later.'
-                })
-                wizard.nextBtn.loading = false
-              }
-            }
-            return false
-          }
-        }
-      ]
-    },
-    ...mapGetters({
-      notification: 'auth/notificationInfo',
-      formData: 'auth/getFormData'
-    })
-  },
   methods: {
-    mergePartialModels (model) {
-      this.finalModel = Object.assign({}, this.finalModel, model)
+    isFormFieldValid (field) {
+      let isValid = false
+      if (this.formFields[field]) {
+        isValid =
+          this.formFields[field].validated && this.formFields[field].valid
+      }
+      return isValid
     },
+    async createAccount () {
+      let {asyncBtn, ...data} = this.$data
+      const {siteId} = this.$route.params
+      data = {...data, siteId}
+      this.asyncBtn.loading = true
+      // data = {...data, siteId: this.$router}
+      if (this.$validator.validateAll()) {
+        const res = await new Proxy('createAccount.php?', data).submit('post')
+        const { provider: {
+          mindbodyActivationLink,
+          providerAccessToken,
+          providerId,
+        }} = res
+        if (res.success) {
+          this.$store.commit('auth/PROVIDER', {mindbodyActivationLink, providerAccessToken, providerId, siteId})
+          this.$store.commit('auth/LOGIN', res.provider)
+          this.$router.push({ name: 'dashboard' })
+          this.asyncBtn.loading = false
+          return true
+        } else {
+          const {displayError, error} = res
+          this.asyncBtn.loading = false
+          this.$store.dispatch('auth/notification', {
+            type: 'ERROR',
+            title: error,
+            message: displayError
+          })
+          return false
+        }
+      }
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.widget.simple-vertical-wizard-widget {
-  .widget-body {
-    padding: 0 $widget-padding;
-    @include media-breakpoint-down(sm) {
-      padding: $widget-padding 0;
-    }
-  }
-}
-
-/deep/.form-wizard-page {
-  margin-top: -5.625rem;
-  width: 80%;
-  .form-group {
-    min-width: 200px;
+.signup {
+  @include media-breakpoint-down(md) {
     width: 100%;
-  }
-  @media screen and (max-width: 992px) {
-    margin-top: 0;
-  }
-  .wizard {
-    @media screen and (max-width: 769px) {
-      .wizard-steps {
-        height: 100%;
-      }
-    }
-    @media screen and (min-width: 769px) {
-      .wizard-steps {
-        height: 500px;
-      }
-      .wizard-body {
-        padding: 0;
-        min-height: 500px;
+    padding-right: 2rem;
+    padding-left: 2rem;
+    .down-container {
+      .link {
+        margin-top: 2rem;
       }
     }
   }
-}
 
-.form-wizard-tab-content-text {
-  width: 100%; // IE11 only
-}
-
-/deep/.register-form {
-  min-height: 500px;
-  width: 100%;
+  .btn.btn-primary.ladda-button {
+    padding: 1.1rem 3.9rem;
+    border-radius: 1.875rem;
+    font-size: 1rem;
+  }
 }
 </style>
+

@@ -6,6 +6,8 @@ import 'babel-polyfill'
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import VeeValidate from 'vee-validate'
+import '@/helpers/CustomRules'
+import '@/helpers/filters'
 import App from './App'
 import store from './store'
 import VuesticPlugin from 'vuestic-theme/vuestic-plugin'
@@ -30,7 +32,7 @@ Vue.use(VuesticPlugin)
 Vue.use(YmapPlugin)
 
 // NOTE: workaround for VeeValidate + vuetable-2
-Vue.use(VeeValidate, {fieldsBagName: 'formFields'})
+Vue.use(VeeValidate, { fieldsBagName: 'formFields' })
 
 store.dispatch('auth/check')
 /* eslint-disable no-new */

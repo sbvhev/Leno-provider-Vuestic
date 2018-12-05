@@ -13,8 +13,14 @@ export default {
     title: ''
   },
   formData: {
-    provider: {},
-    locations: null
+    locations: null,
+    pricings: []
+  },
+  provider: {
+    providerId: null,
+    providerAccessToken: null,
+    mindbodyActivationLink: '',
+    siteId: null
   },
   isProcessing: false
 }

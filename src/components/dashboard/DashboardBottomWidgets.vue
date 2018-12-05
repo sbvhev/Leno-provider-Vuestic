@@ -7,14 +7,18 @@
     </div>
     <div class="col-md-6 d-flex">
       <vuestic-widget class="business-posts">
-        <vuestic-social-news class="vuestic-social-news" :news="news" :url="'http://instagram.com/smartapant'"></vuestic-social-news>
+        <vuestic-social-news
+          class="vuestic-social-news"
+          :news="news"
+          :url="'http://instagram.com/smartapant'"
+        ></vuestic-social-news>
       </vuestic-widget>
     </div>
   </div>
 </template>
 
 <script>
-import Proxy from '@/proxies/Proxy'
+// import Proxy from '@/proxies/Proxy'
 
 export default {
   name: 'dashboard-bottom-widgets',
@@ -64,27 +68,27 @@ export default {
   },
   methods: {
     async initalization () {
-      const me = this.$store.getters['account/myself']
-      try {
-        const { userId, accessToken } = me
-        const { error, feed } = await new Proxy('getFeed.php?', {
-          userId,
-          accessToken
-        }).submit('get')
+      // const me = this.$store.getters['account/myself']
+      // try {
+      //   const { userId, accessToken } = me
+      //   const { error, feed } = await new Proxy('getFeed.php?', {
+      //     userId,
+      //     accessToken
+      //   }).submit('get')
 
-        if (error) {
-          this.posts = []
-        } else {
-          this.posts = feed.splice(0, 3)
-          this.isLoaded = true
-        }
-      } catch (error) {
-        this.$store.dispatch('auth/notification', {
-          type: 'ERROR',
-          title: 'SERVER ERROR',
-          message: 'Oops, Please try again later.'
-        })
-      }
+      //   if (error) {
+      //     this.posts = []
+      //   } else {
+      //     this.posts = feed.splice(0, 3)
+      //     this.isLoaded = true
+      //   }
+      // } catch (error) {
+      //   this.$store.dispatch('auth/notification', {
+      //     type: 'ERROR',
+      //     title: 'SERVER ERROR',
+      //     message: 'Oops, Please try again later.'
+      //   })
+      // }
     },
   }
 }

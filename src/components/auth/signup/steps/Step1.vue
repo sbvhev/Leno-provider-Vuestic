@@ -1,215 +1,89 @@
 <template>
   <form class="register-form step1">
-    <h2 class="text-center">New Provider Account</h2>
-    <div class="row mt-5">
-      <div class="col-md-6">
-        <fieldset>
-          <div
-            class="form-group with-icon-right"
-            :class="{'has-error': errors.has('firstName'), 'valid': isFormFieldValid('firstName')}"
-          >
-            <div class="input-group">
-              <input
-                autofocus
-                id="firstName"
-                name="firstName"
-                data-vv-as="First Name"
-                v-model="firstName"
-                v-validate="'required'"
-                required
-                title
-              >
-              <i class="fa fa-check valid-icon icon-right input-icon"></i>
-              <label class="control-label" for="firstName">First Name</label>
-              <i class="bar"></i>
-              <small
-                v-show="errors.has('firstName')"
-                class="help text-danger"
-              >{{ errors.first('firstName') }}</small>
-            </div>
-          </div>
-        </fieldset>
+    <h2 class="text-center">Activate MINDBODY</h2>
+    <div class="row justify-center align-center mt-5">
+      <div class="col-md-1 paragraph paragraph-head">
+        <p class="h5 bold">1)</p>
       </div>
-
-      <div class="col-md-6">
-        <fieldset>
-          <div
-            class="form-group with-icon-right"
-            :class="{'has-error': errors.has('lastName'), 'valid': isFormFieldValid('lastName')}"
-          >
-            <div class="input-group">
-              <input
-                id="lastName"
-                name="lastName"
-                data-vv-as="Last Name"
-                v-model="lastName"
-                v-validate="'required'"
-                required
-                title
-              >
-              <i class="fa fa-check valid-icon icon-right input-icon"></i>
-              <label class="control-label" for="lastName">Last Name</label>
-              <i class="bar"></i>
-              <small
-                v-show="errors.has('lastName')"
-                class="help text-danger"
-              >{{ errors.first('lastName') }}</small>
-            </div>
-          </div>
-        </fieldset>
+      <div class="col-md-11 paragraph paragraph-body">
+        <p
+          class="h5"
+        >Click below to automatically activate MINDBODY account. You'll see a green checkmark(opens in new window).</p>
+        <br>
+        <p class="h5">
+          <span>
+            <b>Note:</b>
+          </span>must be logged in as the
+          <span
+            style="background-color: #f9d867;"
+          >Site Owner</span> to activate account.
+        </p>
+        <button
+          class="btn btn-info my-5 btn-activate"
+          @click.prevent="activateAccount()"
+        >Activate Account</button>
       </div>
     </div>
-    <div class="row">
-      <div class="col-md-12">
-        <fieldset>
-          <div
-            class="form-group with-icon-right"
-            :class="{'has-error': errors.has('emailAddress'), 'valid': isFormFieldValid('emailAddress')}"
-          >
-            <div class="input-group">
-              <input
-                id="emailAddress"
-                name="emailAddress"
-                data-vv-as="Email"
-                v-model="emailAddress"
-                v-validate="'required|email'"
-                required
-              >
-              <i class="fa fa-check valid-icon icon-right input-icon"></i>
-              <label class="control-label" for="emailAddress">Email</label>
-              <i class="bar"></i>
-              <small
-                v-show="errors.has('emailAddress')"
-                class="help text-danger"
-              >{{ errors.first('emailAddress') }}</small>
-            </div>
-          </div>
-        </fieldset>
+    <div class="row justify-center align-center my-3">
+      <div class="col-md-1 paragraph paragraph-head">
+        <p class="h5 bold">2)</p>
       </div>
-    </div>
-    <div class="row">
-      <div class="col-md-12">
-        <fieldset>
-          <div
-            class="form-group with-icon-right"
-            :class="{'has-error': errors.has('phoneNumber'), 'valid': isFormFieldValid('phoneNumber')}"
-          >
-            <div class="input-group">
-              <input
-                id="phoneNumber"
-                name="phoneNumber"
-                data-vv-as="Phone number"
-                v-model="phoneNumber"
-                v-validate="'required'"
-                required
-                title
-              >
-              <i class="fa fa-check valid-icon icon-right input-icon"></i>
-              <label class="control-label" for="phoneNumber">Phone Number</label>
-              <i class="bar"></i>
-              <small
-                v-show="errors.has('phoneNumber')"
-                class="help text-danger"
-              >{{ errors.first('phoneNumber') }}</small>
-            </div>
-          </div>
-        </fieldset>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-12">
-        <fieldset>
-          <div
-            class="form-group with-icon-right"
-            :class="{'has-error': errors.has('password'), 'valid': isFormFieldValid('password')}"
-          >
-            <div class="input-group">
-              <input
-                id="password"
-                name="password"
-                data-vv-as="password"
-                v-model="password"
-                v-validate="'required|min:6'"
-                type="password"
-                required
-              >
-              <i class="fa fa-check valid-icon icon-right input-icon"></i>
-              <label class="control-label" for="password">Password</label>
-              <i class="bar"></i>
-              <small
-                v-show="errors.has('password')"
-                class="help text-danger"
-              >{{ errors.first('password') }}</small>
-            </div>
-          </div>
-        </fieldset>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-12">
-        <fieldset>
-          <div
-            class="form-group with-icon-right"
-            :class="{'has-error': errors.has('passwordConfirm'), 'valid': isFormFieldValid('passwordConfirm')}"
-          >
-            <div class="input-group">
-              <input
-                id="passwordConfirm"
-                name="passwordConfirm"
-                data-vv-as="password"
-                v-model="passwordConfirm"
-                v-validate="'required|confirmed:password'"
-                type="password"
-                required
-              >
-              <i class="fa fa-check valid-icon icon-right input-icon"></i>
-              <label class="control-label" for="passwordConfirm">Password, again</label>
-              <i class="bar"></i>
-              <small
-                v-show="errors.has('passwordConfirm')"
-                class="help text-danger"
-              >{{ errors.first('passwordConfirm') }}</small>
-            </div>
-          </div>
-        </fieldset>
+      <div class="col-md-11 paragraph paragraph-body">
+        <p class="h5">
+          Verify account activation. Email
+          <b>bryan@myleon.co</b> if you have any issues.
+        </p>
+        <br>
       </div>
     </div>
   </form>
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
 
 export default {
   name: 'step2',
   components: {
   },
-  data () {
-    return {
-      phoneNumber: '1-832-543-1974',
-      firstName: 'test',
-      lastName: 'test',
-      emailAddress: 'devraj@gmail.com',
-      password: 'test123',
-      passwordConfirm: 'test123'
-    }
+  computed: {
+    ...mapGetters({
+      provider: 'auth/provider'
+    })
   },
   methods: {
-    isFormFieldValid (field) {
-      let isValid = false
-      if (this.formFields[field]) {
-        isValid =
-          this.formFields[field].validated && this.formFields[field].valid
-      }
-      return isValid
+    activateAccount () {
+      // const { mindbodyActivationLink } = this.$store.formData.provider
+      const {mindbodyActivationLink} = this.provider
+      const mywindow = window.open(mindbodyActivationLink, 'mywindow', 'location=1,status=1,scrollbars=1,  width=1340,height=1080')
+      mywindow.moveTo(350, 600)
     },
-    validateFormField (fieldName) {
-      this.$validator.validate(fieldName, this[fieldName])
-    }
   }
 }
 </script>
+
 <style lang="scss">
 .step1 {
-  padding: 2.25rem 7%;
+  padding: 0 7rem;
+  .paragraph {
+    .p {
+      line-height: 1.3;
+    }
+    &.paragraph-head {
+      text-align: right;
+    }
+    &.paragraph-body {
+      padding-left: 3rem;
+    }
+  }
+  @include media-breakpoint-down(md) {
+    padding: 0;
+    .paragraph.paragraph-head {
+      text-align: left;
+    }
+    .btn-activate {
+      padding: 1.1rem 2.5rem;
+    }
+  }
 }
 </style>

@@ -24,5 +24,11 @@ export default {
   },
   getFormData: state => {
     return state.formData
+  },
+  pricings: state => {
+    return state.formData.pricings
+  },
+  provider: state => {
+    return state.provider
   }
 }

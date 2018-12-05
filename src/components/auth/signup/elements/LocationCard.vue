@@ -41,11 +41,19 @@ export default {
       isOn: this.item.isOn
     }
   },
+  watch: {
+    isOn: function (val) {
+      this.$store.commit('auth/CHANGEISON', {id: this.item.id, isOn: this.isOn})
+    }
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 .info-widget {
+  /deep/.widget-body {
+    padding: 20px 40px;
+  }
   &.disable-info-widget {
     border-top: 0.5rem solid #a0a0a0;
     color: #c5c5c5;
