@@ -204,12 +204,12 @@ export default {
   },
   data () {
     return {
-      phoneNumber: '832-543-1974',
-      firstName: 'test',
-      lastName: 'test',
-      emailAddress: 'devraj@gmail.com',
-      password1: 'Password@63',
-      password2: 'Password@63',
+      phoneNumber: '',
+      firstName: '',
+      lastName: '',
+      emailAddress: '',
+      password1: '',
+      password2: '',
       asyncBtn: {
         loading: false,
         dataStyle: 'zoom-in',
@@ -226,13 +226,18 @@ export default {
       }
       return isValid
     },
+    formValid () {
+      // loop over all contents of the fields object and check if they exist and valid.
+      return Object.keys(this.formFields).every(field => {
+        return this.formFields[field] && this.formFields[field].valid
+      })
+    },
     async createAccount () {
       let {asyncBtn, ...data} = this.$data
       const {siteId} = this.$route.params
       data = {...data, siteId}
-      this.asyncBtn.loading = true
-      // data = {...data, siteId: this.$router}
-      if (this.$validator.validateAll()) {
+      if (this.formValid()) {
+        this.asyncBtn.loading = true
         const res = await new Proxy('createAccount.php?', data).submit('post')
         const { provider: {
           mindbodyActivationLink,
@@ -255,6 +260,12 @@ export default {
           })
           return false
         }
+      } else {
+        this.$store.dispatch('auth/notification', {
+          type: 'INFO',
+          title: 'Wrong information',
+          message: 'Please input again'
+        })
       }
     }
   }

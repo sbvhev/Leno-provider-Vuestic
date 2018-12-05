@@ -199,6 +199,11 @@ export default {
       pricings: 'auth/pricings',
     })
   },
+  watch: {
+    pricings () {
+      this.thisPricings = [].concat(this.pricings)
+    }
+  },
   data () {
     return {
       expandIndex: 0,
@@ -212,13 +217,7 @@ export default {
       this.expandIndex = nextIndex
       console.log('currentIndex--->', currentIndex, this.dddd)
     }
-  },
-  mounted () {
-    this.thisPricings = [].concat(this.pricings)
-  },
-  updated () {
-    this.thisPricings = [].concat(this.pricings)
-  },
+  }
 }
 </script>
 <style lang="scss" scoped>

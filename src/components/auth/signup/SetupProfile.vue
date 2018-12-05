@@ -132,13 +132,7 @@ export default {
         },
         {
           label: 'Pricing',
-          slot: 'page3',
-          isValid: () => {
-            // integration step's data
-            const that = this.$refs.registerStepTwo
-            this.mergePartialModels(that.completedData())
-            return true
-          }
+          slot: 'page3'
         },
         {
           label: 'Payment',
