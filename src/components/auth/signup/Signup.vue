@@ -290,6 +290,16 @@ export default {
     border-radius: 1.875rem;
     font-size: 1rem;
   }
+
+  /deep/.help {
+    &.text-danger {
+      display: inline-block;
+      max-width: 350px;
+      @include media-breakpoint-down(md) {
+        max-width: 100%;
+      }
+    }
+  }
 }
 </style>
 
