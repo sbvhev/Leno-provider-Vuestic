@@ -21,7 +21,10 @@
       >
         <div class="font-weight-bold text-center mr-1">Show on LEON?</div>
         <div>
-          <toggle-switch :locationIsOn="item.isOn" @checkChange="isOn = !isOn"></toggle-switch>
+          <toggle-switch
+            :locationIsOn="item.isOn"
+            @checkChange="localIsOn = !localIsOn"
+          ></toggle-switch>
         </div>
       </div>
     </div>
@@ -38,14 +41,14 @@ export default {
   props: ['item'],
   data () {
     return {
-      isOn: this.item.isOn
+      localIsOn: this.item.isOn
     }
   },
   watch: {
-    isOn: function (val) {
-      this.$store.commit('auth/CHANGEISON', {id: this.item.id, isOn: this.isOn})
+    localIsOn (val) {
+      this.$store.commit('auth/CHANGEISON', {id: this.item.id, isOn: val})
     }
-  }
+  },
 }
 </script>
 

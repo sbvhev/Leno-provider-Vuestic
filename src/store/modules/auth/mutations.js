@@ -52,10 +52,6 @@ export default {
     delete Vue.$http.defaults.headers.common.Authorization
   },
 
-  [PROCESSING] (state, value) {
-    state.isProcessing = value
-  },
-
   [NOTIFICATION] (state, info) {
     state.notificationInfo = info
   },
@@ -63,6 +59,10 @@ export default {
   [CLEAR] (state) {
     state.notificationInfo.title = ''
     state.notificationInfo.message = ''
+  },
+
+  [PROCESSING] (state, value) {
+    state.isProcessing = value
   },
 
   [PROVIDER] (state, payload) {
@@ -78,13 +78,15 @@ export default {
 
   [CHANGEISON] (state, payload) {
     const { locations } = state.formData
-    const newLocations = locations.map(ele => {
+    const locations1 = [...locations]
+    const newLocations = locations1.map(ele => {
       if (ele.id === payload.id) {
         ele.isOn = payload.isOn
       }
       return ele
     })
-    state.formData.locations = { ...state.formData.locations, newLocations }
+
+    state.formData.locations = newLocations
   },
 
   [CHANGEPRICING] (state, payload) {
