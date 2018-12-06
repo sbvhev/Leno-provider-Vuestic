@@ -8,7 +8,15 @@
       </div>
       <vuestic-pre-loader v-show="!isLoaded" class="pre-loader"></vuestic-pre-loader>
       <div class="col-md-6" v-if="isLoaded">
-        <vuestic-data-table :apiMode="apiMode" :tableData="tableData" :tableFields="tableFields" :itemsPerPage="itemsPerPage" :onEachSide="onEachSide" :sortFunctions="sortFunctions" :dataModeFilterableFields="dataModeFilterableFields" />
+        <vuestic-data-table
+          :apiMode="apiMode"
+          :tableData="tableData"
+          :tableFields="tableFields"
+          :itemsPerPage="itemsPerPage"
+          :onEachSide="onEachSide"
+          :sortFunctions="sortFunctions"
+          :dataModeFilterableFields="dataModeFilterableFields"
+        />
       </div>
     </div>
   </div>
@@ -99,10 +107,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../../sass/_variables.scss";
-@import "~bootstrap/scss/functions";
-@import "~bootstrap/scss/variables";
-@import "~bootstrap/scss/mixins/breakpoints";
+@import '../../../sass/_variables.scss';
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins/breakpoints';
 
 .chart-container {
   padding: 0 2rem;

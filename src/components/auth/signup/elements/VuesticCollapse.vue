@@ -5,7 +5,7 @@
       :class="{
         'vuestic-collapse__header--no-header': noHeader,
       }"
-      @click="onHeaderClick()"
+      @click.prevent="onHeaderClick()"
     >
       <template v-if="noHeader">
         <slot name="header"/>
@@ -30,6 +30,8 @@ export default {
       default: false,
     },
     noHeader: Boolean,
+    onClickHeader: Function,
+    index: Number
   },
   inject: {
     accordion: {
@@ -56,8 +58,9 @@ export default {
       bodyContent.style.height = 0
       this.show = false
     },
-    onHeaderClick () {
+    onHeaderClick (e) {
       this.toggle()
+      this.$emit('onClickHeader', this.index)
       this.accordion.onChildChange(this, this.show)
     },
     // Public

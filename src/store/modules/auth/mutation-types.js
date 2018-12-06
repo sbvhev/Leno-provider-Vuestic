@@ -17,6 +17,7 @@ export const FORMDATA = 'FORMDATA'
 export const PROVIDER = 'PROVIDER'
 export const CHANGEISON = 'CHANGEISON'
 export const CHANGEPRICING = 'CHANGEPRICING'
+export const CHANGEPRICEISON = 'CHANGEPRICEISON'
 
 export default {
   CHECK,
@@ -29,5 +30,6 @@ export default {
   FORMDATA,
   PROVIDER,
   CHANGEISON,
-  CHANGEPRICING
+  CHANGEPRICING,
+  CHANGEPRICEISON
 }

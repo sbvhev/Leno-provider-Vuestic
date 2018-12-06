@@ -11,7 +11,7 @@
             <input
               id="email"
               name="email"
-              v-model="user.userEmailAddress"
+              v-model="user.emailAddress"
               v-validate="'required|email'"
               required
             >
@@ -30,7 +30,7 @@
               id="password"
               name="password"
               type="password"
-              v-model="user.userPassword"
+              v-model="user.password"
               required
             >
             <label class="control-label" for="password">Password</label>
@@ -69,11 +69,7 @@ export default {
   },
   methods: {
     async handleSubmit (e) {
-      try {
-        await this.$validator.validateAll() && this.$store.dispatch('auth/login', this.user)
-      } catch (e) {
-        console.log('extra error')
-      }
+      this.$store.dispatch('auth/login', this.user)
     },
   }
 }

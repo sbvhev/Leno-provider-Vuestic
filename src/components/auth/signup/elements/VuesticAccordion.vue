@@ -48,6 +48,4 @@ export default {
 
 // HACK Accordion for presentation page
 <style lang="scss">
-.vuestic-accordion {
-}
 </style>

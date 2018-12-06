@@ -28,6 +28,9 @@ export default {
   pricings: state => {
     return state.formData.pricings
   },
+  locations: state => {
+    return state.formData.locations
+  },
   provider: state => {
     return state.provider
   }

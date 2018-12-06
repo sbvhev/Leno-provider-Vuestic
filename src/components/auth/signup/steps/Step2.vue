@@ -32,21 +32,18 @@ export default {
   },
   computed: {
     ...mapGetters({
-      formData: 'auth/getFormData'
+      formData: 'auth/locations'
     }),
   },
   watch: {
     formData: {
       handler (val) {
+        let originLocations = val.slice(0)
         this.locations = []
-        if (val.locations) {
-          let originLocations = val.locations.slice(0)
-          while (originLocations.length) {
-            this.locations.push(originLocations.splice(0, 2))
-          }
+        while (originLocations.length) {
+          this.locations.push(originLocations.splice(0, 2))
         }
       },
-      deep: true
     }
   },
 }

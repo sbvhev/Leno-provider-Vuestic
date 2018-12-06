@@ -4,9 +4,11 @@
       <div class="col-sm-12 text-right">
         <vuestic-accordion>
           <vuestic-collapse
-            v-for="(pricing, index) in thisPricings"
+            v-for="(pricing, index) in pricingInstance"
             :key="index"
-            :value="index === expandIndex"
+            :value="index == expandIndex"
+            :index="index"
+            @onClickHeader="handleExpandIndex"
           >
             <span slot="header">{{pricing.title}}</span>
             <div slot="body">
@@ -19,7 +21,10 @@
                       class="font-weight-bold text-center mr-1 show-leon font-weight-bold"
                     >Show on LEON?</div>
                     <div>
-                      <toggle-switch :locationIsOn="pricing.isOn"></toggle-switch>
+                      <toggle-switch
+                        :locationIsOn="pricing.isOn"
+                        @checkChange="isOnChange"
+                      ></toggle-switch>
                     </div>
                   </div>
                 </div>
@@ -58,111 +63,7 @@
                   </vuestic-widget>
                 </div>
                 <div class="col-md-6">
-                  <vuestic-widget class="info-widget">
-                    <div
-                      class="table-header pt-3 d-flex flex-row flex-wrap justify-content-between align-content-center border-bottom-2"
-                    >
-                      <div class="location pr-3">
-                        <div class="location-title">
-                          <h5>Payment Options</h5>
-                        </div>
-                      </div>
-                      <div
-                        class="d-flex justify-content-center flex-row align-items-center flex-wrap"
-                      >
-                        <div class="font-weight-bold text-center mr-1">
-                          <h5>Price</h5>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="table-body">
-                      <div class="py-3 row">
-                        <div class="col-8 text-left widget-element pl-1">
-                          <b>Single Class</b>
-                        </div>
-                        <div class="col-4 text-right widget-element input">
-                          $
-                          <input
-                            type="number"
-                            align="right"
-                            class="h-100"
-                            v-model="pricing.options[0].price_cents"
-                          >
-                        </div>
-                      </div>
-                      <div class="pt-3 pb-1 row">
-                        <div class="col-8 text-left widget-element pl-1">
-                          <b>5-pack</b>
-                        </div>
-                        <div class="col-4 text-right widget-element input">
-                          $
-                          <input
-                            type="number"
-                            align="right"
-                            class="h-100"
-                            :value="pricing.options[1].price_cents"
-                          >
-                        </div>
-                      </div>
-                      <div class="pt-1 pb-3 row">
-                        <div class="col-8 text-left widget-element pl-1">
-                          <b>10-pack</b>
-                        </div>
-                        <div class="col-4 text-right widget-element input">
-                          $
-                          <input
-                            type="number"
-                            align="right"
-                            class="h-100"
-                            :value="pricing.options[2].price_cents"
-                          >
-                        </div>
-                      </div>
-                      <div class="pt-3 pb-1 row">
-                        <div class="col-8 text-left widget-element pl-1">
-                          <b>Monthly membership</b>
-                        </div>
-                        <div class="col-4 text-right widget-element input">
-                          $
-                          <input
-                            type="number"
-                            align="right"
-                            class="h-100"
-                            :value="pricing.options[3].price_cents"
-                          >
-                        </div>
-                      </div>
-                      <div class="pt-1 pb-3 row">
-                        <div class="col-8 text-left widget-element pl-1">
-                          <b>max classes per month</b>
-                        </div>
-                        <div class="col-4 text-right widget-element input">
-                          $
-                          <input
-                            type="number"
-                            align="right"
-                            class="h-100"
-                            :value="pricing.options[4].classes"
-                          >
-                        </div>
-                      </div>
-                      <div class="py-3 row">
-                        <div class="col-8 text-left widget-element pl-1">
-                          <b>introductory rate</b>
-                        </div>
-                        <div class="col-4 text-right widget-element input">
-                          $
-                          <input
-                            type="number"
-                            align="right"
-                            class="h-100"
-                            :value="pricing.options[5].price_cents"
-                            v-model="ddsd"
-                          >
-                        </div>
-                      </div>
-                    </div>
-                  </vuestic-widget>
+                  <price-form ref="priceForm" :options="pricing.options"></price-form>
                 </div>
               </div>
               <div
@@ -170,7 +71,7 @@
               >
                 <button
                   class="btn btn-info"
-                  @click="nextCollapse(index+1)"
+                  @click.prevent="nextCollapse()"
                 >{{'auth.submit' | translate}}</button>
               </div>
             </div>
@@ -185,6 +86,7 @@
 import ToggleSwitch from '../elements/ToggleSwitch'
 import VuesticCollapse from '../elements/VuesticCollapse.vue'
 import VuesticAccordion from '../elements/VuesticAccordion.vue'
+import PriceForm from '../elements/PriceForm.vue'
 import {mapGetters} from 'vuex'
 
 export default {
@@ -192,38 +94,48 @@ export default {
   components: {
     ToggleSwitch,
     VuesticCollapse,
-    VuesticAccordion
+    VuesticAccordion,
+    PriceForm
   },
   computed: {
     ...mapGetters({
       pricings: 'auth/pricings',
-    })
+    }),
   },
   watch: {
-    pricings () {
-      this.thisPricings = [].concat(this.pricings)
+    pricings: {
+      handler (val) {
+        this.pricingInstance = JSON.parse(JSON.stringify(val))
+      },
     }
   },
   data () {
     return {
       expandIndex: 0,
-      thisPricings: [],
-      dddd: 0
+      pricingInstance: [],
     }
   },
   methods: {
-    nextCollapse (nextIndex) {
-      const currentIndex = nextIndex - 1
-      this.expandIndex = nextIndex
-      console.log('currentIndex--->', currentIndex, this.dddd)
+    nextCollapse () {
+      const {priceModels} = this.$refs.priceForm[this.expandIndex].$data
+      this.$store.commit('auth/CHANGEPRICING', {key: this.expandIndex, value: priceModels})
+      if (this.expandIndex < this.pricingInstance.length - 1) {
+        this.expandIndex++
+      } else this.expandIndex = this.pricingInstance.length - 1
+    },
+    handleExpandIndex (index) {
+      this.expandIndex = index
+    },
+    isOnChange () {
+      this.$store.commit('auth/CHANGEPRICEISON', this.expandIndex)
     }
-  }
+  },
 }
 </script>
 <style lang="scss" scoped>
 $info-color: #76c5ea;
 
-.step3 {
+/deep/.step3 {
   .table-header {
     padding-left: 5%;
     padding-right: 5%;
@@ -249,7 +161,7 @@ $info-color: #76c5ea;
       padding: 0;
       height: 25px;
       input {
-        width: 40%;
+        width: 50%;
         @include media-breakpoint-down(sm) {
           width: 80%;
         }

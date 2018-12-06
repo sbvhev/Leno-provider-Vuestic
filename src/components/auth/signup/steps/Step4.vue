@@ -1,23 +1,27 @@
 <template>
-  <form class="register-step3-form">
+  <form class="register-form step4">
     <div class="row">
-      <div class="col-md-8">
+      <div class="col-md-12">
         <fieldset>
-          <div class="form-group">
+          <div
+            class="form-group with-icon-right"
+            :class="{'has-error': errors.has('address1'), 'valid': isFormFieldValid('address1')}"
+          >
             <div class="input-group">
-              <input id="addressCity" v-model="address_city" required/>
-              <label class="control-label" for="addressCity">City</label><i class="bar"></i>
-            </div>
-          </div>
-        </fieldset>
-      </div>
-
-      <div class="col-md-4">
-        <fieldset>
-          <div class="form-group">
-            <div class="input-group">
-              <input id="addressState" v-model="address_state" required/>
-              <label class="control-label" for="addressState">State</label><i class="bar"></i>
+              <input
+                name="address1"
+                data-vv-as="Address1"
+                v-model="address1"
+                v-validate="'required'"
+                required
+              >
+              <i class="fa fa-check valid-icon icon-right input-icon"></i>
+              <label class="control-label">Address1</label>
+              <i class="bar"></i>
+              <small
+                v-show="errors.has('address1')"
+                class="help text-danger"
+              >{{ errors.first('address1') }}</small>
             </div>
           </div>
         </fieldset>
@@ -26,50 +30,106 @@
     <div class="row">
       <div class="col-md-12">
         <fieldset>
-          <div class="form-group with-icon-right" :class="{'has-error': errors.has('number'), 'valid': isFormFieldValid('number')}">
+          <div
+            class="form-group with-icon-right"
+            :class="{'has-error': errors.has('address2'), 'valid': isFormFieldValid('address2')}"
+          >
             <div class="input-group">
               <input
-              name="number"
-              data-vv-as="Credit Card Number"
-              v-model="number"
-              v-validate="'required'"
-              required />
+                name="address2"
+                data-vv-as="Address2"
+                v-model="address2"
+                v-validate="'required'"
+                required
+              >
               <i class="fa fa-check valid-icon icon-right input-icon"></i>
-              <label class="control-label">Credit Card Number</label><i class="bar"></i>
-              <small v-show="errors.has('number')" class="help text-danger">
-                {{ errors.first('number') }}
-              </small>
+              <label class="control-label">Address2</label>
+              <i class="bar"></i>
+              <small
+                v-show="errors.has('address2')"
+                class="help text-danger"
+              >{{ errors.first('address2') }}</small>
             </div>
           </div>
         </fieldset>
       </div>
     </div>
     <div class="row">
-      <div class="col-md-4">
+      <div class="col-md-12">
         <fieldset>
-          <vuestic-simple-select label="Expiration Year" v-model="expYear" :options="['2014','2015','2016','2017','2018','2019','2020','2021','2022','2023','2024','2025']" />
-        </fieldset>
-      </div>
-      <div class="col-md-4">
-        <fieldset>
-          <vuestic-simple-select label="Expiration Month" v-model="expMonth" :options="['1','2','3','4','5','6','7','8','9','10','11','12']" />
-        </fieldset>
-      </div>
-      <div class="col-md-4">
-        <fieldset>
-          <div class="form-group with-icon-right" :class="{'has-error': errors.has('cvc'), 'valid': isFormFieldValid('cvc')}">
+          <div
+            class="form-group with-icon-right"
+            :class="{'has-error': errors.has('city'), 'valid': isFormFieldValid('city')}"
+          >
             <div class="input-group">
               <input
-                name="cvc"
-                data-vv-as="CVV/CVC"
-                v-model="cvc"
+                name="city"
+                data-vv-as="City"
+                v-model="city"
                 v-validate="'required'"
-                required />
+                required
+              >
               <i class="fa fa-check valid-icon icon-right input-icon"></i>
-              <label class="control-label">CVV/CVC</label><i class="bar"></i>
-              <small v-show="errors.has('cvc')" class="help text-danger">
-                {{ errors.first('cvc') }}
-              </small>
+              <label class="control-label">City</label>
+              <i class="bar"></i>
+              <small
+                v-show="errors.has('city')"
+                class="help text-danger"
+              >{{ errors.first('city') }}</small>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <fieldset>
+          <div
+            class="form-group with-icon-right"
+            :class="{'has-error': errors.has('state'), 'valid': isFormFieldValid('state')}"
+          >
+            <div class="input-group">
+              <input
+                name="state"
+                data-vv-as="State"
+                v-model="state"
+                v-validate="'required'"
+                required
+              >
+              <i class="fa fa-check valid-icon icon-right input-icon"></i>
+              <label class="control-label">State</label>
+              <i class="bar"></i>
+              <small
+                v-show="errors.has('state')"
+                class="help text-danger"
+              >{{ errors.first('state') }}</small>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <fieldset>
+          <div
+            class="form-group with-icon-right"
+            :class="{'has-error': errors.has('zipcode'), 'valid': isFormFieldValid('zipcode')}"
+          >
+            <div class="input-group">
+              <input
+                name="zipcode"
+                data-vv-as="Zip Code"
+                v-model="zipcode"
+                v-validate="'required'"
+                required
+              >
+              <i class="fa fa-check valid-icon icon-right input-icon"></i>
+              <label class="control-label">Zip code</label>
+              <i class="bar"></i>
+              <small
+                v-show="errors.has('zipcode')"
+                class="help text-danger"
+              >{{ errors.first('zipcode') }}</small>
             </div>
           </div>
         </fieldset>
@@ -82,17 +142,16 @@
 import stripeAsPromised from 'stripe-as-promised'
 
 export default {
-  name: 'step5',
+  name: 'step4',
   components: {
   },
   data () {
     return {
-      number: '',
-      expMonth: '12',
-      expYear: '2018',
-      cvc: '',
-      address_city: '',
-      address_state: '',
+      address1: '',
+      address2: '',
+      city: '',
+      state: '',
+      zipcode: '',
     }
   },
   methods: {
@@ -130,4 +189,12 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.register-form.step4 {
+  padding-left: 20%;
+  padding-right: 20%;
+  @include media-breakpoint-down(sm) {
+    padding-left: 2%;
+    padding-right: 2%;
+  }
+}
 </style>

@@ -74,8 +74,8 @@ export default {
           isValid: async () => {
             this.nextBtn.loading = true
             // validation check
-            const {success} = await new Proxy('checkSiteActivation.php?', {siteId: this.provider.siteId}).submit('post')
-            console.log('setUpprofile--->', success)
+            const {mindbodyActivationLink, ...providerData} = this.provider
+            const {success, error} = await new Proxy('checkSiteActivation.php?', providerData).submit('post')
             if (success) {
               const {providerAccessToken, providerId} = this.provider
               const locations = await new Proxy('getLocations.php?', {
@@ -89,7 +89,7 @@ export default {
               this.$store.dispatch('auth/notification', {
                 type: 'ERROR',
                 title: 'Not found Account',
-                message: 'Please try Activate Account again.'
+                message: error
               })
               this.nextBtn.loading = false
               return false
@@ -102,20 +102,19 @@ export default {
           isValid: async () => {
             this.nextBtn.loading = true
             const {locations} = this.formData
-            const {success} = await new Proxy('saveLocations.php?', {locations}).submit('post')
+            const {mindbodyActivationLink, siteId, ...providerData} = this.provider
+            const {success, error} = await new Proxy('saveLocations.php?', {locations, ...providerData}).submit('post')
             if (success) {
-              const {providerId} = this.provider
-              const {pricings, success} = await new Proxy('getPricings.php?', {providerId}).submit('post')
+              const {pricings, success, error} = await new Proxy('getPricings.php?', providerData).submit('post')
               if (success) {
-                console.log('hahah', pricings)
                 this.$store.commit('auth/FORMDATA', {key: 'pricings', value: pricings})
               } else {
-                this.errorNotification()
+                this.errorNotification(error)
               }
               this.nextBtn.loading = false
               return true
             } else {
-              this.errorNotification()
+              this.errorNotification(error)
               this.nextBtn.loading = false
               return false
             }
@@ -132,20 +131,36 @@ export default {
         },
         {
           label: 'Pricing',
-          slot: 'page3'
+          slot: 'page3',
+          isValid: async () => {
+            this.nextBtn.loading = true
+            const {pricings} = this.formData
+            const {mindbodyActivationLink, siteId, ...providerData} = this.provider
+            const {success, error} = await new Proxy('savePricings.php?', {pricings, ...providerData}).submit('post')
+
+            if (success) {
+              this.nextBtn.loading = false
+              return true
+            } else {
+              this.errorNotification()
+              console.log(error)
+              this.nextBtn.loading = false
+              return false
+            }
+          }
         },
         {
           label: 'Payment',
           slot: 'page4',
           onNext: () => {
             // manual validation occur
-            const that = this.$refs.registerStepOne
+            const that = this.$refs.registerStepFour
             Object.keys(that.formFields).map(field => {
               that.validateFormField(field)
             })
           },
           isValid: async () => {
-            let that = this.$refs.registerStepThree
+            let that = this.$refs.registerStepFour
             Object.keys(that.formFields).map(field => {
               that.validateFormField(field)
             })
@@ -153,22 +168,22 @@ export default {
             const validOk = Object.keys(that.formFields).every(field => {
               return that.isFormFieldValid(field)
             })
-            let wizard = this.$refs.wizard
+
             if (validOk) {
-              try {
-                wizard.nextBtn.loading = true
-                const stripeToken = await that.completedData()
-                const { stripePaymentToken } = stripeToken
-                if (stripePaymentToken) {
-                  this.mergePartialModels(stripeToken)
-                  this.$store.dispatch('auth/register', this.finalModel)
-                  this.finalModel = []
-                }
-                wizard.nextBtn.loading = false
-              } catch (err) {
-                wizard.nextBtn.loading = false
+              const data = that.$data
+              const {mindbodyActivationLink, siteId, ...providerData} = this.provider
+              const {success, error} = await new Proxy('savePayment.php?', {data, ...providerData}).submit('post')
+
+              if (success) {
+                alert(success)
+                return true
+              } else {
+                this.errorNotification()
+                console.log(error)
+                return false
               }
             }
+
             return false
           }
         }
@@ -181,14 +196,11 @@ export default {
     })
   },
   methods: {
-    mergePartialModels (model) {
-      this.finalModel = Object.assign({}, this.finalModel, model)
-    },
-    errorNotification (errMessage = null) {
+    errorNotification (errMessage = 'Oops, Please try again later.') {
       this.$store.dispatch('auth/notification', {
         type: 'ERROR',
         title: 'SERVER ERROR',
-        message: 'Oops, Please try again later.'
+        message: errMessage
       })
     }
   }

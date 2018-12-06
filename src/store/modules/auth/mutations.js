@@ -18,7 +18,8 @@ import {
   FORMDATA,
   PROVIDER,
   CHANGEISON,
-  CHANGEPRICING
+  CHANGEPRICING,
+  CHANGEPRICEISON
 } from './mutation-types'
 
 /* eslint-disable no-param-reassign */
@@ -44,9 +45,9 @@ export default {
 
   [LOGOUT] (state) {
     state.authenticated = false
-    state.provider = []
-    state.formData.locations = []
-    state.formData.pricings = []
+    state.provider = null
+    state.formData.locations = null
+    state.formData.pricings = null
     localStorage.removeItem('id_token')
     delete Vue.$http.defaults.headers.common.Authorization
   },
@@ -69,7 +70,10 @@ export default {
   },
 
   [FORMDATA] (state, payload) {
-    state.formData[payload.key] = payload.value
+    state.formData = {
+      ...state.formData,
+      [payload.key]: payload.value
+    }
   },
 
   [CHANGEISON] (state, payload) {
@@ -80,11 +84,19 @@ export default {
       }
       return ele
     })
-    state.formData.locations = newLocations
+    state.formData.locations = { ...state.formData.locations, newLocations }
   },
 
   [CHANGEPRICING] (state, payload) {
-    state.formData.pricings[payload.key].options = payload.value
-    console.log(this.formData)
+    state.formData.pricings[payload.key] = {
+      ...state.formData.pricings[payload.key],
+      options: payload.value
+    }
+  },
+
+  [CHANGEPRICEISON] (state, index) {
+    let tempFlg = true
+    if (state.formData.pricings[index].isOn) tempFlg = false
+    state.formData.pricings[index].isOn = tempFlg
   }
 }
