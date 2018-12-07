@@ -2,5 +2,5 @@
 module.exports = {
   NODE_ENV: '"production"',
   APP_VERSION: 0.1,
-  APP_BUILD: 5.4
+  APP_BUILD: 5.5
 }
