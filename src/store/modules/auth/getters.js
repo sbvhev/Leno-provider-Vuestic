@@ -33,5 +33,8 @@ export default {
   },
   provider: state => {
     return state.provider
+  },
+  setupProfile: state => {
+    return state.isSetupProfile
   }
 }

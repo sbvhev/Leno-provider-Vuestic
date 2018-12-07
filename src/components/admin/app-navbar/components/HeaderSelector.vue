@@ -1,6 +1,7 @@
 <template>
-  <span class="header-selector i-menu-expanded"
-       @click="$emit('update:isOpen', !isOpen)"
+  <span
+    class="header-selector i-menu-collapsed"
+    @click="$emit('update:isOpen', !isOpen)"
   />
 </template>
 
@@ -17,9 +18,8 @@
 </script>
 
 <style lang="scss">
-  .header-selector {
-    @include flex-center();
-    cursor: pointer;
-  }
-
+.header-selector {
+  @include flex-center();
+  cursor: pointer;
+}
 </style>

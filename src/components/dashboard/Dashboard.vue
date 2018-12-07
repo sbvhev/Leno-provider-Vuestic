@@ -1,43 +1,58 @@
 <template>
   <div class="dashboard">
-    <dashboard-info-widgets></dashboard-info-widgets>
-    <vuestic-widget
-      class="no-padding no-v-padding"
-      :headerText="$t('Setup Profile')"
-    >
-      <setup-profile-tab></setup-profile-tab>
-    </vuestic-widget>
-    <!-- <vuestic-widget class="no-padding no-v-padding">
-      <vuestic-tabs :names="['Studio Usage', 'Users']" ref="tabs">
-        <div :slot="$t('Studio Usage')">
-          <studio-and-users></studio-and-users>
-        </div>
-        <div :slot="$t('Users')">
-          <users-table-tab></users-table-tab>
-        </div>
-      </vuestic-tabs>
-    </vuestic-widget>-->
-    <dashboard-bottom-widgets></dashboard-bottom-widgets>
+    <div v-if="!isSetupProfile">
+      <vuestic-widget
+        class="no-padding no-v-padding"
+        :headerText="$t('Setup Profile')"
+      >
+        <setup-profile-tab></setup-profile-tab>
+      </vuestic-widget>
+    </div>
+    <div v-else>
+      <dashboard-info-widgets></dashboard-info-widgets>
+
+      <vuestic-widget class="no-padding no-v-padding px-4">
+        <vuestic-tabs :names="['Classes', 'Locations', 'Users']" ref="tabs">
+          <div :slot="$t('Classes')">
+            <classes-tab></classes-tab>
+          </div>
+          <div :slot="$t('Locations')">
+            <!-- <locations-tab></locations-tab> -->
+          </div>
+          <div :slot="$t('Users')">
+            <users-table-tab></users-table-tab>
+          </div>
+        </vuestic-tabs>
+      </vuestic-widget>
+
+      <dashboard-bottom-widgets></dashboard-bottom-widgets>
+    </div>
   </div>
 </template>
 
 <script>
 import DashboardInfoWidgets from './DashboardInfoWidgets'
-import StudioAndUsers from './dashboard-middle-content/DataVisualisation.vue'
+import ClassesTab from './dashboard-middle-content/ClassesVisualisation.vue'
 import UsersTableTab from './dashboard-middle-content/UsersTableTab.vue'
 import DashboardBottomWidgets from './DashboardBottomWidgets.vue'
-import SetupProfileTab from '../auth/signup/SetupProfile.vue'
+import SetupProfileTab from './setup-profile-tab/SetupProfile.vue'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'dashboard',
   components: {
-    StudioAndUsers,
+    ClassesTab,
     DashboardInfoWidgets,
     DashboardBottomWidgets,
     UsersTableTab,
     SetupProfileTab
   },
-
+  computed: {
+    ...mapGetters({
+      isLoading: 'shared/isLoading',
+      isSetupProfile: 'auth/setupProfile'
+    })
+  },
   methods: {
     launchEpicmaxToast () {
       this.showToast(`Let's work together!`, {
@@ -51,7 +66,7 @@ export default {
         }
       })
     }
-  }
+  },
 }
 </script>
 <style lang="scss" scoped>

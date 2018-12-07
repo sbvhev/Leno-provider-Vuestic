@@ -3,7 +3,15 @@
     <div class="row">
       <vuestic-pre-loader v-show="!isLoaded" class="pre-loader"></vuestic-pre-loader>
       <div class="col-md-12" v-if="isLoaded">
-        <vuestic-data-table :apiMode="apiMode" :tableData="tableData" :tableFields="tableFields" :itemsPerPage="itemsPerPage" :onEachSide="onEachSide" :sortFunctions="sortFunctions" :dataModeFilterableFields="dataModeFilterableFields" />
+        <vuestic-data-table
+          :apiMode="apiMode"
+          :tableData="table.datas"
+          :tableFields="table.fields"
+          :sortFunctions="table.sortFunctions"
+          :itemsPerPage="itemsPerPage"
+          :onEachSide="onEachSide"
+          :dataModeFilterableFields="dataModeFilterableFields"
+        />
       </div>
     </div>
   </div>
@@ -12,10 +20,8 @@
 <script>
 import Vue from 'vue'
 import BadgeColumn from 'components/users/BadgeColumn.vue'
-import DonutChartData from './DonutChartData'
-import FieldsDef from './fields-definition'
-import TableData from './TableData'
 import Proxy from '@/proxies/Proxy'
+import TableDataInfo from '@/helpers/TableDataInfo'
 
 Vue.component('badge-column', BadgeColumn)
 
@@ -29,12 +35,8 @@ export default {
   data () {
     return {
       isLoaded: false,
-      donutChartData: DonutChartData,
       apiMode: false,
-      sortFunctions: FieldsDef.sortFunctions,
-      tableData: TableData,
       onEachSide: 1,
-      tableFields: FieldsDef.tableFields,
       dataModeFilterableFields: ['name'],
       itemsPerPage: [
         {
@@ -44,53 +46,57 @@ export default {
           value: 6
         }
       ],
-      tempData: []
+      table: {
+        dats: [],
+        fields: [],
+        sortFunctions: {}
+      },
     }
   },
 
   methods: {
     async initalization () {
-      const me = this.$store.getters['account/myself']
+      const {providerId, providerAccessToken} = this.$store.getters['auth/provider']
       try {
-        const { userId, accessToken } = me
-        const { error, users } = await new Proxy('getUsers.php?', {
-          userId,
-          accessToken
-        }).submit('get')
-        if (error) {
-          this.statsDatas = []
-        } else {
-          this.tableData = { data: users }
-          const elements = Object.keys(users[0]).filter(
-            ele => ele !== 'name'
-          ).map((ele, index) => ({
-            name: ele,
-            title: ele
-          }))
-          this.tableFields = [...FieldsDef.tableFields, ...elements]
-          this.isLoaded = true
-        }
-      } catch (error) {
-        this.$store.dispatch('auth/notification', {
-          type: 'ERROR',
-          title: 'SERVER ERROR',
-          message: 'Oops, Please try again later.'
+        const { success, users } = await new Proxy('getUsers.php?').submit('post', {
+          providerId,
+          providerAccessToken
         })
+
+        if (success) {
+          if (users) { this.table = new TableDataInfo(users) }
+        } else {
+          this.showToast()
+        }
+
+        this.isLoaded = true
+      } catch (error) {
+        this.isLoaded = true
       }
     },
-
+    showToast () {
+      this.$store.dispatch('auth/notification', {
+        type: 'ERROR',
+        title: 'UsersTableTab',
+        message: 'Oops, Please try again later.'
+      })
+    }
   },
 }
 </script>
 
 <style lang="scss" scoped>
-@import "../../../sass/_variables.scss";
-@import "~bootstrap/scss/functions";
-@import "~bootstrap/scss/variables";
-@import "~bootstrap/scss/mixins/breakpoints";
+@import '../../../sass/_variables.scss';
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins/breakpoints';
 
-.chart-container {
-  padding: 0 2rem;
-  height: 24rem;
+.users-table-tab {
+  padding-left: 10%;
+  padding-right: 10%;
+  @include media-breakpoint-down(md) {
+    padding-left: 0;
+    padding-right: 0;
+  }
 }
 </style>

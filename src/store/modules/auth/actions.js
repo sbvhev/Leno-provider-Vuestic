@@ -60,7 +60,7 @@ export const login = async ({ commit }, user) => {
    * Normally you would use a proxy to log the user in:
    */
   Vue.$http.defaults.headers.common.Authorization = ''
-  const response = await new Proxy('logIn.php?', user).submit('post')
+  const response = await new Proxy('logIn.php').submit('post', user)
   const { success, error, displayError, provider } = response
   if (success) {
     commit(types.PROVIDER, provider)

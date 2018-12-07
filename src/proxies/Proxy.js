@@ -88,12 +88,10 @@ class Proxy {
    *
    * @returns {Promise} The result in a promise.
    */
-  submit (requestType, url, data = null) {
+  submit (requestType, data = null) {
+    console.log({ ...this.appInfo, ...this.browserInfo, ...data })
     return new Promise((resolve, reject) => {
-      Vue.$http[requestType](
-        this.endpoint + this.getParameterString() + '',
-        data
-      )
+      Vue.$http[requestType](this.endpoint, this.getParameterString(data))
         .then(response => {
           resolve(response.data)
         })
@@ -165,13 +163,13 @@ class Proxy {
    *
    * @returns {string} The parameter string.
    */
-  getParameterString () {
+  getParameterString (data) {
     // if (
     //   Object.keys(this.parameters).length === 0 &&
     //   this.parameters.constructor === Object
     // ) {
     //   return ''
-    const params = { ...this.parameters, ...this.browserInfo, ...this.appInfo }
+    const params = { ...data, ...this.browserInfo, ...this.appInfo }
     return `data=${JSON.stringify(params)}`
   }
 }

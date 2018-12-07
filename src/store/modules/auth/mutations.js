@@ -19,7 +19,8 @@ import {
   PROVIDER,
   CHANGEISON,
   CHANGEPRICING,
-  CHANGEPRICEISON
+  CHANGEPRICEISON,
+  COMPLETE_SETUP_PROFILE
 } from './mutation-types'
 
 /* eslint-disable no-param-reassign */
@@ -48,6 +49,7 @@ export default {
     state.provider = null
     state.formData.locations = null
     state.formData.pricings = null
+    state.isSetupProfile = false
     localStorage.removeItem('id_token')
     delete Vue.$http.defaults.headers.common.Authorization
   },
@@ -100,5 +102,9 @@ export default {
     let tempFlg = true
     if (state.formData.pricings[index].isOn) tempFlg = false
     state.formData.pricings[index].isOn = tempFlg
+  },
+
+  [COMPLETE_SETUP_PROFILE] (state) {
+    state.isSetupProfile = true
   }
 }

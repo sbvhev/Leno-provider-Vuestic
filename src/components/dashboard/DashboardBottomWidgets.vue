@@ -70,10 +70,10 @@ export default {
     async initalization () {
       const {providerId, providerAccessToken} = this.$store.getters['auth/provider']
       try {
-        const { error, feed } = await new Proxy('getFeed.php?', {
+        const { error, feed } = await new Proxy('getFeed.php?').submit('post', {
           providerId,
           providerAccessToken
-        }).submit('post')
+        })
 
         if (error) {
           this.posts = []
@@ -89,7 +89,7 @@ export default {
     showToast () {
       this.$store.dispatch('auth/notification', {
         type: 'ERROR',
-        title: 'SERVER ERROR',
+        title: 'DashboardBottomWidgets',
         message: 'Oops, Please try again later.'
       })
     }

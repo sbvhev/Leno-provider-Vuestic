@@ -33,7 +33,7 @@
 
 <script>
 import AchPayment from './options/ach-payment'
-import CardPayment from '../auth/signup/steps/Step4'
+import CardPayment from '../dashboard/setup-profile-tab/steps/Step4'
 import Proxy from '@/proxies/Proxy'
 
 export default {

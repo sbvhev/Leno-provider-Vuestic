@@ -7,6 +7,7 @@
 
 export default {
   authenticated: false,
+  isSetupProfile: false,
   notificationInfo: {
     type: '',
     message: '',

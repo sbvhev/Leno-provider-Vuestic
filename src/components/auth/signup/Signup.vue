@@ -238,7 +238,7 @@ export default {
       data = {...data, siteId}
       if (this.formValid()) {
         this.asyncBtn.loading = true
-        const res = await new Proxy('createAccount.php?', data).submit('post')
+        const res = await new Proxy('createAccount.php?').submit('post', data)
         const { provider: {
           mindbodyActivationLink,
           providerAccessToken,

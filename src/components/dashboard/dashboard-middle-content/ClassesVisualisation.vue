@@ -10,11 +10,11 @@
       <div class="col-md-6" v-if="isLoaded">
         <vuestic-data-table
           :apiMode="apiMode"
-          :tableData="tableData"
-          :tableFields="tableFields"
+          :tableData="table.datas"
+          :tableFields="table.fields"
           :itemsPerPage="itemsPerPage"
           :onEachSide="onEachSide"
-          :sortFunctions="sortFunctions"
+          :sortFunctions="table.sortFunctions"
           :dataModeFilterableFields="dataModeFilterableFields"
         />
       </div>
@@ -25,7 +25,7 @@
 <script>
 import Vue from 'vue'
 import BadgeColumn from 'components/users/BadgeColumn.vue'
-import TableData from './TableData'
+import TableDataInfo from '@/helpers/TableDataInfo'
 import Proxy from '@/proxies/Proxy'
 
 Vue.component('badge-column', BadgeColumn)
@@ -50,10 +50,12 @@ export default {
       },
       // donutChartData: DonutChartData,
       apiMode: false,
-      sortFunctions: [],
-      tableData: TableData,
+      table: {
+        dats: [],
+        fields: [],
+        sortFunctions: {}
+      },
       onEachSide: 1,
-      tableFields: [],
       dataModeFilterableFields: ['name'],
       itemsPerPage: [
         {
@@ -63,50 +65,31 @@ export default {
           value: 6
         }
       ],
-      tempData: [],
     }
   },
   methods: {
     async initalization () {
       const {providerId, providerAccessToken} = this.$store.getters['auth/provider']
       try {
-        const {success, classes} = await new Proxy('getClasses.php?', {
+        const {success, classes} = await new Proxy('getClasses.php?').submit('post', {
           providerId,
           providerAccessToken
-        }).submit('post')
+        })
+
         if (success) {
           this.createTable(classes)
           this.drawChart(classes)
-          this.isLoaded = true
         } else {
           this.tableData = []
-          this.isLoaded = true
           this.showToast()
         }
+        this.isLoaded = true
       } catch (error) {
-        this.showToast()
+        this.isLoaded = true
       }
     },
-
     createTable (data) {
-      this.tableData = { data }
-      this.tableFields = Object.keys(data[0]).map((ele, index) => {
-        return {
-          name: ele,
-          title: ele,
-          dataClass: index === 0 ? 'text-center' : '',
-          sortField: ele
-        }
-      })
-      this.sortFunctions = {
-        ...Object.keys(data[0]).map(ele => {
-          return {
-            [ele]: function (item1, item2) {
-              return item1 >= item2 ? 1 : -1
-            }
-          }
-        })
-      }
+      if (data) { this.table = new TableDataInfo(data) }
     },
     drawChart (data) {
       const palette = this.$store.getters['shared/palette']
@@ -124,7 +107,7 @@ export default {
     showToast () {
       this.$store.dispatch('auth/notification', {
         type: 'ERROR',
-        title: 'SERVER ERROR',
+        title: 'ClassesVisualisation',
         message: 'Oops, Please try again later.'
       })
     }

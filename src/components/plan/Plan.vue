@@ -2,23 +2,24 @@
   <div class="row">
     <div class="col-md-12">
       <vuestic-pre-loader v-show="isLoading" class="pre-loader"></vuestic-pre-loader>
-      <vuestic-widget class="chart-widget" :headerText="'Plan Update' | translate">
+      <vuestic-widget
+        class="chart-widget"
+        :headerText="'Plan Update' | translate"
+      >
         <div class="row d-flex justify-center-center">
           <div class="col-md-4"></div>
-          <div class="col-md-4"><Plan ref="updatePlan"></Plan></div>
+          <div class="col-md-4">
+            <Plan ref="updatePlan"></Plan>
+          </div>
           <div class="col-md-4"></div>
         </div>
         <div class="row">
           <div class="col-md-3"></div>
           <div class="col-md-3">
-            <button class="btn btn-warning" @click="handleCancel">
-              Cancel
-            </button>
+            <button class="btn btn-warning" @click="handleCancel">Cancel</button>
           </div>
           <div class="col-md-3">
-            <button class="btn btn-primary" @click="hanldeUpdate">
-              Update
-            </button>
+            <button class="btn btn-primary" @click="hanldeUpdate">Update</button>
           </div>
           <div class="col-md-3"></div>
         </div>
@@ -28,7 +29,7 @@
 </template>
 
 <script>
-import Plan from '../auth/signup/steps/Step4'
+import Plan from '../dashboard/setup-profile-tab/steps/Step4'
 import Proxy from '@/proxies/Proxy'
 
 export default {
