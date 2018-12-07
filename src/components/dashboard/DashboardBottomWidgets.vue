@@ -6,7 +6,7 @@
       </vuestic-widget>
     </div>
     <div class="col-md-6 d-flex">
-      <vuestic-widget class="business-posts">
+      <vuestic-widget class="business-posts p-2">
         <vuestic-social-news
           class="vuestic-social-news"
           :news="news"
@@ -18,7 +18,7 @@
 </template>
 
 <script>
-// import Proxy from '@/proxies/Proxy'
+import Proxy from '@/proxies/Proxy'
 
 export default {
   name: 'dashboard-bottom-widgets',
@@ -68,28 +68,31 @@ export default {
   },
   methods: {
     async initalization () {
-      // const me = this.$store.getters['account/myself']
-      // try {
-      //   const { userId, accessToken } = me
-      //   const { error, feed } = await new Proxy('getFeed.php?', {
-      //     userId,
-      //     accessToken
-      //   }).submit('get')
+      const {providerId, providerAccessToken} = this.$store.getters['auth/provider']
+      try {
+        const { error, feed } = await new Proxy('getFeed.php?', {
+          providerId,
+          providerAccessToken
+        }).submit('post')
 
-      //   if (error) {
-      //     this.posts = []
-      //   } else {
-      //     this.posts = feed.splice(0, 3)
-      //     this.isLoaded = true
-      //   }
-      // } catch (error) {
-      //   this.$store.dispatch('auth/notification', {
-      //     type: 'ERROR',
-      //     title: 'SERVER ERROR',
-      //     message: 'Oops, Please try again later.'
-      //   })
-      // }
+        if (error) {
+          this.posts = []
+          this.showToast()
+        } else {
+          this.posts = feed.splice(0, 3)
+          this.isLoaded = true
+        }
+      } catch (error) {
+        this.showToast()
+      }
     },
+    showToast () {
+      this.$store.dispatch('auth/notification', {
+        type: 'ERROR',
+        title: 'SERVER ERROR',
+        message: 'Oops, Please try again later.'
+      })
+    }
   }
 }
 </script>
