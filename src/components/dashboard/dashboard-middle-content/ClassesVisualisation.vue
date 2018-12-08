@@ -12,9 +12,9 @@
           :apiMode="apiMode"
           :tableData="table.datas"
           :tableFields="table.fields"
-          :itemsPerPage="itemsPerPage"
           :onEachSide="onEachSide"
           :sortFunctions="table.sortFunctions"
+          :perPageSelectorShown="false"
           :dataModeFilterableFields="dataModeFilterableFields"
         />
       </div>

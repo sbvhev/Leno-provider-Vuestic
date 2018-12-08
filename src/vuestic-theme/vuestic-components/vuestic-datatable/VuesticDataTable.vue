@@ -1,7 +1,12 @@
 <template>
-  <div class="vuestic-data-table table-responsive"
-       :class="{'data-loading': loading}">
-    <div class="d-flex flex-md-row flex-column align-items-center" :class="controlsAlignmentClass">
+  <div
+    class="vuestic-data-table table-responsive"
+    :class="{'data-loading': loading}"
+  >
+    <div
+      class="d-flex flex-md-row flex-column align-items-center"
+      :class="controlsAlignmentClass"
+    >
       <filter-bar
         @filter="onFilterSet"
         :label="filterInputLabel"
@@ -11,11 +16,13 @@
         <div class="form-group">
           <slot name="additionalTableControl"></slot>
         </div>
-        <items-per-page :options="itemsPerPage"
-                        :label="itemsPerPageLabel"
-                        :defaultPerPage="defaultPerPageComputed"
-                        @items-per-page="onItemsPerPage"
-                        v-show="perPageSelectorShown"></items-per-page>
+        <items-per-page
+          :options="itemsPerPage"
+          :label="itemsPerPageLabel"
+          :defaultPerPage="defaultPerPageComputed"
+          @items-per-page="onItemsPerPage"
+          v-show="perPageSelectorShown"
+        ></items-per-page>
       </div>
     </div>
     <div v-show="loading" class="data-table-loading">
@@ -37,7 +44,7 @@
       :fields="tableFields"
       :dataManager="dataManager"
       :css="css.table"
-      dataPath="data"
+      data-path="data"
       :paginationPath="paginationPathComputed"
       :appendParams="moreParams"
       :perPage="perPage"
@@ -48,12 +55,12 @@
       @vuetable:loaded="onLoaded"
     />
     <div class="d-flex justify-content-center mb-4">
-      <vuetable-pagination ref="pagination"
-                           :css="css.pagination"
-                           :onEachSide="onEachSide"
-                           @vuetable-pagination:change-page="onChangePage">
-
-      </vuetable-pagination>
+      <vuetable-pagination
+        ref="pagination"
+        :css="css.pagination"
+        :onEachSide="onEachSide"
+        @vuetable-pagination:change-page="onChangePage"
+      ></vuetable-pagination>
     </div>
   </div>
 </template>
@@ -286,47 +293,48 @@
 </script>
 
 <style lang="scss">
-  .vuestic-data-table {
-    min-height: 24rem;
+.vuestic-data-table {
+  min-height: 24rem;
 
-    .form-group {
-      margin-bottom: 1rem;
+  .form-group {
+    margin-bottom: 1rem;
+  }
+
+  @media (max-width: 1258px) {
+    .pagination-link-btn:first-child,
+    .pagination-link-btn:last-child {
+      display: none;
     }
 
-    @media (max-width: 1258px) {
-      .pagination-link-btn:first-child, .pagination-link-btn:last-child {
-        display: none;
-      }
-
-      .pagination-link-btn:nth-child(2) {
-        border-top-left-radius: $btn-border-radius !important;
-        border-bottom-left-radius: $btn-border-radius !important;
-      }
-
-      .pagination-link-btn:nth-last-child(2) {
-        border-top-right-radius: $btn-border-radius !important;
-        border-bottom-right-radius: $btn-border-radius !important;
-      }
+    .pagination-link-btn:nth-child(2) {
+      border-top-left-radius: $btn-border-radius !important;
+      border-bottom-left-radius: $btn-border-radius !important;
     }
 
-    @media (max-width: 576px) {
-      .hide-not-focused-btn:not(.focus) {
-        display: none;
-      }
-    }
-
-    .data-table-loading {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: absolute;
-      top: 40%;
-      left: 50%;
+    .pagination-link-btn:nth-last-child(2) {
+      border-top-right-radius: $btn-border-radius !important;
+      border-bottom-right-radius: $btn-border-radius !important;
     }
   }
 
-  .data-loading {
-    opacity: .5;
-    pointer-events: none;
+  @media (max-width: 576px) {
+    .hide-not-focused-btn:not(.focus) {
+      display: none;
+    }
   }
+
+  .data-table-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+  }
+}
+
+.data-loading {
+  opacity: 0.5;
+  pointer-events: none;
+}
 </style>

@@ -8,8 +8,8 @@
           :tableData="table.datas"
           :tableFields="table.fields"
           :sortFunctions="table.sortFunctions"
-          :itemsPerPage="itemsPerPage"
           :onEachSide="onEachSide"
+          :perPageSelectorShown="false"
           :dataModeFilterableFields="dataModeFilterableFields"
         />
       </div>

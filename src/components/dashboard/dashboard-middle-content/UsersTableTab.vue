@@ -11,6 +11,7 @@
           :itemsPerPage="itemsPerPage"
           :onEachSide="onEachSide"
           :dataModeFilterableFields="dataModeFilterableFields"
+          :perPageSelectorShown="false"
         />
       </div>
     </div>
