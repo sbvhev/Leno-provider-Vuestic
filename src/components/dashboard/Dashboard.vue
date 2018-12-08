@@ -17,7 +17,7 @@
             <classes-tab></classes-tab>
           </div>
           <div :slot="$t('Locations')">
-            <!-- <locations-tab></locations-tab> -->
+            <locations-tab></locations-tab>
           </div>
           <div :slot="$t('Users')">
             <users-table-tab></users-table-tab>
@@ -26,6 +26,12 @@
       </vuestic-widget>
 
       <dashboard-bottom-widgets></dashboard-bottom-widgets>
+      <!-- <vuestic-widget
+        class="chart-widget"
+        :headerText="'Plan Update' | translate"
+      >-->
+      <schedule-table></schedule-table>
+      <!-- </vuestic-widget> -->
     </div>
   </div>
 </template>
@@ -34,7 +40,9 @@
 import DashboardInfoWidgets from './DashboardInfoWidgets'
 import ClassesTab from './dashboard-middle-content/ClassesVisualisation.vue'
 import UsersTableTab from './dashboard-middle-content/UsersTableTab.vue'
+import LocationsTab from './dashboard-middle-content/LocationsTab.vue'
 import DashboardBottomWidgets from './DashboardBottomWidgets.vue'
+import ScheduleTable from './ScheduleTable.vue'
 import SetupProfileTab from './setup-profile-tab/SetupProfile.vue'
 import { mapGetters } from 'vuex'
 
@@ -45,7 +53,9 @@ export default {
     DashboardInfoWidgets,
     DashboardBottomWidgets,
     UsersTableTab,
-    SetupProfileTab
+    SetupProfileTab,
+    LocationsTab,
+    ScheduleTable
   },
   computed: {
     ...mapGetters({

@@ -1,20 +1,15 @@
 <template>
-  <div class="data-visualisation-tab dashboard-tab">
+  <div class="users-table-tab dashboard-tab">
     <div class="row">
-      <div class="col-md-6">
-        <div class="chart-container" v-if="isLoaded">
-          <vuestic-chart v-bind:data="donutChartData" type="donut"></vuestic-chart>
-        </div>
-      </div>
       <vuestic-pre-loader v-show="!isLoaded" class="pre-loader"></vuestic-pre-loader>
-      <div class="col-md-6" v-if="isLoaded">
+      <div class="col-md-12" v-if="isLoaded">
         <vuestic-data-table
           :apiMode="apiMode"
           :tableData="table.datas"
           :tableFields="table.fields"
+          :sortFunctions="table.sortFunctions"
           :itemsPerPage="itemsPerPage"
           :onEachSide="onEachSide"
-          :sortFunctions="table.sortFunctions"
           :dataModeFilterableFields="dataModeFilterableFields"
         />
       </div>
@@ -25,13 +20,13 @@
 <script>
 import Vue from 'vue'
 import BadgeColumn from 'components/users/BadgeColumn.vue'
-import TableDataInfo from '@/helpers/TableDataInfo'
 import Proxy from '@/proxies/Proxy'
+import TableDataInfo from '@/helpers/TableDataInfo'
 
 Vue.component('badge-column', BadgeColumn)
 
 export default {
-  name: 'data-visualisation-tab',
+  name: 'locations-tab',
 
   created () {
     this.initalization()
@@ -40,21 +35,7 @@ export default {
   data () {
     return {
       isLoaded: false,
-      donutChartData: {
-        labels: [],
-        datasets: [{
-          label: 'Population (millions)',
-          backgroundColor: [],
-          data: []
-        }]
-      },
-      // donutChartData: DonutChartData,
       apiMode: false,
-      table: {
-        dats: [],
-        fields: [],
-        sortFunctions: {}
-      },
       onEachSide: 1,
       dataModeFilterableFields: ['name'],
       itemsPerPage: [
@@ -65,49 +46,38 @@ export default {
           value: 6
         }
       ],
+      table: {
+        dats: [],
+        fields: [],
+        sortFunctions: {}
+      },
     }
   },
+
   methods: {
     async initalization () {
       const {providerId, providerAccessToken} = this.$store.getters['auth/provider']
       try {
-        const {success, classes} = await new Proxy('getClasses.php?').submit('post', {
+        const {success, locations} = await new Proxy('getLocationSpend.php').submit('post', {
           providerId,
           providerAccessToken
         })
 
         if (success) {
-          this.createTable(classes)
-          this.drawChart(classes)
+          if (locations) { this.table = new TableDataInfo(locations) }
         } else {
-          this.tableData = []
           this.showToast()
         }
+
         this.isLoaded = true
       } catch (error) {
         this.isLoaded = true
       }
     },
-    createTable (data) {
-      if (data) { this.table = new TableDataInfo(data) }
-    },
-    drawChart (data) {
-      const palette = this.$store.getters['shared/palette']
-      const colorType = [palette.info, palette.warning, palette.primary, palette.fontColor]
-      this.donutChartData.labels = data.map(ele => {
-        return ele.className
-      })
-      this.donutChartData.datasets[0].data = data.map(ele => {
-        return ele.percentage
-      })
-      this.donutChartData.datasets[0].backgroundColor = Object.keys(data).map((ele, index) => {
-        return colorType[index % 4]
-      })
-    },
     showToast () {
       this.$store.dispatch('auth/notification', {
         type: 'ERROR',
-        title: 'ClassesVisualisation',
+        title: 'UsersTableTab',
         message: 'Oops, Please try again later.'
       })
     }
@@ -121,8 +91,12 @@ export default {
 @import '~bootstrap/scss/variables';
 @import '~bootstrap/scss/mixins/breakpoints';
 
-.chart-container {
-  padding: 0 2rem;
-  height: 24rem;
+.users-table-tab {
+  padding-left: 10%;
+  padding-right: 10%;
+  @include media-breakpoint-down(md) {
+    padding-left: 0;
+    padding-right: 0;
+  }
 }
 </style>

@@ -3,11 +3,12 @@ class TableDataInfo {
     if (data) {
       this.datas = { data }
       this.fields = Object.keys(data[0]).map((ele, index) => {
-        return {
-          name: ele,
-          title: ele,
-          dataClass: index === 0 ? 'text-center' : '',
-          sortField: ele
+        if (ele !== 'percentage') {
+          return {
+            name: ele,
+            title: ele,
+            sortField: ele
+          }
         }
       })
       this.sortFunctions = {
