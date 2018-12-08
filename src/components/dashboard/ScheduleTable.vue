@@ -1,8 +1,5 @@
 <template>
-  <vuestic-widget
-    class="schedule-table"
-    :headerText="'Plan Update' | translate"
-  >
+  <vuestic-widget class="schedule-table" :headerText="`Schedule`">
     <div class="users-table-tab dashboard-tab pt-3">
       <div class="row">
         <vuestic-pre-loader v-show="!isLoaded" class="pre-loader"></vuestic-pre-loader>
