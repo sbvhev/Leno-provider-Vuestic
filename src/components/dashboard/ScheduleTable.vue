@@ -49,7 +49,7 @@ export default {
         }
       ],
       table: {
-        dats: [],
+        datas: {},
         fields: [],
         sortFunctions: {}
       },
@@ -59,22 +59,20 @@ export default {
   methods: {
     async initalization () {
       const {providerId, providerAccessToken} = this.$store.getters['auth/provider']
-      try {
-        const {success, schedule} = await new Proxy('getSchedule.php').submit('post', {
-          providerId,
-          providerAccessToken
-        })
-
-        if (success) {
-          if (schedule) { this.table = new TableDataInfo(schedule) }
-        } else {
-          this.showToast()
+      const {success, schedule} = await new Proxy('getSchedule.php').submit('post', {
+        providerId,
+        providerAccessToken
+      })
+      if (success && schedule) {
+        if (schedule) {
+          this.$nextTick(() => {
+            this.table = new TableDataInfo(schedule)
+          })
         }
-
-        this.isLoaded = true
-      } catch (error) {
-        this.isLoaded = true
+      } else {
+        this.showToast()
       }
+      this.isLoaded = true
     },
     showToast () {
       this.$store.dispatch('auth/notification', {

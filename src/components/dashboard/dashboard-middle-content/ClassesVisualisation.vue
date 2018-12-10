@@ -3,7 +3,11 @@
     <div class="row">
       <div class="col-md-6">
         <div class="chart-container" v-if="isLoaded">
-          <vuestic-chart v-bind:data="donutChartData" type="donut"></vuestic-chart>
+          <vuestic-chart
+            :options="options"
+            v-bind:data="donutChartData"
+            type="donut"
+          ></vuestic-chart>
         </div>
       </div>
       <vuestic-pre-loader v-show="!isLoaded" class="pre-loader"></vuestic-pre-loader>
@@ -48,10 +52,9 @@ export default {
           data: []
         }]
       },
-      // donutChartData: DonutChartData,
       apiMode: false,
       table: {
-        dats: [],
+        datas: {},
         fields: [],
         sortFunctions: {}
       },
@@ -65,44 +68,65 @@ export default {
           value: 6
         }
       ],
+      options: {}
     }
   },
   methods: {
     async initalization () {
       const {providerId, providerAccessToken} = this.$store.getters['auth/provider']
-      try {
-        const {success, classes} = await new Proxy('getClasses.php?').submit('post', {
-          providerId,
-          providerAccessToken
-        })
+      const {success, classes} = await new Proxy('getClasses.php?').submit('post', {
+        providerId,
+        providerAccessToken
+      })
 
-        if (success) {
-          this.createTable(classes)
-          this.drawChart(classes)
-        } else {
-          this.tableData = []
-          this.showToast()
-        }
-        this.isLoaded = true
-      } catch (error) {
-        this.isLoaded = true
+      if (success && classes) {
+        this.createTable(classes)
+        this.drawChart(classes)
+      } else {
+        this.tableData = []
+        this.showToast()
       }
+      this.isLoaded = true
     },
     createTable (data) {
-      if (data) { this.table = new TableDataInfo(data) }
+      if (data) {
+        this.$nextTick(() => {
+          this.table = new TableDataInfo(data)
+        })
+      }
     },
     drawChart (data) {
       const palette = this.$store.getters['shared/palette']
-      const colorType = [palette.info, palette.warning, palette.primary, palette.fontColor]
+      const colorType = [palette.info, palette.warning, palette.primary, palette.fontColor, palette.success, palette.danger]
       this.donutChartData.labels = data.map(ele => {
-        return ele.className
+        return ele.class
       })
+      let emptyFlg = true
       this.donutChartData.datasets[0].data = data.map(ele => {
+        if (ele.percentage !== 0) emptyFlg = false
         return ele.percentage
       })
       this.donutChartData.datasets[0].backgroundColor = Object.keys(data).map((ele, index) => {
-        return colorType[index % 4]
+        return colorType[index % 7]
       })
+
+      if (emptyFlg) {
+        this.donutChartData.datasets[0].data = data.map((ele, index) => {
+          if (index === 0) return 1
+          else return 0
+        })
+
+        this.donutChartData.datasets[0].backgroundColor = Object.keys(data).map((ele, index) => {
+          if (index === 0) return '#EFF4F5'
+          else { return colorType[index % 7] }
+        })
+
+        this.options = {
+          tooltips: {
+            enabled: false
+          },
+        }
+      }
     },
     showToast () {
       this.$store.dispatch('auth/notification', {

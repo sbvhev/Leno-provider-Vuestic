@@ -89,7 +89,6 @@ class Proxy {
    * @returns {Promise} The result in a promise.
    */
   submit (requestType, data = null) {
-    console.log({ ...this.appInfo, ...this.browserInfo, ...data })
     return new Promise((resolve, reject) => {
       Vue.$http[requestType](this.endpoint, this.getParameterString(data))
         .then(response => {

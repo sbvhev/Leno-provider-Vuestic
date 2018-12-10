@@ -48,7 +48,7 @@ export default {
         }
       ],
       table: {
-        dats: [],
+        datas: {},
         fields: [],
         sortFunctions: {}
       },
@@ -58,20 +58,20 @@ export default {
   methods: {
     async initalization () {
       const {providerId, providerAccessToken} = this.$store.getters['auth/provider']
-      try {
-        const { success, users } = await new Proxy('getUsers.php?').submit('post', {
-          providerId,
-          providerAccessToken
-        })
+      const { success, users } = await new Proxy('getUsers.php?').submit('post', {
+        providerId,
+        providerAccessToken
+      })
 
-        if (success) {
-          if (users) { this.table = new TableDataInfo(users) }
+      if (success && users) {
+        if (users) {
+          this.$nextTick(() => {
+            this.table = new TableDataInfo(users)
+          })
         } else {
           this.showToast()
         }
 
-        this.isLoaded = true
-      } catch (error) {
         this.isLoaded = true
       }
     },
