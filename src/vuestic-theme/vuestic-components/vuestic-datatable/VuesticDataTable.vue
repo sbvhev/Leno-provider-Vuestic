@@ -53,6 +53,7 @@
       @vuetable:pagination-data="onPaginationData"
       @vuetable:loading="onLoading"
       @vuetable:loaded="onLoaded"
+      @vuetable:row-clicked="onRowClicked"
     />
     <div class="d-flex justify-content-center mb-4">
       <vuetable-pagination
@@ -168,7 +169,7 @@
         dataCount: 0,
         css: DataTableStyles,
         loading: false,
-        noDataTemplate: ''
+        noDataTemplate: '<span>No available data</span>'
       }
     },
     computed: {
@@ -287,6 +288,9 @@
         this.noDataTemplate = this.$t('tables.dataTable.noDataAvailable')
         this.loading = false
         this.$emit('vuestic:loaded')
+      },
+      onRowClicked (e) {
+        this.$emit('onRowClicked', e)
       }
     }
   }
@@ -330,6 +334,18 @@
     position: absolute;
     top: 40%;
     left: 50%;
+  }
+
+  .vuetable-body {
+    tr {
+      td:nth-child(2) {
+        color: #4ab2e3;
+        cursor: pointer;
+        &:hover {
+          color: #219ed9;
+        }
+      }
+    }
   }
 }
 

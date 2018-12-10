@@ -20,6 +20,7 @@
           :sortFunctions="table.sortFunctions"
           :perPageSelectorShown="false"
           :dataModeFilterableFields="dataModeFilterableFields"
+          @onRowClicked="onRowClicked"
         />
       </div>
     </div>
@@ -68,7 +69,8 @@ export default {
           value: 6
         }
       ],
-      options: {}
+      options: {},
+      result: []
     }
   },
   methods: {
@@ -79,6 +81,7 @@ export default {
         providerAccessToken
       })
 
+      this.result = classes
       if (success && classes) {
         this.createTable(classes)
         this.drawChart(classes)
@@ -94,6 +97,10 @@ export default {
           this.table = new TableDataInfo(data)
         })
       }
+    },
+    onRowClicked (e) {
+      const selectedClass = this.result.filter(ele => e.rank === ele.rank).pop()
+      this.$router.push(`class/${selectedClass.classDescriptionId}`)
     },
     drawChart (data) {
       const palette = this.$store.getters['shared/palette']

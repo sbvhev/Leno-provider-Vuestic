@@ -12,6 +12,7 @@
           :onEachSide="onEachSide"
           :dataModeFilterableFields="dataModeFilterableFields"
           :perPageSelectorShown="false"
+          @onCellClicked="onCellClicked"
         />
       </div>
     </div>
@@ -74,6 +75,9 @@ export default {
 
         this.isLoaded = true
       }
+    },
+    onCellClicked (e) {
+      console.log('row selected --->', e)
     },
     showToast () {
       this.$store.dispatch('auth/notification', {

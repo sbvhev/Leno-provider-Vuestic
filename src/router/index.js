@@ -72,6 +72,11 @@ export default new Router({
           component: lazyLoading('payment/Payment')
         },
         {
+          name: 'class',
+          path: 'class/:classId',
+          component: lazyLoading('dashboard/class/Class')
+        },
+        {
           name: 'plan',
           path: 'plan',
           component: lazyLoading('plan/Plan')

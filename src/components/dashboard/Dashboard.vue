@@ -26,12 +26,7 @@
       </vuestic-widget>
 
       <dashboard-bottom-widgets></dashboard-bottom-widgets>
-      <!-- <vuestic-widget
-        class="chart-widget"
-        :headerText="'Plan Update' | translate"
-      >-->
       <schedule-table></schedule-table>
-      <!-- </vuestic-widget> -->
     </div>
   </div>
 </template>
