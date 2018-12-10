@@ -63,6 +63,7 @@ export default {
         providerId,
         providerAccessToken
       })
+
       if (success && schedule) {
         if (schedule) {
           this.$nextTick(() => {

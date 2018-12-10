@@ -1,23 +1,29 @@
 <template>
-  <vuestic-widget class="table-widget" :headerText="headerText">
-    <div class="users-table-tab dashboard-tab pt-3">
-      <div class="row">
-        <vuestic-pre-loader v-show="!isLoaded" class="pre-loader"></vuestic-pre-loader>
-        <div class="col-md-12" v-if="isLoaded">
-          <vuestic-data-table
-            :apiMode="apiMode"
-            :tableData="table.datas"
-            :tableFields="table.fields"
-            :sortFunctions="table.sortFunctions"
-            :itemsPerPage="itemsPerPage"
-            :onEachSide="onEachSide"
-            :perPageSelectorShown="perPageSelectorShown"
-            :dataModeFilterableFields="dataModeFilterableFields"
-          />
+  <div class="table-container">
+    <vuestic-pre-loader v-if="!isLoaded" class="pre-loader"></vuestic-pre-loader>
+    <vuestic-widget
+      v-if="isLoaded"
+      class="table-widget"
+      :headerText="headerText"
+    >
+      <div class="users-table-tab dashboard-tab pt-3">
+        <div class="row">
+          <div class="col-md-12">
+            <vuestic-data-table
+              :apiMode="apiMode"
+              :tableData="table.datas"
+              :tableFields="table.fields"
+              :sortFunctions="table.sortFunctions"
+              :itemsPerPage="itemsPerPage"
+              :onEachSide="onEachSide"
+              :perPageSelectorShown="perPageSelectorShown"
+              :dataModeFilterableFields="dataModeFilterableFields"
+            />
+          </div>
         </div>
       </div>
-    </div>
-  </vuestic-widget>
+    </vuestic-widget>
+  </div>
 </template>
 
 <script>
@@ -67,7 +73,9 @@ export default {
         }
       ],
       table: {
-        datas: {},
+        datas: {
+          data: {}
+        },
         fields: [],
         sortFunctions: {}
       },
@@ -120,5 +128,9 @@ export default {
       padding-right: 0;
     }
   }
+}
+.table-container {
+  min-height: 100px;
+  position: relative;
 }
 </style>

@@ -1,59 +1,62 @@
 <template>
-  <div class="class-details" v-if="loaded">
-    <vuestic-widget class="class-header-card" headerText="Row 50">
-      <div class="d-flex flex-row justify-content-between">
-        <h5>Description</h5>
-        <a href="#" class="text-info">Edit</a>
-      </div>
-      <p>{{description}}</p>
-      <div class="d-flex flex-row justify-content-between align-items-end">
-        <div>
-          <h6 class="d-inline pr-3">Price</h6>
-          <custom-input :value="inputValue" @inputChange="onInputChange"></custom-input>
+  <div>
+    <vuestic-pre-loader v-if="!isLoaded" class="pre-loader"></vuestic-pre-loader>
+    <div class="class-details" v-if="isLoaded">
+      <vuestic-widget class="class-header-card" :headerText="generalInfo.name">
+        <div class="d-flex flex-row justify-content-between">
+          <h5>Description</h5>
+          <a href="#" class="text-info">Edit</a>
         </div>
-        <a href="#" class="text-info">Advanced pricing</a>
-      </div>
-    </vuestic-widget>
+        <p>{{generalInfo.description}}</p>
+        <div class="d-flex flex-row justify-content-between align-items-end">
+          <div>
+            <h6 class="d-inline pr-3">Price</h6>
+            <custom-input :value="inputValue" @inputChange="onInputChange"></custom-input>
+          </div>
+          <a href="#" class="text-info">Advanced pricing</a>
+        </div>
+      </vuestic-widget>
 
-    <div class="row">
-      <div class="col-md-6 col-12">
-        <vuestic-widget class="business-posts p-2">
-          <vuestic-social-news
-            class="vuestic-social-news"
-            :news="news"
-            :url="'http://instagram.com/smartapant'"
-            btnText="upload"
-            headerText="Photos"
-          ></vuestic-social-news>
-        </vuestic-widget>
-        <table-widget
-          headerText="Instructors"
-          endpoint="classDescription/instructors.php"
-          :parameters="Object.assign({}, classId)"
-        ></table-widget>
+      <div class="row">
+        <div class="col-md-6 col-12">
+          <vuestic-widget class="business-posts p-2">
+            <vuestic-social-news
+              class="vuestic-social-news"
+              :news="news"
+              :url="'http://instagram.com/smartapant'"
+              btnText="upload"
+              headerText="Photos"
+            ></vuestic-social-news>
+          </vuestic-widget>
+          <table-widget
+            headerText="Instructors"
+            endpoint="classDescription/instructors.php"
+            :parameters="Object.assign({}, classId)"
+          ></table-widget>
+        </div>
+        <div class="col-md-6 col-12 class-description">
+          <vuestic-widget>
+            <div v-for="(info, index) in leonInfo" :key="index" class="pa-3">
+              <h5>{{info.title}}</h5>
+              <p class="pt-2">{{info.description}}</p>
+            </div>
+            <div
+              class="d-flex flex-row justify-content-between align-items-end pt-4"
+            >
+              <h6 class="d-inline pr-3">Want to change this info</h6>
+              <a href="#" class="text-info">Contact Bryan</a>
+            </div>
+          </vuestic-widget>
+        </div>
       </div>
-      <div class="col-md-6 col-12 class-description">
-        <vuestic-widget>
-          <div v-for="(info, index) in leonInfo" :key="index" class="pa-3">
-            <h5>{{info.title}}</h5>
-            <p class="pt-2">{{info.description}}</p>
-          </div>
-          <div
-            class="d-flex flex-row justify-content-between align-items-end pt-4"
-          >
-            <h6 class="d-inline pr-3">Want to change this info</h6>
-            <a href="#" class="text-info">Contact Bryan</a>
-          </div>
-        </vuestic-widget>
-      </div>
+
+      <table-widget
+        headerText="Schedule"
+        endpoint="classDescription/schedule.php"
+        perPageSelectorShown
+        :parameters="Object.assign({}, classId)"
+      ></table-widget>
     </div>
-
-    <table-widget
-      headerText="Schedule"
-      endpoint="classDescription/schedule.php"
-      perPageSelectorShown
-      :parameters="Object.assign({}, classId)"
-    ></table-widget>
   </div>
 </template>
 <script>
@@ -110,8 +113,8 @@ export default {
       classId: this.$route.params.classId,
       leonInfo: null,
       instructors: null,
-      description: null,
-      loaded: true
+      generalInfo: null,
+      isLoaded: false
     }
   },
   created () {
@@ -119,11 +122,11 @@ export default {
   },
   methods: {
     async initalization () {
-      this.loaded = false
+      this.isLoaded = false
       this.leonInfo = await this.getDatasFromEndpoint('classDescription/leonInfo.php')
       this.inputValue = await this.getDatasFromEndpoint('classDescription/price.php')
-      this.description = await this.getDatasFromEndpoint('classDescription/description.php')
-      this.loaded = true
+      this.generalInfo = await this.getDatasFromEndpoint('classDescription/generalInfo.php')
+      this.isLoaded = true
     },
     onInputChange (val) {
       this.inputValue = val

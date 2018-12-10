@@ -58,20 +58,6 @@ export default {
       isSetupProfile: 'auth/setupProfile'
     })
   },
-  methods: {
-    launchEpicmaxToast () {
-      this.showToast(`Let's work together!`, {
-        icon: 'fa-star-o',
-        position: 'top-right',
-        duration: Infinity,
-        action: {
-          text: 'Hire us',
-          href: 'http://epicmax.co/#/contact',
-          class: 'vuestic-toasted-link'
-        }
-      })
-    }
-  },
 }
 </script>
 <style lang="scss" scoped>
