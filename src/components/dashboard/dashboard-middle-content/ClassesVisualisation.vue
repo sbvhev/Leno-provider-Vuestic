@@ -104,7 +104,7 @@ export default {
     },
     onRowClicked (e) {
       const selectedClass = this.result.filter(ele => e.rank === ele.rank).pop()
-      this.$router.push(`class/${selectedClass.classDescriptionId}`)
+      this.$router.push(`dashboard/class/${selectedClass.classDescriptionId}`)
     },
     drawChart (data) {
       const palette = this.$store.getters['shared/palette']

@@ -38,8 +38,6 @@
 <script>
 import DashboardInfoWidgets from './DashboardInfoWidgets'
 import ClassesTab from './dashboard-middle-content/ClassesVisualisation.vue'
-import UsersTableTab from './dashboard-middle-content/UsersTableTab.vue'
-import LocationsTab from './dashboard-middle-content/LocationsTab.vue'
 import DashboardBottomWidgets from './DashboardBottomWidgets.vue'
 import SetupProfileTab from './setup-profile-tab/SetupProfile.vue'
 import TableWidget from './elements/TableWidget.vue'
@@ -52,9 +50,7 @@ export default {
     ClassesTab,
     DashboardInfoWidgets,
     DashboardBottomWidgets,
-    UsersTableTab,
     SetupProfileTab,
-    LocationsTab,
     TableWidget,
     InlineTable
   },
@@ -67,8 +63,11 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.dashboard {
-  /deep/.widget-body {
+/deep/.dashboard {
+  .table-container {
+    position: inherit;
+  }
+  .widget-body {
     padding: 0;
   }
 }

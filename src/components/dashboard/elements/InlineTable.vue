@@ -1,7 +1,7 @@
 <template>
   <div class="inline-table-container">
-    <vuestic-pre-loader v-if="!isLoaded" class="pre-loader"></vuestic-pre-loader>
-    <div v-else class="table-body pt-3">
+    <vuestic-pre-loader v-show="!isLoaded" class="pre-loader"></vuestic-pre-loader>
+    <div v-if="isLoaded" class="table-body pt-3">
       <div class="row">
         <div class="col-md-12">
           <vuestic-data-table

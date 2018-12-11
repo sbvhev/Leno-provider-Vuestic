@@ -73,7 +73,7 @@ export default new Router({
         },
         {
           name: 'class',
-          path: 'class/:classId',
+          path: 'dashboard/class/:classId',
           component: lazyLoading('dashboard/class/Class')
         },
         {
