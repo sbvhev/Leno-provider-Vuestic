@@ -6,7 +6,7 @@
       class="table-widget"
       :headerText="headerText"
     >
-      <div class="users-table-tab dashboard-tab pt-3">
+      <div class="table-body pt-3">
         <div class="row">
           <div class="col-md-12">
             <vuestic-data-table
@@ -27,12 +27,8 @@
 </template>
 
 <script>
-import Vue from 'vue'
-import BadgeColumn from 'components/users/BadgeColumn.vue'
 import Proxy from '@/proxies/Proxy'
 import TableDataInfo from '@/helpers/TableDataInfo'
-
-Vue.component('badge-column', BadgeColumn)
 
 export default {
   name: 'schedule-table',
@@ -55,7 +51,7 @@ export default {
     },
     parameters: {
       type: Object,
-      default: {}
+      default: () => {}
     }
   },
   data () {
@@ -74,7 +70,7 @@ export default {
       ],
       table: {
         datas: {
-          data: {}
+          data: []
         },
         fields: [],
         sortFunctions: {}
@@ -85,22 +81,23 @@ export default {
   methods: {
     async initalization () {
       const {providerId, providerAccessToken} = this.$store.getters['auth/provider']
-      const {success, error, ...data} = await new Proxy(this.endpoint).submit('post', {
-        providerId,
-        providerAccessToken,
-        classDescriptionId: this.parameters[0]
-      })
-
-      if (success && data) {
-        if (data) {
-          this.$nextTick(() => {
+      try {
+        const {success, error, ...data} = await new Proxy(this.endpoint).submit('post', {
+          providerId,
+          providerAccessToken,
+          classDescriptionId: this.parameters ? this.parameters[0] : {}
+        })
+        if (success && data) {
+          if (data) {
             this.table = new TableDataInfo(Object.values(data).pop())
-          })
+          }
+        } else {
+          this.showToast(error)
         }
-      } else {
-        this.showToast(error)
+        this.isLoaded = true
+      } catch (error) {
+        console.log('empty table')
       }
-      this.isLoaded = true
     },
     showToast (error = 'Oops, Please try again later.') {
       this.$store.dispatch('auth/notification', {
@@ -119,18 +116,18 @@ export default {
 @import '~bootstrap/scss/variables';
 @import '~bootstrap/scss/mixins/breakpoints';
 
-.table-widget {
-  /deep/.users-table-tab {
-    padding-left: 2%;
-    padding-right: 2%;
-    @include media-breakpoint-down(md) {
-      padding-left: 0;
-      padding-right: 0;
-    }
-  }
-}
-.table-container {
+/deep/.table-container {
   min-height: 100px;
   position: relative;
+  .table-widget {
+    .table-body {
+      padding-left: 2%;
+      padding-right: 2%;
+      @include media-breakpoint-down(md) {
+        padding-left: 0;
+        padding-right: 0;
+      }
+    }
+  }
 }
 </style>

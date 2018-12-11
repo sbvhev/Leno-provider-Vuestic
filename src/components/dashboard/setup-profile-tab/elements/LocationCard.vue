@@ -1,6 +1,7 @@
 <template>
   <vuestic-widget
     :class="['info-widget', {'disable-info-widget': item.isOutsideCoverage === 'true'}]"
+    v-if="item.name"
   >
     <div
       class="d-flex flex-row flex-wrap justify-content-between align-content-center"
@@ -38,10 +39,23 @@ export default {
   components: {
     ToggleSwitch
   },
-  props: ['item'],
+  props: {
+    item: {
+      type: Object,
+      default: () => {
+        return {
+          address: '',
+          id: '',
+          isOn: false,
+          isOutsideCoverage: false,
+          name: ''
+        }
+      }
+    }
+  },
   data () {
     return {
-      localIsOn: this.item.isOn
+      localIsOn: this.item.isOn,
     }
   },
   watch: {

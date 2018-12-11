@@ -49,7 +49,9 @@ export default {
         }
       ],
       table: {
-        datas: {},
+        datas: {
+          data: {}
+        },
         fields: [],
         sortFunctions: {}
       },
@@ -59,21 +61,23 @@ export default {
   methods: {
     async initalization () {
       const {providerId, providerAccessToken} = this.$store.getters['auth/provider']
-      const { success, users } = await new Proxy('getUsers.php?').submit('post', {
-        providerId,
-        providerAccessToken
-      })
+      try {
+        const { success, users } = await new Proxy('getUsers.php?').submit('post', {
+          providerId,
+          providerAccessToken
+        })
 
-      if (success && users) {
-        if (users) {
-          this.$nextTick(() => {
+        if (success && users) {
+          if (users) {
             this.table = new TableDataInfo(users)
-          })
-        } else {
-          this.showToast()
-        }
+          } else {
+            this.showToast()
+          }
 
-        this.isLoaded = true
+          this.isLoaded = true
+        }
+      } catch (error) {
+        console.log('empty table')
       }
     },
     onCellClicked (e) {

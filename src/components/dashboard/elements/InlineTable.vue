@@ -1,9 +1,9 @@
 <template>
-  <vuestic-widget class="schedule-table" :headerText="`Schedule`">
-    <div class="users-table-tab dashboard-tab pt-3">
+  <div class="inline-table-container">
+    <vuestic-pre-loader v-if="!isLoaded" class="pre-loader"></vuestic-pre-loader>
+    <div v-else class="table-body pt-3">
       <div class="row">
-        <vuestic-pre-loader v-show="!isLoaded" class="pre-loader"></vuestic-pre-loader>
-        <div class="col-md-12" v-if="isLoaded">
+        <div class="col-md-12">
           <vuestic-data-table
             :apiMode="apiMode"
             :tableData="table.datas"
@@ -11,21 +11,18 @@
             :sortFunctions="table.sortFunctions"
             :itemsPerPage="itemsPerPage"
             :onEachSide="onEachSide"
+            :perPageSelectorShown="perPageSelectorShown"
             :dataModeFilterableFields="dataModeFilterableFields"
           />
         </div>
       </div>
     </div>
-  </vuestic-widget>
+  </div>
 </template>
 
 <script>
-import Vue from 'vue'
-import BadgeColumn from 'components/users/BadgeColumn.vue'
 import Proxy from '@/proxies/Proxy'
 import TableDataInfo from '@/helpers/TableDataInfo'
-
-Vue.component('badge-column', BadgeColumn)
 
 export default {
   name: 'schedule-table',
@@ -33,7 +30,20 @@ export default {
   created () {
     this.initalization()
   },
-
+  props: {
+    endpoint: {
+      type: String,
+      require: true
+    },
+    perPageSelectorShown: {
+      type: Boolean,
+      default: false
+    },
+    parameters: {
+      type: Object,
+      default: () => {}
+    }
+  },
   data () {
     return {
       isLoaded: false,
@@ -49,7 +59,9 @@ export default {
         }
       ],
       table: {
-        datas: {},
+        datas: {
+          data: []
+        },
         fields: [],
         sortFunctions: {}
       },
@@ -59,27 +71,29 @@ export default {
   methods: {
     async initalization () {
       const {providerId, providerAccessToken} = this.$store.getters['auth/provider']
-      const {success, schedule} = await new Proxy('getSchedule.php').submit('post', {
-        providerId,
-        providerAccessToken
-      })
+      try {
+        const {success, error, ...data} = await new Proxy(this.endpoint).submit('post', {
+          providerId,
+          providerAccessToken,
+          classDescriptionId: this.parameters ? this.parameters[0] : {}
+        })
 
-      if (success && schedule) {
-        if (schedule) {
-          this.$nextTick(() => {
-            this.table = new TableDataInfo(schedule)
-          })
+        if (success && data) {
+          this.table = new TableDataInfo(Object.values(data).pop())
+        } else {
+          this.showToast(error)
         }
-      } else {
-        this.showToast()
+        this.isLoaded = true
+      } catch (error) {
+        console.log('empty table')
+        this.isLoaded = true
       }
-      this.isLoaded = true
     },
-    showToast () {
+    showToast (error = 'Oops, Please try again later.') {
       this.$store.dispatch('auth/notification', {
         type: 'ERROR',
-        title: 'UsersTableTab',
-        message: 'Oops, Please try again later.'
+        title: 'Parameters error!',
+        message: error
       })
     }
   },
@@ -87,19 +101,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../sass/_variables.scss';
+@import '../../../sass/_variables.scss';
 @import '~bootstrap/scss/functions';
 @import '~bootstrap/scss/variables';
 @import '~bootstrap/scss/mixins/breakpoints';
 
-.schedule-table {
-  /deep/.users-table-tab {
-    padding-left: 2%;
-    padding-right: 2%;
-    @include media-breakpoint-down(md) {
-      padding-left: 0;
-      padding-right: 0;
-    }
+.inline-table-container {
+  padding-left: 10%;
+  padding-right: 10%;
+  @include media-breakpoint-down(md) {
+    padding-left: 0;
+    padding-right: 0;
   }
 }
 </style>

@@ -17,16 +17,20 @@
             <classes-tab></classes-tab>
           </div>
           <div :slot="$t('Locations')">
-            <locations-tab></locations-tab>
+            <inline-table endpoint="getLocationSpend.php"></inline-table>
           </div>
           <div :slot="$t('Users')">
-            <users-table-tab></users-table-tab>
+            <inline-table endpoint="getUsers.php"></inline-table>
           </div>
         </vuestic-tabs>
       </vuestic-widget>
 
       <dashboard-bottom-widgets></dashboard-bottom-widgets>
-      <schedule-table></schedule-table>
+      <table-widget
+        headerText="Schedule"
+        endpoint="getSchedule.php"
+        perPageSelectorShown
+      ></table-widget>
     </div>
   </div>
 </template>
@@ -37,8 +41,9 @@ import ClassesTab from './dashboard-middle-content/ClassesVisualisation.vue'
 import UsersTableTab from './dashboard-middle-content/UsersTableTab.vue'
 import LocationsTab from './dashboard-middle-content/LocationsTab.vue'
 import DashboardBottomWidgets from './DashboardBottomWidgets.vue'
-import ScheduleTable from './ScheduleTable.vue'
 import SetupProfileTab from './setup-profile-tab/SetupProfile.vue'
+import TableWidget from './elements/TableWidget.vue'
+import InlineTable from './elements/InlineTable.vue'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -50,7 +55,8 @@ export default {
     UsersTableTab,
     SetupProfileTab,
     LocationsTab,
-    ScheduleTable
+    TableWidget,
+    InlineTable
   },
   computed: {
     ...mapGetters({

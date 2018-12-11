@@ -60,7 +60,6 @@
   </div>
 </template>
 <script>
-import ScheduleTable from '../ScheduleTable.vue'
 import TableWidget from '../elements/TableWidget.vue'
 import CustomInput from '../elements/CustomInput.vue'
 import Proxy from '@/proxies/Proxy'
@@ -68,7 +67,6 @@ import Proxy from '@/proxies/Proxy'
 export default {
   name: 'class',
   components: {
-    ScheduleTable,
     TableWidget,
     CustomInput
   },

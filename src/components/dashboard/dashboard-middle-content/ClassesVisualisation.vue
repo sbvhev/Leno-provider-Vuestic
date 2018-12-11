@@ -55,7 +55,9 @@ export default {
       },
       apiMode: false,
       table: {
-        datas: {},
+        datas: {
+          data: {}
+        },
         fields: [],
         sortFunctions: {}
       },
@@ -76,26 +78,28 @@ export default {
   methods: {
     async initalization () {
       const {providerId, providerAccessToken} = this.$store.getters['auth/provider']
-      const {success, classes} = await new Proxy('getClasses.php?').submit('post', {
-        providerId,
-        providerAccessToken
-      })
+      try {
+        const {success, classes} = await new Proxy('getClasses.php?').submit('post', {
+          providerId,
+          providerAccessToken
+        })
 
-      this.result = classes
-      if (success && classes) {
-        this.createTable(classes)
-        this.drawChart(classes)
-      } else {
-        this.tableData = []
-        this.showToast()
+        this.result = classes
+        if (success && classes) {
+          this.createTable(classes)
+          this.drawChart(classes)
+        } else {
+          this.tableData = []
+          this.showToast()
+        }
+        this.isLoaded = true
+      } catch (error) {
+        console.log('empty table')
       }
-      this.isLoaded = true
     },
     createTable (data) {
       if (data) {
-        this.$nextTick(() => {
-          this.table = new TableDataInfo(data)
-        })
+        this.table = new TableDataInfo(data)
       }
     },
     onRowClicked (e) {

@@ -1,6 +1,6 @@
 class TableDataInfo {
   constructor (data) {
-    this.datas = {}
+    this.datas = { data: [] }
     this.fields = []
     this.sortFunctions = {}
     if (data.length) {
