@@ -3,7 +3,7 @@
     <vuestic-widget class="info-widget brand-primary">
       <div class="info-widget-inner">
         <div class="stats">
-          <h1 class="stats-number">{{ data.value }}</h1>
+          <h1 class="stats-number pt-2">{{ data.value }}</h1>
           <div class="stats-title pb-3">{{ data.description }}</div>
         </div>
       </div>

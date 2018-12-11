@@ -44,15 +44,15 @@ $colors-map: (
 );
 
 $theme-colors: (
-  "primary": $brand-primary,
-  "secondary": $white,
-  "success": $light-green,
-  "info": $brand-info,
-  "warning": $brand-warning,
-  "danger": $brand-danger,
-  "light": $light-gray2,
-  "dark": $almost-black,
-  "pale": $theme-pale
+  'primary': $brand-primary,
+  'secondary': $white,
+  'success': $light-green,
+  'info': $brand-info,
+  'warning': $brand-warning,
+  'danger': $brand-danger,
+  'light': $light-gray2,
+  'dark': $almost-black,
+  'pale': $theme-pale
 );
 
 // Layout //
@@ -78,7 +78,7 @@ $content-wrap-pt: $layout-padding;
 $content-wrap-pb: $layout-padding;
 $made-by-footer-pb: 27px;
 
-$greeny-box-shadow: 0 4px 9.6px 0.4px rgba($vue-green, .5);
+$greeny-box-shadow: 0 4px 9.6px 0.4px rgba($vue-green, 0.5);
 
 $min-z-index: -1000;
 
@@ -89,10 +89,10 @@ $auth-wallpaper-oblique-line: $dark-gray;
 //Mobile Layout
 $top-mobile-nav-height: 5.625rem;
 $layout-mobile-padding: 0.1875rem;
-$layout-mobile-padding-right: .375rem;
+$layout-mobile-padding-right: 0.375rem;
 
 $sidebar-mobile-width: calc(100% - #{$layout-mobile-padding-right});
-$sidebar-mobile-top: $top-mobile-nav-height+$layout-mobile-padding;
+$sidebar-mobile-top: $top-mobile-nav-height + $layout-mobile-padding;
 $sidebar-mobile-left: $layout-mobile-padding;
 $content-mobile-wrap-margin: 1.125rem;
 $sidebar-mobile-z-index: 1000;
@@ -102,15 +102,18 @@ $content-mobile-wrap-pr: 1rem;
 $content-mobile-wrap-pt: 2rem;
 $content-mobile-wrap-pt-fixed-layout: 7rem;
 $content-mobile-wrap-pb: $layout-padding;
-$content-mobile-wrap: $content-mobile-wrap-pt $content-mobile-wrap-pr $content-mobile-wrap-pb $content-mobile-wrap-pl;
-$content-mobile-wrap-fixed-layout: $content-mobile-wrap-pt-fixed-layout $content-mobile-wrap-pr $content-mobile-wrap-pb $content-mobile-wrap-pl;
-$content-mobile-wrap-sb-top: calc(#{$top-nav-height} + #{$layout-padding+20}) - 20 px;
+$content-mobile-wrap: $content-mobile-wrap-pt $content-mobile-wrap-pr
+  $content-mobile-wrap-pb $content-mobile-wrap-pl;
+$content-mobile-wrap-fixed-layout: $content-mobile-wrap-pt-fixed-layout
+  $content-mobile-wrap-pr $content-mobile-wrap-pb $content-mobile-wrap-pl;
+$content-mobile-wrap-sb-top: calc(#{$top-nav-height} + #{$layout-padding+20}) -
+  20 px;
 
-$nav-mobile-padding-h: .875rem;
+$nav-mobile-padding-h: 0.875rem;
 $nav-mobile-pt: 3rem;
 $nav-mobile-pb: 1.375rem;
 $nav-mobile-brand-width: 4rem;
-$nav-mobile-brand-top: .875rem;
+$nav-mobile-brand-top: 0.875rem;
 $nav-mobile-brand-left: calc(50% - #{$nav-mobile-brand-width});
 
 $droppdown-mobile-mp: 1.9375rem;
@@ -126,7 +129,7 @@ $auth-content-padding-t: 2.875rem;
 
 //$text-color:            $gray !default;
 
-$font-family-sans-serif: 'Source Sans Pro', sans-serif !default;
+$font-family-sans-serif: 'Nunito', sans-serif !default;
 
 $font-size-root: 16px;
 
@@ -160,7 +163,7 @@ $navbar-dd-item-height: 48px;
 //Breadcrumbs
 $breadcrumbs-height: 54px;
 $breadcrumbs-arrow-font: 0.7rem;
-$breadcrumbs-arrow-content: "\f054";
+$breadcrumbs-arrow-content: '\f054';
 
 //Sidebar
 $sidebar-link-height: 64px;
@@ -170,7 +173,9 @@ $sidebar-submenu-link-pl: 74px;
 $sidebar-link-active-bg: $almost-black;
 $sidebar-arrow-right: 16px;
 $sidebar-menu-item-icon-size: 19px;
-$sidebar-viewport-height: calc(100vh - #{$top-nav-height} - #{$content-wrap-pt} - #{$content-wrap-pb});
+$sidebar-viewport-height: calc(
+  100vh - #{$top-nav-height} - #{$content-wrap-pt} - #{$content-wrap-pb}
+);
 
 $sidebar-hidden-top: -150px;
 $sidebar-hidden-top-mobile: $sidebar-mobile-top;
@@ -212,9 +217,9 @@ $btn-with-icon-padding-x: 2.8125rem;
 $btn-with-icon-rounded-size: 3.5rem;
 $btn-with-icon-rounded-size-micro: 2.25rem;
 $btn-with-icon-rounded-font-micro: 1.5rem;
-$btn-with-icon-rounded-position-top: .4rem;
-$btn-with-icon-rounded-position-left: .46rem;
-$btn-with-icon-icon-top: .75rem;
+$btn-with-icon-rounded-position-top: 0.4rem;
+$btn-with-icon-rounded-position-left: 0.46rem;
+$btn-with-icon-icon-top: 0.75rem;
 $btn-with-icon-rounded-icon-left: 1.23rem;
 $btn-with-icon-icon-size: 2rem;
 $btn-group-button-padding-x: 1.53rem;
@@ -278,11 +283,13 @@ $vuestic-switch-border-size: 0.125rem;
 //Progress Bars
 $progress-bar-value-font-size: 0.6875rem;
 $progress-bar-circle-diameter: 3.125rem;
-$progress-bar-circle-bw: .0678rem;
-$progress-bar-circle-overlay-diameter: calc(#{$progress-bar-circle-diameter} - 2 * #{$progress-bar-circle-bw});
+$progress-bar-circle-bw: 0.0678rem;
+$progress-bar-circle-overlay-diameter: calc(
+  #{$progress-bar-circle-diameter} - 2 * #{$progress-bar-circle-bw}
+);
 $progress-bar-vertical-height: 5.75rem;
-$progress-bar-width-thin: .125rem;
-$progress-bar-width-basic: .5rem;
+$progress-bar-width-thin: 0.125rem;
+$progress-bar-width-basic: 0.5rem;
 $progress-bar-width-thick: 1.5rem;
 $vertical-progress-bar-width-thick: 2rem;
 
@@ -308,7 +315,7 @@ $badge-info-bg: $theme-blue;
 
 //Alerts
 $alert-padding-x: 1.25rem !default;
-$alert-padding-y: .75rem !default;
+$alert-padding-y: 0.75rem !default;
 $alert-margin-bottom: $widget-mb;
 $with-close-pr: 3.125rem;
 
@@ -351,7 +358,8 @@ $vuestic-preloader-left: calc(50% - 140px / 2);
 $vuestic-preloader-top: calc(50% - 104px / 2);
 
 //Medium Editor
-$medium-editor-button-size: $btn-padding-y * 2 + $font-size-base * $btn-line-height;
+$medium-editor-button-size: $btn-padding-y * 2 + $font-size-base *
+  $btn-line-height;
 
 //tooltips
 
@@ -361,15 +369,15 @@ $tooltip-max-width: 200px;
 $tooltip-color: $white;
 $tooltip-bg: $darkest-gray;
 $tooltip-border-radius: $font-size-base * 0.5;
-$tooltip-opacity: .9;
-$tooltip-padding-y: .5rem;
-$tooltip-padding-x: .75rem;
+$tooltip-opacity: 0.9;
+$tooltip-padding-y: 0.5rem;
+$tooltip-padding-x: 0.75rem;
 $tooltip-margin: 0;
 $tooltip-line-height: 1.13;
 $tooltip-font-weight: 300;
 
-$tooltip-arrow-width: .8rem;
-$tooltip-arrow-height: .4rem;
+$tooltip-arrow-width: 0.8rem;
+$tooltip-arrow-height: 0.4rem;
 $tooltip-arrow-color: $tooltip-bg;
 
 // Popovers
@@ -388,7 +396,7 @@ $popover-opacity: $tooltip-opacity;
 $popover-header-bg: $tooltip-bg;
 $popover-header-color: $white;
 $popover-header-padding-y: 0;
-$popover-header-padding-x: .75rem;
+$popover-header-padding-x: 0.75rem;
 $popover-header-no-icon-padding-x: 0;
 $popover-header-font-weight: bold;
 
@@ -404,7 +412,7 @@ $popover-arrow-width: 1rem;
 $popover-arrow-height: 1rem;
 $popover-arrow-color: transparent;
 
-$popover-arrow-outer-color: fade-in($popover-border-color, .05);
+$popover-arrow-outer-color: fade-in($popover-border-color, 0.05);
 
 // Toasts
 

@@ -1,3 +1,4 @@
 build/*.js
 config/*.js
 src/vuestic-theme/**/*.vue
+src/fonts

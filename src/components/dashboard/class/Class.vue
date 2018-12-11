@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="class-container">
     <vuestic-pre-loader v-if="!isLoaded" class="pre-loader"></vuestic-pre-loader>
     <div class="class-details" v-if="isLoaded">
       <vuestic-widget class="class-header-card" :headerText="generalInfo.name">
@@ -54,7 +54,6 @@
         headerText="Schedule"
         endpoint="classDescription/schedule.php"
         :parameters="{classDescriptionId: classId}"
-        :rowClickParams="{kind: 'class', id: 'class'}"
       ></table-widget>
     </div>
   </div>
@@ -174,6 +173,14 @@ export default {
 
   p {
     max-width: 800px;
+  }
+
+  .vuestic-data-table .vuetable-body tr td:nth-child(2) {
+    color: inherit;
+    cursor: inherit;
+  }
+  .vuestic-data-table .vuetable-body tr td:nth-child(2):hover {
+    color: inherit;
   }
 }
 </style>
