@@ -1,6 +1,5 @@
 export default {
-  bind: function (el, binding) {},
-  update: function (el, binding) {
+  componentUpdated: function (el, binding) {
     let navbar = el.querySelector('.vuestic-navbar')
     let sidebar = el.querySelector('.vuestic-sidebar')
 
@@ -25,7 +24,7 @@ export default {
         }
       }, 0)
     }
-    if (binding.value.isSetupProfile && !binding.oldValue.isSetupProfile) {
+    if (binding.value.isSetupProfile) {
       let selector = navbar.querySelector('.header-selector')
       sidebar.classList.remove('sidebar-hidden')
       selector.classList.add('i-menu-expanded')
@@ -38,6 +37,9 @@ export default {
           sidebar.classList.add('sidebar-hidden')
         }
       })
+    } else {
+      navbar.removeEventListener('click', el.resizeWindow)
+      sidebar.removeEventListener('click', el.resizeWindow)
     }
   },
   unbind: el => {
