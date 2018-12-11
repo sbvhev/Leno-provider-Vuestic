@@ -50,6 +50,9 @@ export default {
     toggleSidebar (opened) {
       this.opened = opened
     }
-  }
+  },
+  mounted () {
+    this.opened = this.isSetupProfile
+  },
 }
 </script>
