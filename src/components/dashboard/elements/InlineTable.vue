@@ -13,6 +13,7 @@
             :onEachSide="onEachSide"
             :perPageSelectorShown="perPageSelectorShown"
             :dataModeFilterableFields="dataModeFilterableFields"
+            @onRowClicked="onRowClicked"
           />
         </div>
       </div>
@@ -42,6 +43,10 @@ export default {
     parameters: {
       type: Object,
       default: () => {}
+    },
+    rowClickParams: {
+      type: Object,
+      default: () => {}
     }
   },
   data () {
@@ -65,6 +70,7 @@ export default {
         fields: [],
         sortFunctions: {}
       },
+      result: []
     }
   },
 
@@ -75,11 +81,12 @@ export default {
         const {success, error, ...data} = await new Proxy(this.endpoint).submit('post', {
           providerId,
           providerAccessToken,
-          classDescriptionId: this.parameters ? this.parameters[0] : {}
+          ...this.parameters
         })
 
         if (success && data) {
-          this.table = new TableDataInfo(Object.values(data).pop())
+          this.result = Object.values(data).pop()
+          this.table = new TableDataInfo(this.result)
         } else {
           this.showToast(error)
         }
@@ -87,6 +94,15 @@ export default {
       } catch (error) {
         console.log('empty table')
         this.isLoaded = true
+      }
+    },
+    onRowClicked (e) {
+      const {kind, id} = this.rowClickParams
+      if (kind === 'class') {
+        setTimeout(() => {
+          const selectedClass = this.result.filter(ele => e[id] === ele[id]).pop()
+          this.$router.push(`dashboard/class/${selectedClass.classDescriptionId}`)
+        }, 20)
       }
     },
     showToast (error = 'Oops, Please try again later.') {

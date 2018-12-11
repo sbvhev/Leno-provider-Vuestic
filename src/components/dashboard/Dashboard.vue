@@ -29,7 +29,7 @@
       <table-widget
         headerText="Schedule"
         endpoint="getSchedule.php"
-        perPageSelectorShown
+        :rowClickParams="{kind: 'class', id: 'class'}"
       ></table-widget>
     </div>
   </div>
@@ -59,7 +59,7 @@ export default {
       isLoading: 'shared/isLoading',
       isSetupProfile: 'auth/setupProfile'
     })
-  },
+  }
 }
 </script>
 <style lang="scss" scoped>

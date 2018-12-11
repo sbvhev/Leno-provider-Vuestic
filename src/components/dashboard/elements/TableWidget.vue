@@ -5,6 +5,7 @@
         :endpoint="endpoint"
         :perPageSelectorShown="perPageSelectorShown"
         :parameters="parameters"
+        :rowClickParams="rowClickParams"
       ></inline-table>
     </vuestic-widget>
   </div>
@@ -34,6 +35,10 @@ export default {
     parameters: {
       type: Object,
       default: () => {}
+    },
+    rowClickParams: {
+      type: Object,
+      default: () => {}
     }
   },
 }
@@ -51,10 +56,6 @@ export default {
   .inline-table-container {
     padding-left: 2%;
     padding-right: 2%;
-    @include media-breakpoint-down(md) {
-      padding-left: 0;
-      padding-right: 0;
-    }
   }
 }
 </style>

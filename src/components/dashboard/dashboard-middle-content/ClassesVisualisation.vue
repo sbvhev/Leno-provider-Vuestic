@@ -102,10 +102,6 @@ export default {
         this.table = new TableDataInfo(data)
       }
     },
-    onRowClicked (e) {
-      const selectedClass = this.result.filter(ele => e.rank === ele.rank).pop()
-      this.$router.push(`dashboard/class/${selectedClass.classDescriptionId}`)
-    },
     drawChart (data) {
       const palette = this.$store.getters['shared/palette']
       const colorType = [palette.info, palette.warning, palette.primary, palette.fontColor, palette.success, palette.danger]
@@ -138,6 +134,10 @@ export default {
           },
         }
       }
+    },
+    onRowClicked (e) {
+      const selectedClass = this.result.filter(ele => e.rank === ele.rank).pop()
+      this.$router.push(`dashboard/class/${selectedClass.classDescriptionId}`)
     },
     showToast () {
       this.$store.dispatch('auth/notification', {

@@ -31,7 +31,7 @@
           <table-widget
             headerText="Instructors"
             endpoint="classDescription/instructors.php"
-            :parameters="Object.assign({}, classId)"
+            :parameters="{classDescriptionId: classId}"
           ></table-widget>
         </div>
         <div class="col-md-6 col-12 class-description">
@@ -53,8 +53,8 @@
       <table-widget
         headerText="Schedule"
         endpoint="classDescription/schedule.php"
-        perPageSelectorShown
-        :parameters="Object.assign({}, classId)"
+        :parameters="{classDescriptionId: classId}"
+        :rowClickParams="{kind: 'class', id: 'class'}"
       ></table-widget>
     </div>
   </div>
