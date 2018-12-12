@@ -2,12 +2,13 @@
   <div class="class-container">
     <vuestic-pre-loader v-if="!isLoaded" class="pre-loader"></vuestic-pre-loader>
     <div class="class-details" v-if="isLoaded">
-      <vuestic-widget class="class-header-card" :headerText="generalInfo.name">
+      <vuestic-widget class="class-header-card" ref="widgetHeader" :isEdit="isEdit" @onChangeHeader="onChangeHeader(val)" :headerText="generalInfo.name">
         <div class="d-flex flex-row justify-content-between">
           <h5>Description</h5>
-          <a href="#" class="text-info">Edit</a>
+          <a href="#" class="text-info" @click.prevent="onClickEdit">{{btnText}}</a>
         </div>
-        <p>{{generalInfo.description}}</p>
+        <p v-if="!isEdit">{{generalInfo.description}}</p>
+        <textarea row="5" col="50" class="edit-content" v-model="generalInfo.description" v-else></textarea>
         <div class="d-flex flex-row justify-content-between align-items-end">
           <div>
             <h6 class="d-inline pr-3">Price</h6>
@@ -111,7 +112,10 @@ export default {
       leonInfo: null,
       instructors: null,
       generalInfo: null,
-      isLoaded: false
+      isLoaded: false,
+      isEdit: false,
+      btnText: 'Edit',
+      widgetHeaderText: ''
     }
   },
   created () {
@@ -120,21 +124,35 @@ export default {
   methods: {
     async initalization () {
       this.isLoaded = false
-      this.leonInfo = await this.getDatasFromEndpoint('classDescription/leonInfo.php')
-      this.inputValue = await this.getDatasFromEndpoint('classDescription/price.php')
-      this.generalInfo = await this.getDatasFromEndpoint('classDescription/generalInfo.php')
+      this.leonInfo = await this.getDatasFromEndpoint('classDescription/leonInfo.php', {classDescriptionId: this.classId})
+      this.inputValue = await this.getDatasFromEndpoint('classDescription/price.php', {classDescriptionId: this.classId})
+      this.generalInfo = await this.getDatasFromEndpoint('classDescription/generalInfo.php', {classDescriptionId: this.classId})
       this.isLoaded = true
     },
     onInputChange (val) {
       this.inputValue = val
     },
-    async getDatasFromEndpoint (url) {
+    async onClickEdit () {
+      if (this.isEdit) {
+        this.btnText = 'Edit'
+        const data = this.$refs.widgetHeader.$data
+        await this.getDatasFromEndpoint('classDescription/save/generalInfo.php', {
+          name: data.editedHeaderText,
+          description: this.generalInfo.description
+        })
+        this.generalInfo.name = data.editedHeaderText
+      } else {
+        this.btnText = 'Save'
+      }
+      this.isEdit = !this.isEdit
+    },
+    async getDatasFromEndpoint (url, params) {
       const {providerId, providerAccessToken} = this.$store.getters['auth/provider']
       try {
         const {success, error, ...data} = await new Proxy(url).submit('post', {
           providerId,
           providerAccessToken,
-          classDescriptionId: this.classId
+          ...params
         })
         if (success) {
           return Object.values(data).pop()
@@ -181,6 +199,20 @@ export default {
   }
   .vuestic-data-table .vuetable-body tr td:nth-child(2):hover {
     color: inherit;
+  }
+  .edit-content {
+    width: 100%;
+    height: 300px;
+    font-family: "Nunito", sans-serif;
+    font-size: 1rem;
+    font-weight: 300;
+    line-height: 1.5;
+    color: #34495e;
+    text-align: left;
+
+    &:focus {
+      outline: rgba(74, 227, 135, 0.5) auto 5px;
+    }
   }
 }
 </style>

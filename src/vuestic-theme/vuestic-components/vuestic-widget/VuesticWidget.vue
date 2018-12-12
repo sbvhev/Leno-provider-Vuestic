@@ -1,17 +1,23 @@
 <template>
   <div class="widget" :class="{'no-header': !headerText}">
-    <div class="widget-header" v-if="headerText">{{headerText}}</div>
+    <div v-if="!isEdit && headerText" class="widget-header">{{headerText}}</div>
+    <div v-if="isEdit" class="widget-header">
+      <input class="widget-header-input" v-model="editedHeaderText"/>
+    </div>
     <div class="widget-body" v-if="hasSlotData">
       <slot></slot>
     </div>
   </div>
 </template>
-
 <script>
   export default {
     name: 'vuestic-widget',
-
-    props: ['headerText'],
+    props: ['headerText', 'isEdit', 'onChangeHeader'],
+    data () {
+      return {
+        editedHeaderText: this.headerText
+      }
+    },
     computed: {
       hasSlotData () {
         return this.$slots.default
@@ -92,6 +98,19 @@
       font-weight: 600;
       display: flex;
       align-items: center;
+    }
+
+    .widget-header-input {
+      border: 0;
+      font-family: "Nunito", sans-serif;
+      font-weight: bold;
+      line-height: 1.5;
+      color: #34495e;
+      text-align: left;
+    }
+
+    .widget-header-input:focus {
+      outline: rgba(74, 227, 135, 0.5) auto 5px;
     }
   }
 </style>
