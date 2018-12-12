@@ -25,6 +25,8 @@
     background: $widget-bg;
     box-shadow: $widget-box-shadow;
     margin-bottom: $widget-mb;
+    border: thin solid #afafaf;
+    border-radius: 16px;
     padding: 0;
 
     &.no-header {

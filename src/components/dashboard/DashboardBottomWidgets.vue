@@ -70,17 +70,17 @@ export default {
     async initalization () {
       const {providerId, providerAccessToken} = this.$store.getters['auth/provider']
       try {
-        const { error, feed } = await new Proxy('getFeed.php?').submit('post', {
+        const { success, feed } = await new Proxy('getFeed.php?').submit('post', {
           providerId,
           providerAccessToken
         })
 
-        if (error) {
-          this.posts = []
-          this.showToast()
-        } else {
+        if (success) {
           this.posts = feed.splice(0, 3)
           this.isLoaded = true
+        } else {
+          this.posts = []
+          this.showToast()
         }
       } catch (error) {
         this.showToast()

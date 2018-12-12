@@ -2,19 +2,15 @@
   <div class="vuestic-feed">
     <div v-if="posts.length == 0" class="empty">Your feed is empty.</div>
     <div
+      v-else
       class="post"
-      v-for="post in posts"
+      v-for="(post, index) in posts"
       :class="{last: posts.indexOf(post) === posts.length - 1}"
-      :key="post"
+      :key="index"
     >
       <div class="underscored">
-        <span class="text">{{changeUnicodeString(post)}}</span>
-        <!-- <button
-          v-on:click="removePost(post)"
-          class="btn btn-micro btn-primary btn-with-icon close-btn rounded-icon"
-        >
-          <i class="ion-md-close ion"></i>
-        </button>-->
+        <span class="text">{{changeUnicodeString(post.emoticon)}}<b>&nbsp;&nbsp;{{post.name}}&nbsp;&nbsp;</b>{{post.item}}</span>
+        <span class="ago">{{post.ago}}</span>
       </div>
     </div>
   </div>
@@ -91,6 +87,11 @@ export default {
         .name {
           font-weight: $font-weight-bold;
         }
+      }
+      .ago {
+        text-transform: uppercase;
+        opacity: 0.5;
+        font-size: 0.75rem;
       }
       .close-btn {
         margin-left: 1rem;
