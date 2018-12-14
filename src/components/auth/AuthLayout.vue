@@ -8,7 +8,7 @@
         <router-view></router-view>
       </div>
       <div class="auth-wallpaper col-6 d-none d-lg-flex">
-        <div class="oblique"></div>
+        <div class="i-vuestic-back"></div>
         <router-link class="i-vuestic" :to="{path: '/'}"></router-link>
       </div>
     </div>
@@ -60,7 +60,7 @@ export default {
       background-color: white;
     }
     .auth-wallpaper {
-      background-color: $top-nav-bg;
+      background: linear-gradient(to bottom right, #7FE3FF, #00577F);
       overflow: hidden;
       display: flex;
       align-items: center;
@@ -69,14 +69,6 @@ export default {
         z-index: 2;
         height: $auth-wallpaper-ivuestic-h;
         width: 100%;
-      }
-      .oblique {
-        position: absolute;
-        background-color: $auth-wallpaper-oblique-line;
-        left: calc(50% - 27% / 2);
-        transform: rotate(15deg);
-        width: 27%;
-        height: 115%;
       }
     }
   }

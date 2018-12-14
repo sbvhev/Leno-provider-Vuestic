@@ -50,7 +50,7 @@ export default {
 }
 
 .check:checked ~ .track {
-  box-shadow: inset 0 0 0 20px #4ae387;
+  box-shadow: inset 0 0 0 20px #43A7CF;
 }
 
 .check:checked ~ .switch {

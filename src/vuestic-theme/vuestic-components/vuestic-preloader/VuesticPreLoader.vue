@@ -3,7 +3,7 @@
     <spring-spinner
       :animation-duration="2000"
       :size="100"
-      color="#4ae387"
+      color="#43A7CF"
     ></spring-spinner>
     <!-- <canvas ref="canvas"></canvas> -->
   </div>

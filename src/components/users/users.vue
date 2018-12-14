@@ -17,7 +17,7 @@
             slot="loading"
             :animation-duration="2500"
             :size="70"
-            color="#4ae387"
+            color="#43A7CF"
           />
           </vuestic-data-table>
         </vuestic-widget>

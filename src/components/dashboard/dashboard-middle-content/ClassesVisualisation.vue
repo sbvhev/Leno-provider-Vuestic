@@ -136,7 +136,7 @@ export default {
       }
     },
     onRowClicked (e) {
-      const selectedClass = this.result.filter(ele => e.rank === ele.rank).pop()
+      const selectedClass = this.result.filter(ele => e.row === ele.row).pop()
       this.$router.push(`dashboard/class/${selectedClass.classDescriptionId}`)
     },
     showToast () {

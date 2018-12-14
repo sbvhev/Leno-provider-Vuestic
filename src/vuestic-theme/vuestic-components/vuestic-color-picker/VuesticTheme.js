@@ -9,7 +9,7 @@ export const VuesticTheme = {
 }
 
 export const colorConfig = {
-  [VuesticTheme.Primary]: '#4ae387',
+  [VuesticTheme.Primary]: '#43A7CF',
   [VuesticTheme.Danger]: '#e34a4a',
   [VuesticTheme.Info]: '#4ab2e3',
   [VuesticTheme.Success]: '#db76df',

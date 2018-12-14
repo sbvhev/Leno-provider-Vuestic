@@ -26,13 +26,17 @@
           <table-widget headerText="Instructors" endpoint="classDescription/instructors.php" :parameters="{classDescriptionId: classId}"></table-widget>
         </div>
         <div class="col-md-6 col-12 class-description">
-          <vuestic-widget>
+          <vuestic-widget class="leonInfo-div">
+            <div class="d-flex flex-row justify-content-between">
+              <h5>LEON Info</h5>
+            </div>
+            <p class="leonInfo-explanation">{{leonInfo.explanation}}</p>
             <div v-for="(info, index) in leonInfo.info" :key="index" class="pa-3">
               <custom-class :headerText="info.title" :contentText="info.description" :infoId="info.infoId" :canEdit="leonInfo.canEdit"></custom-class>
             </div>
-            <div class="d-flex flex-row justify-content-between align-items-end pt-4">
-              <h6 class="d-inline pr-3">Want to change this info</h6>
-              <a href="#" class="text-info">Contact Bryan</a>
+            <div v-if="!leonInfo.canEdit" class="d-flex flex-row justify-content-between align-items-end pt-4 bottom-div-leoninfo">
+              <h6 class="d-inline pr-3">Need an edit?</h6>
+              <button href="#" class="btn btn-primary btn-micro">Contact us</button>
             </div>
           </vuestic-widget>
         </div>
@@ -115,7 +119,6 @@ export default {
       this.inputValue = await this.getDatasFromEndpoint('classDescription/price.php', {classDescriptionId: this.classId})
       this.generalInfo = await this.getDatasFromEndpoint('classDescription/generalInfo.php', {classDescriptionId: this.classId})
       this.isLoaded = true
-      console.log('this.classId', this.classId)
     },
     onInputChange (val) {
       this.inputValue = val
@@ -209,6 +212,20 @@ export default {
   }
   .save-edit {
     margin-top: -50px;
+  }
+
+  .leonInfo-explanation {
+    margin-bottom: 50px;
+  }
+  .bottom-div-leoninfo {
+    position: absolute;
+    bottom: 25px;
+    width: 100%;
+    padding: 1.5625rem;
+    left: 0;
+  }
+  .leonInfo-div {
+    position: relative;
   }
 }
 </style>

@@ -19,6 +19,25 @@
   background: url('assets/icons/vuestic.svg') no-repeat center center;
 }
 
+.i-vuestic-nav {
+  display: inline-block;
+  width: 62px;
+  height: 13.4px;
+  background: url('assets/icons/vuesticnav.svg') no-repeat center center;
+}
+
+.i-vuestic-back {
+  position: absolute;
+  background-image: url('assets/vendor/leaflet/vuesticback.png');
+  background-size: 800px 350px;
+  background-repeat: no-repeat;
+  background-position: right top;
+  width: 100%;
+  right: 0;
+  height: 100%;
+  top: 0;
+}
+
 .i-menu-expanded {
   display: inline-block;
   width: 24px;

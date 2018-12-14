@@ -4,9 +4,9 @@
       <h5>{{headerText}}</h5>
       <a v-if="canEdit" href="#" class="text-info" @click.prevent="onClickEdit">{{btnText}}</a>
     </div>
-    <p v-if="!_contentText" class="no-info">No info yet</p>
+    <p v-if="!_contentText && !isEdit" class="no-info">No info yet</p>
     <p v-else-if="!isEdit">{{_contentText}}</p>
-    <textarea v-else row="5" col="50" class="edit-content" v-model="_contentText"></textarea>
+    <textarea v-if="isEdit" row="5" col="50" class="edit-content" v-model="_contentText"></textarea>
   </div>
 </template>
 
@@ -85,5 +85,10 @@ export default {
 <style lang="scss" scoped>
 .no-info {
   opacity: 0.25;
+}
+.class-container {
+  padding: 20px;
+  background-color: #EFF4F5;
+  margin-bottom: 20px;
 }
 </style>

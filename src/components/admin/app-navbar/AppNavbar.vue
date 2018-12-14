@@ -1,7 +1,7 @@
 <template>
   <vuestic-navbar>
     <header-selector slot="selector" :isOpen.sync="valueProxy"/>
-    <span slot="logo" class="i-vuestic"></span>
+    <span slot="logo" class="i-vuestic-nav"></span>
     <profile-dropdown>
       <img src="https://picsum.photos/300/200/?image=898">
     </profile-dropdown>
