@@ -86,7 +86,7 @@ export const notificationClear = ({ commit }) => {
 export const logout = ({ commit }) => {
   commit(types.LOGOUT)
   commit(`account/${types.LOGOUT}`, null, { root: true })
-  Vue.router.push({
+  Vue.router.go({
     name: 'login'
   })
 }
