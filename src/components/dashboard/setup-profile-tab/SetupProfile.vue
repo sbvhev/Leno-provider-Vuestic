@@ -69,7 +69,7 @@ export default {
     hsSteps () {
       return [
         {
-          label: 'Activate MINDBODY',
+          label: 'Activation',
           slot: 'page1',
           isValid: async () => {
             this.nextBtn.loading = true
@@ -93,7 +93,7 @@ export default {
           }
         },
         {
-          label: 'MINDBODY location',
+          label: 'Locations',
           slot: 'page2',
           isValid: async () => {
             this.nextBtn.loading = true

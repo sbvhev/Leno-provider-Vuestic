@@ -8,13 +8,16 @@
         <router-view></router-view>
       </div>
       <div class="auth-wallpaper col-6 d-none d-lg-flex">
-        <div class="i-vuestic-back"></div>
+        <!-- <div class="i-vuestic-back"></div> -->
+        <canvas id="leonSketch"></canvas>
         <router-link class="i-vuestic" :to="{path: '/'}"></router-link>
       </div>
     </div>
   </div>
 </template>
 <script>
+
+import leonSketch from './leonSketch'
 
 export default {
   name: 'AuthLayout',
@@ -27,11 +30,22 @@ export default {
     $route (to, from) {
       this.authKind = to.name
     }
+  },
+  mounted () {
+    leonSketch()
   }
 }
 </script>
 
 <style lang="scss">
+canvas {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+}
+
 .auth-layout {
   height: 100vh;
   margin: 0;

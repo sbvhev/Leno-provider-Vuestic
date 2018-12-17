@@ -1,6 +1,8 @@
 <template>
   <form class="register-form step3">
-    <div class="row">
+    <h1 class="text-center">Set your pricing category and pricing options</h1>
+    <h5 class="text-center justify-center align-center mt-5">LEON allows you to sell single class, multi class, unlimited memberships and even an intro option directly on the platform! Simply toggle on or off which pricing category you wish to offer.</h5>
+    <div class="row justify-center align-center mt-5">
       <div class="col-sm-12 text-right">
         <vuestic-accordion>
           <vuestic-collapse
@@ -134,6 +136,13 @@ export default {
 $info-color: #76c5ea;
 
 /deep/.step3 {
+  h1 {
+  font-size: 3.5rem;
+  margin-top: 40px;
+  }
+  h5 {
+    margin-bottom: 100px;
+  }
   .table-header {
     padding-left: 5%;
     padding-right: 5%;

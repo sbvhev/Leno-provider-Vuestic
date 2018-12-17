@@ -1,6 +1,6 @@
 <template>
   <form class="register-form step1">
-    <h2 class="text-center">Activate MINDBODY</h2>
+    <h1 class="text-center">Connect up your studio with LEON CONNECT</h1>
     <div class="row justify-center align-center mt-5">
       <div class="col-md-1 paragraph paragraph-head">
         <p class="h5 bold">1)</p>
@@ -64,6 +64,13 @@ export default {
 
 <style lang="scss">
 .step1 {
+  h1 {
+  font-size: 3.5rem;
+  margin-top: 40px;
+  }
+  h5 {
+    margin-bottom: 100px;
+  }
   padding: 0 7rem;
   .paragraph {
     .p {

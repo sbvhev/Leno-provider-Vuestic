@@ -1,5 +1,7 @@
 <template>
   <form class="register-form step4">
+    <h1 class="text-center">Get paid by LEON</h1>
+    <h5 class="text-center">This will allow LEON to pay you directly for any services or memberships purchased through the platform.</h5>
     <div class="row">
       <div class="col-md-12">
         <fieldset>
@@ -190,6 +192,13 @@ export default {
 </script>
 <style lang="scss" scoped>
 .register-form.step4 {
+  h1 {
+  font-size: 3.5rem;
+  margin-top: 40px;
+  }
+  h5 {
+    margin-bottom: 100px;
+  }
   padding-left: 20%;
   padding-right: 20%;
   @include media-breakpoint-down(sm) {

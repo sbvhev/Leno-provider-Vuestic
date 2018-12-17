@@ -1,6 +1,7 @@
 <template>
-  <form class="register-form step3">
-    <h2 class="text-center">Mindbody locations</h2>
+  <form class="register-form step2">
+    <h1 class="text-center">Bring your locations on board</h1>
+    <h5 class="text-center">Let the journey begin! Choose which facilities you would like to offer on LEON.</h5>
     <div
       class="row justify-center align-center mt-5"
       v-for="(location, index) in locations"
@@ -48,4 +49,13 @@ export default {
 </script>
 
 <style lang="scss">
+.step2 {
+  h1 {
+  font-size: 3.5rem;
+  margin-top: 40px;
+  }
+  h5 {
+    margin-bottom: 100px;
+  }
+}
 </style>
