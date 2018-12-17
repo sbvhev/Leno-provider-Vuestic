@@ -30,6 +30,10 @@
 </script>
 
 <style lang="scss">
+.navbar-brand {
+  padding-top: 0.9rem !important;
+}
+
 .vuestic-navbar {
   .layout-fixed & {
     position: fixed;
@@ -72,6 +76,7 @@
         left: $nav-mobile-brand-left;
         height: auto;
         .navbar-brand {
+        padding-top: 0.65rem;
           height: $font-size-smaller;
           padding: 0;
           font-size: $font-size-smaller;
