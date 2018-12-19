@@ -20,8 +20,8 @@
 
       <div class="row">
         <div class="col-md-6 col-12">
-          <vuestic-widget class="business-posts p-2">
-            <vuestic-social-news class="vuestic-social-news" :news="news" :url="'http://instagram.com/smartapant'" btnText="upload" headerText="Photos"></vuestic-social-news>
+          <vuestic-widget class="business-posts p-2" :headerText="'Photos'">
+            <vuestic-social-news class="vuestic-social-news" :news="news" :url="'http://instagram.com/smartapant'" btnText="upload" headerText="Photos" :multiple="false"></vuestic-social-news>
           </vuestic-widget>
           <table-widget headerText="Instructors" endpoint="classDescription/instructors.php" :parameters="{classDescriptionId: classId}"></table-widget>
         </div>

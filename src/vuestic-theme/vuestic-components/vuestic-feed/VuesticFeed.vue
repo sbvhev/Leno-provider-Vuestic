@@ -49,7 +49,6 @@ export default {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   padding-left: 1.5rem;
-  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;

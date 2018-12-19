@@ -1,22 +1,33 @@
 <template>
   <div class="vuestic-social-news">
     <div class="d-flex justify-content-between align-items-center text-w-btn">
-      <span
-        class="text"
-        v-if="!headerText"
-      >That what users have posted about your business.</span>
-      <h5 v-else>{{headerText}}</h5>
-      <a :href="url" target="_blank">
-        <button class="btn btn-micro btn-primary">{{btnText}}</button>
-      </a>
+      <div v-if="multiple" class="d-flex justify-content-between align-items-center vuestic-description">
+        <span
+          class="text"
+        >Highlighted photo is your primary studio photo:</span>
+        <a href="#" class="text-info">Edit</a>
+      </div>
+
+      <div v-if="!multiple" class="single-upload">
+        <label for="logo" class="btn btn-micro btn-primary">UPLOAD</label>
+        <input type="file" name="logo" id="logo" style="visibility: hidden;" @change="onLogoChanged" accept="image/png,image/jpeg">
+      </div>
+      <div v-if="multiple" class="multiple-upload">
+        <label for="photos" class="btn btn-micro btn-primary">UPLOAD</label>
+        <input type="file" name="photos[]" id="photos" style="visibility: hidden;" @change="onFileChanged" accept="image/png,image/jpeg" multiple>
+      </div>
     </div>
-    <div class="d-flex flex-row justify-content-around photos">
-      <div
-        class="photo"
-        v-for="pieceOfNews in news"
-        :style="`background: url(${pieceOfNews.photoURL})`"
-      ></div>
+    <div class="d-flex flex-row justify-content-around photos" v-if="!multiple">
+      <div class="logo" v-if="logo.length > 0">
+        <img :src="logo" class="highlighted">
+      </div>
     </div>
+    <div class="d-flex flex-row justify-content-around photos" v-else>
+      <div class="photo" v-if="photos.length > 0" v-for="(photo, idx) in photos">
+        <img :class="{'highlighted': idx == highlighted}" :src="photo" @click.prevent="onClickImage(idx)">
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -32,10 +43,47 @@
       },
       btnText: {
         type: String,
-        default: 'view'
+        default: 'UPLOAD'
       },
       headerText: {
         type: String
+      },
+      multiple: {
+        type: Boolean,
+        default: false
+      }
+    },
+    data() {
+      return {
+        photos: [],
+        logo: "",
+        highlighted: 0
+      }
+    },
+    methods: {
+      onFileChanged(event) {
+        var input = event.target;
+        for(let i=0; i< input.files.length ; i++) {
+          var reader = new FileReader();
+          reader.onload = (e) => {
+            this.photos.push(e.target.result);
+          }
+          reader.readAsDataURL(input.files[i]);
+        }
+      },
+      onLogoChanged(event) {
+        var input = event.target;
+        if(input.files && input.files[0]) {
+          var reader = new FileReader();
+          reader.onload = (e) => {
+            this.logo = e.target.result;
+          }
+          reader.readAsDataURL(input.files[0]);
+        }
+      },
+      onClickImage(index) {
+        this.highlighted = index
+        console.log("index", index)
       }
     }
   }
@@ -45,6 +93,7 @@
 .business-posts .widget-body {
   padding-left: 2rem;
   padding-right: 0;
+  position: relative;
   .text-w-btn {
     padding-right: 1.3rem;
     padding-bottom: 1.5rem;
@@ -60,17 +109,62 @@
       line-height: 1; //TODO: review btn styles
     }
   }
+  .text-info {
+    margin-right: 10px;
+  }
   .photos {
     padding-right: 2rem;
-    height: 80px;
     flex-wrap: wrap;
     overflow: hidden;
+    display: inline-block !important;
+    margin-left: 20px;
     .photo {
       background-size: cover !important;
       width: 80px;
       height: 80px;
-      margin-right: 2px;
+      margin-right: 10px;
+      margin-bottom: 10px;
+      float: left;
+      img {
+        width: 100%;
+        height: 100%;
+        opacity: 0.3;
+      }
+      .highlighted {
+        opacity: 1;
+      }
     }
+    .logo {
+      background-size: cover !important;
+      width: 80px;
+      height: 80px;
+      margin-right: 10px;
+      margin-bottom: 10px;
+      float: left;
+      img {
+        width: 100%;
+        height: 100%;
+        opacity: 0.3;
+      }
+      .highlighted {
+        opacity: 1;
+      }
+    }
+  }
+  .single-upload {
+    position: absolute;
+    top: -45px;
+    right: -300px;
+  }
+  .multiple-upload {
+    position: absolute;
+    top: -45px;
+    right: -300px;
+  }
+  .vuestic-description {
+    margin-top: 20px;
+    margin-left: 20px;
+    width: 100%;
   }
 }
 </style>

@@ -1,16 +1,25 @@
 <template>
   <div v-if="isLoaded" class="row bottom-widgets">
     <div class="col-md-6 d-flex">
-      <vuestic-widget class="no-h-padding no-v-padding">
+      <vuestic-widget class="no-h-padding no-v-padding vuestic-activity-feed" :headerText="'Activity Feed'">
         <vuestic-feed :initialPosts="posts"></vuestic-feed>
       </vuestic-widget>
     </div>
-    <div class="col-md-6 d-flex">
-      <vuestic-widget class="business-posts p-2">
+    <div class="col-md-6 d-flex photo-upload">
+      <vuestic-widget class="business-posts p-2" :headerText="'Logo'">
         <vuestic-social-news
           class="vuestic-social-news"
           :news="news"
-          :url="'http://instagram.com/smartapant'"
+          :btnText="'UPLOAD'"
+          :multiple="false"
+        ></vuestic-social-news>
+      </vuestic-widget>
+      <vuestic-widget class="business-posts p-2" :headerText="'Photos'">
+        <vuestic-social-news
+          class="vuestic-social-news"
+          :news="news"
+          :btnText="'UPLOAD'"
+          :multiple="true"
         ></vuestic-social-news>
       </vuestic-widget>
     </div>
@@ -104,5 +113,12 @@ export default {
       width: 100%;
     }
   }
+}
+.photo-upload {
+  display: flex;
+  flex-direction: column;
+}
+.vuestic-activity-feed {
+  height: auto;
 }
 </style>
