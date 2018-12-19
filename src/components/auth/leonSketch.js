@@ -1,10 +1,250 @@
 // setup
 export default () => {
-  let leonSketch = document.querySelector('#leonSketch')
-  leonSketch.style.opacity = 0.25
+  /*
+Copyright © 2018 by Health Science Inc. All rights reserved.
+https://myleon.co
+*/
 
-  let razzles = []
-  // parallax
+
+
+  // sketch class
+
+  function LeonSketch (canvas) {
+    this.canvas = canvas
+    this.canvas.style.opacity = 0.2
+
+    this.context = canvas.getContext('2d')
+
+    this.dpr = window.devicePixelRatio || 1
+    this.resize()
+
+    this.shapeRadiusMin = 10
+    this.shapeRadiusMax = 20
+
+    this.shapeTypeEnum = {
+      'plus': 1,
+      'circle': 2,
+      'dot': 3
+    }
+
+    this.shapes = []
+    for (let i = 0; i < this.shapeDensity; i++) {
+      let shape = this.newShape(true)
+      this.shapes.push(shape)
+    }
+  }
+
+  LeonSketch.prototype.calculateShapeDensity = function () {
+    return 10 + Math.floor(Math.max(this.canvas.width, this.canvas.height) / 200)
+  }
+
+  LeonSketch.prototype.calculateBleed = function () {
+    return Math.max(this.canvas.width, this.canvas.height) / 4
+  }
+
+  LeonSketch.prototype.resize = function () {
+    this.canvas.width = this.canvas.clientWidth * this.dpr
+    this.canvas.height = this.canvas.clientHeight * this.dpr
+
+    this.bleed = this.calculateBleed()
+    this.shapeDensity = this.calculateShapeDensity()
+
+    this.shouldResize = false
+  }
+
+  LeonSketch.prototype.refresh = function () {
+    if (this.shouldResize) {
+      this.resize()
+    }
+
+    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
+
+    for (let i = 0; i < this.shapes.length; i++) {
+      this.drive(this.shapes[i])
+      this.display(this.shapes[i])
+    }
+
+    for (let i = 0; i < this.shapes.length; i++) {
+      if (!this.containsShape(this.shapes[i])) {
+        this.shapes.splice(i, 1)
+      }
+    }
+
+    for (let i = 0; i < 2; i++) {
+      if (this.shapes.length < this.shapeDensity) {
+        let shape = this.newShape(false)
+        this.shapes.push(shape)
+      }
+    }
+  }
+
+  LeonSketch.prototype.newShape = function (onScreen) {
+    let coordinate = null
+
+    if (onScreen) {
+      let x = Math.random() * (this.canvas.width + this.bleed * 2) - this.bleed
+      let y = Math.random() * (this.canvas.height + this.bleed * 2) - this.bleed
+
+      coordinate = {
+        x: x,
+        y: y
+      }
+    } else {
+      let x = Math.random() * this.canvas.width - this.bleed
+      let y = this.canvas.height + this.bleed / 2
+
+      coordinate = {
+        x: x,
+        y: y
+      }
+    }
+
+    let radius = (Math.floor(Math.random() * (this.shapeRadiusMax - this.shapeRadiusMin) / 2) + this.shapeRadiusMin) * this.dpr
+
+    let velocity = {
+      dx: (Math.random() / 3 + 1 / 6) * this.dpr,
+      dy: Math.random() + 0.5
+    }
+
+    let momentum = {
+      dx: 0,
+      dy: 0
+    }
+
+    let shapeType = null
+    switch (Math.floor(Math.random() * 3) + 1) {
+      case 1:
+        shapeType = this.shapeTypeEnum.plus
+        break
+      case 2:
+        shapeType = this.shapeTypeEnum.circle
+        break
+      case 3:
+        shapeType = this.shapeTypeEnum.dot
+        break
+    }
+
+    let shape = {
+      coordinate: coordinate,
+      radius: radius,
+      velocity: velocity,
+      momentum: momentum,
+      shapeType: shapeType
+    }
+
+    return shape
+  }
+
+  LeonSketch.prototype.containsShape = function (shape) {
+    let x = -this.bleed
+    let y = -this.bleed
+    let w = this.canvas.width + this.bleed * 2
+    let h = this.canvas.height + this.bleed * 2
+
+    let containsX = (x <= shape.coordinate.x && shape.coordinate.x <= w)
+    let containsY = (y <= shape.coordinate.y && shape.coordinate.y <= h)
+
+    return (containsX && containsY)
+  }
+
+  LeonSketch.prototype.drive = function (shape) {
+    let friction = 1 / 32
+
+    if (Math.abs(shape.momentum.dx) > 1) {
+      shape.coordinate.x += shape.momentum.dx * friction
+      shape.momentum.dx -= shape.momentum.dx * friction
+    } else {
+      shape.momentum.dx = shape.momentum.dx === 0
+    }
+
+    if (Math.abs(shape.momentum.dy) > 1) {
+      shape.coordinate.y += shape.momentum.dy * friction
+      shape.momentum.dy -= shape.momentum.dy * friction
+    } else {
+      shape.momentum.dy = shape.momentum === 0
+    }
+
+    shape.coordinate.x += shape.velocity.dx
+    shape.coordinate.y -= shape.velocity.dy
+  }
+
+  LeonSketch.prototype.display = function (shape) {
+    this.context.lineWidth = shape.radius / 2
+    this.context.lineCap = 'round'
+    this.context.lineJoin = 'round'
+    this.context.strokeStyle = 'black'
+    this.context.fillStyle = 'black'
+
+    switch (shape.shapeType) {
+      case this.shapeTypeEnum.plus:
+        this.drawPlus(shape.coordinate.x, shape.coordinate.y, shape.radius)
+        break
+      case this.shapeTypeEnum.circle:
+        this.drawCircle(shape.coordinate.x, shape.coordinate.y, shape.radius)
+        break
+      case this.shapeTypeEnum.dot:
+        this.drawDot(shape.coordinate.x, shape.coordinate.y, shape.radius)
+        break
+    }
+  }
+
+  LeonSketch.prototype.drawPlus = function (x, y, r) {
+    this.context.beginPath()
+    this.context.moveTo(x - r, y)
+    this.context.lineTo(x + r, y)
+    this.context.lineTo(x, y)
+    this.context.lineTo(x, y - r)
+    this.context.lineTo(x, y + r)
+    this.context.stroke()
+  }
+
+  LeonSketch.prototype.drawCircle = function (x, y, r) {
+    this.context.beginPath()
+    this.context.arc(x, y, r, 0, 2 * Math.PI)
+    this.context.stroke()
+  }
+
+  LeonSketch.prototype.drawDot = function (x, y, r) {
+    this.context.beginPath()
+    this.context.arc(x, y, r / 2, 0, 2 * Math.PI)
+    this.context.fill()
+  }
+
+  LeonSketch.prototype.apply = function (momentum) {
+    for (let i = 0; i < this.shapes.length; i++) {
+      let shape = this.shapes[i]
+
+      let percentToApply = shape.radius / this.shapeRadiusMax
+
+      let dx = momentum.dx * percentToApply * this.dpr * 1 / 8
+      let dy = momentum.dy * percentToApply * this.dpr * 1 / 12
+
+      shape.momentum = {
+        dx: shape.momentum.dx + dx,
+        dy: shape.momentum.dy + dy
+      }
+    }
+  }
+
+
+
+  // sketch setup
+
+  let leonSketch = new LeonSketch(document.querySelector('#leonSketch'))
+
+  window.onresize = function () {
+    leonSketch.shouldResize = true
+  }
+
+  window.onload = function () {
+    window.setInterval(function () {
+      leonSketch.refresh()
+    }, 20)
+  }
+
+
+
+  // sketch parallax
 
   let mouseoverElement = document
 
@@ -18,11 +258,15 @@ export default () => {
       previousMousePoint = currentMousePoint
       currentMousePoint = mousePoint(e)
 
-      for (let i = 0; i < razzles.length; i++) {
-        let percentToOffset = razzles[i].r / objRMax
-        let offsetToQueue = (currentMousePoint.x - previousMousePoint.x) / 4
-        razzles[i].queuedOffset += offsetToQueue * percentToOffset
+      let dx = (currentMousePoint.x - previousMousePoint.x)
+      let dy = (currentMousePoint.y - previousMousePoint.y)
+
+      let mouseMomentum = {
+        dx: dx,
+        dy: dy
       }
+
+      leonSketch.apply(mouseMomentum)
     }
   }
 
@@ -32,153 +276,12 @@ export default () => {
   }
 
   function mousePoint (e) {
-    let mouseX = e.offsetX * dpr
-    let mouseY = e.offsetY * dpr
+    let mouseX = e.offsetX
+    let mouseY = e.offsetY
 
     return {
       x: mouseX,
       y: mouseY
     }
-  }
-
-  let bleed, objDensity
-  let dpr = window.devicePixelRatio || 1
-
-  let sketchesChanged = true
-
-  let objRMax = 20
-  let objRMin = 10
-
-  function initObj (onScreen) {
-    let x = Math.random()
-    let y = (onScreen) ? (Math.random() * leonSketch.height + bleed * 2) - bleed : leonSketch.height + bleed
-
-    let s = Math.random() + 0.5
-
-    let r = Math.floor(Math.random() * (objRMax - objRMin) / 2)
-    r += objRMin
-
-    let t = ''
-    let which = Math.random()
-    if (which < 0.33) {
-      t = '+'
-    } else if (which < 0.67) {
-      t = 'o'
-    } else {
-      t = '*'
-    }
-
-    razzles.push({
-      x: x,
-      y: y,
-      s: s,
-      r: r,
-      t: t,
-      mouseOffset: 0,
-      queuedOffset: 0
-    })
-  }
-
-  function sizeSketches () {
-    if (sketchesChanged) {
-      leonSketch.width = leonSketch.clientWidth * dpr
-      leonSketch.height = leonSketch.clientHeight * dpr
-      bleed = objRMax * dpr * 2
-      objDensity = 4 + Math.floor(Math.max(leonSketch.width, leonSketch.height) / 200)
-      sketchesChanged = false
-    }
-  }
-
-  function drawSketches () {
-    sizeSketches()
-
-    let context = leonSketch.getContext('2d')
-    context.clearRect(0, 0, leonSketch.width, leonSketch.height)
-
-    for (let i = 0; i < razzles.length; i++) {
-      if (Math.rectContainsPoint(-bleed, -bleed, leonSketch.width + bleed * 2, leonSketch.height + bleed * 2, razzles[i].x, razzles[i].y)) {
-        if (razzles[i].queuedOffset > 1 || razzles[i].queuedOffset < -1) {
-          let amountToAdd = razzles[i].queuedOffset / 16
-          razzles[i].mouseOffset += amountToAdd
-          razzles[i].queuedOffset -= amountToAdd
-        } else {
-          razzles[i].queuedOffset = (razzles[i].queuedOffset === 0)
-        }
-
-        let sketch = leonSketch
-        let context = sketch.getContext('2d')
-
-        let curX = razzles[i].x * (sketch.width + sketch.height / 2) - sketch.height / 2 + razzles[i].mouseOffset
-        let offset = razzles[i].r * dpr
-
-        context.lineCap = 'round'
-        context.lineWidth = offset / 2
-        context.strokeStyle = 'black'
-        context.fillStyle = 'black'
-
-        if (razzles[i].t === '+') {
-          context.beginPath()
-          context.moveTo(curX - offset, razzles[i].y)
-          context.lineTo(curX + offset, razzles[i].y)
-          context.stroke()
-          context.beginPath()
-          context.moveTo(curX, razzles[i].y - offset)
-          context.lineTo(curX, razzles[i].y + offset)
-          context.stroke()
-        } else if (razzles[i].t === 'o') {
-          context.beginPath()
-          context.arc(curX, razzles[i].y, offset, 0, 2 * Math.PI)
-          context.stroke()
-        } else if (razzles[i].t === '*') {
-          context.beginPath()
-          context.arc(curX, razzles[i].y, offset / 2, 0, 2 * Math.PI)
-          context.fill()
-        }
-
-        razzles[i].x += 0.0005
-        razzles[i].y -= razzles[i].s * dpr
-      }
-    }
-
-    for (let i = 0; i < razzles.length; i++) {
-      if (razzles[i].y < -bleed) {
-        razzles.splice(i, 1)
-        if (razzles.length < objDensity) {
-          initObj(false)
-          if (razzles.length < objDensity) {
-            initObj(false)
-          }
-        }
-      }
-    }
-  }
-
-  Math.rectContainsPoint = function (rX, rY, rW, rH, pX, pY) {
-    let xContainsPoint = (rX <= pX && pX <= rX + rW)
-    let yContainsPoint = (rY <= pY && pY <= rY + rH)
-
-    return (xContainsPoint && yContainsPoint)
-  }
-
-  Math.distanceBetweenPoints = function (x1, y1, x2, y2) {
-    let a = x1 - x2
-    let b = y1 - y2
-
-    return Math.sqrt(a * a + b * b)
-  }
-
-  window.onresize = function () {
-    sketchesChanged = true
-  }
-
-  window.onload = function () {
-    sizeSketches()
-    for (let i = 0; i < objDensity; i++) {
-      initObj(true)
-    }
-
-    window.setInterval(function () {
-      drawSketches()
-    }, 20)
   }
 }

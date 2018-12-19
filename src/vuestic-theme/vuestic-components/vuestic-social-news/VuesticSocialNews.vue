@@ -9,12 +9,14 @@
       </div>
 
       <div v-if="!multiple" class="single-upload">
-        <label for="logo" class="btn btn-micro btn-primary">UPLOAD</label>
-        <input type="file" name="logo" id="logo" style="visibility: hidden;" @change="onLogoChanged" accept="image/png,image/jpeg">
+        <form>
+          <label for="logo" class="btn btn-micro btn-primary">UPLOAD</label>
+          <input type="file" name="logo" id="logo" style="visibility: hidden;" @change.prevent="onLogoChanged" accept="image/png,image/jpeg">
+        </form>
       </div>
       <div v-if="multiple" class="multiple-upload">
         <label for="photos" class="btn btn-micro btn-primary">UPLOAD</label>
-        <input type="file" name="photos[]" id="photos" style="visibility: hidden;" @change="onFileChanged" accept="image/png,image/jpeg" multiple>
+        <input type="file" name="photos[]" id="photos" style="visibility: hidden;" @change.prevent="onFileChanged" accept="image/png,image/jpeg" multiple>
       </div>
     </div>
     <div class="d-flex flex-row justify-content-around photos" v-if="!multiple">
@@ -32,6 +34,8 @@
 </template>
 
 <script>
+import Proxy from '@/proxies/Proxy'
+
   export default {
     name: 'vuestic-social-news',
     props: {
@@ -61,7 +65,7 @@
       }
     },
     methods: {
-      onFileChanged(event) {
+      async onFileChanged(event) {
         var input = event.target;
         for(let i=0; i< input.files.length ; i++) {
           var reader = new FileReader();
@@ -70,21 +74,55 @@
           }
           reader.readAsDataURL(input.files[i]);
         }
+        console.log("photos: ", this,photos)
+        await this.getDatasFromEndpoint('photos/upload.php', {
+          photos: this.photos
+        })
+        this.$store.dispatch('auth/notification', {
+          type: 'SUCCESS',
+          title: 'SUCCESS',
+          message: 'SUCCESS!'
+        })
       },
       onLogoChanged(event) {
         var input = event.target;
         if(input.files && input.files[0]) {
-          var reader = new FileReader();
-          reader.onload = (e) => {
-            this.logo = e.target.result;
+          var reader = new FileReader()
+          reader.onload = async (e) => {
+            this.logo = e.target.result
+            await this.getDatasFromEndpoint('logo/upload.php', {
+              logo: this.logo
+            })
+            this.$store.dispatch('auth/notification', {
+              type: 'SUCCESS',
+              title: 'SUCCESS',
+              message: 'SUCCESS!'
+            })
           }
           reader.readAsDataURL(input.files[0]);
         }
+        event.preventDefault();
       },
       onClickImage(index) {
         this.highlighted = index
-        console.log("index", index)
-      }
+      },
+      async getDatasFromEndpoint (url, params) {
+        const {providerId, providerAccessToken} = this.$store.getters['auth/provider']
+        try {
+          const {success, error, ...data} = await new Proxy(url).submit('post', {
+            providerId,
+            providerAccessToken,
+            ...params
+          })
+          if (success) {
+            return Object.values(data).pop()
+          } else {
+            this.showToast(error)
+          }
+        } catch (err) {
+          this.showToast()
+        }
+      },
     }
   }
 </script>

@@ -6,7 +6,7 @@
       </vuestic-widget>
     </div>
     <div class="col-md-6 d-flex photo-upload">
-      <vuestic-widget class="business-posts p-2" :headerText="'Logo'">
+      <vuestic-widget class="business-posts single-upload p-2" :headerText="'Logo'">
         <vuestic-social-news
           class="vuestic-social-news"
           :news="news"
@@ -14,7 +14,7 @@
           :multiple="false"
         ></vuestic-social-news>
       </vuestic-widget>
-      <vuestic-widget class="business-posts p-2" :headerText="'Photos'">
+      <vuestic-widget class="business-posts multiple-upload p-2" :headerText="'Photos'">
         <vuestic-social-news
           class="vuestic-social-news"
           :news="news"
@@ -85,7 +85,7 @@ export default {
         })
 
         if (success) {
-          this.posts = feed.splice(0, 3)
+          this.posts = feed.splice(0, 100)
           this.isLoaded = true
         } else {
           this.posts = []
@@ -118,7 +118,21 @@ export default {
   display: flex;
   flex-direction: column;
 }
-.vuestic-activity-feed {
-  height: auto;
+::-webkit-scrollbar-track {
+  background-color: red;
+  border-radius: 5px;
+}
+/deep/.vuestic-activity-feed {
+  .widget-body {
+    max-height: 600px;
+    overflow-y: scroll;
+    margin: 5px;
+  }
+}
+/deep/.single-upload {
+  height: 180px;
+}
+.multiple-upload {
+  height: 457px;
 }
 </style>

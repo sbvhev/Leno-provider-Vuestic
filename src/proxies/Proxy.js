@@ -94,7 +94,9 @@ class Proxy {
         .then(response => {
           resolve(response.data)
         })
-        .catch(({ response }) => {
+        .catch(({
+          response
+        }) => {
           if (response) {
             reject(response.data)
           } else {
@@ -168,8 +170,28 @@ class Proxy {
     //   this.parameters.constructor === Object
     // ) {
     //   return ''
-    const params = { ...data, ...this.browserInfo, ...this.appInfo }
-    return `data=${JSON.stringify(params)}`
+    if (data.logo) {
+      const { logo, ...params } = { ...data,
+        ...this.browserInfo,
+        ...this.appInfo
+      }
+      return `data=${JSON.stringify(params)}&&logo=${logo}`
+    } else if (data.photos) {
+      const {
+        photos,
+        ...params
+      } = { ...data,
+        ...this.browserInfo,
+        ...this.appInfo
+      }
+      return `data=${JSON.stringify(params)}&&photos=${photos}`
+    } else {
+      const params = { ...data,
+        ...this.browserInfo,
+        ...this.appInfo
+      }
+      return `data=${JSON.stringify(params)}`
+    }
   }
 }
 
