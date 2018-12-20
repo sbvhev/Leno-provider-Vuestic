@@ -14,10 +14,10 @@
       <vuestic-widget class="no-padding no-v-padding px-4">
         <vuestic-tabs :names="['Classes', 'Locations', 'Users']" ref="tabs">
           <div :slot="$t('Classes')">
-            <classes-tab></classes-tab>
+            <classes-tab endpoint="getClasses.php?"></classes-tab>
           </div>
           <div :slot="$t('Locations')">
-            <inline-table endpoint="getLocationSpend.php"></inline-table>
+            <classes-tab endpoint="getLocationSpend.php?"></classes-tab>
           </div>
           <div :slot="$t('Users')">
             <inline-table endpoint="getUsers.php"></inline-table>
@@ -52,7 +52,7 @@ export default {
     DashboardBottomWidgets,
     SetupProfileTab,
     TableWidget,
-    InlineTable
+    InlineTable,
   },
   computed: {
     ...mapGetters({

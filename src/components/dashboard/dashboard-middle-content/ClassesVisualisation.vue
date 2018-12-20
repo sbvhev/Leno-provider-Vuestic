@@ -41,7 +41,12 @@ export default {
   created () {
     this.initalization()
   },
-
+  props: {
+    endpoint: {
+      type: String,
+      require: true
+    },
+  },
   data () {
     return {
       isLoaded: false,
@@ -79,22 +84,24 @@ export default {
     async initalization () {
       const {providerId, providerAccessToken} = this.$store.getters['auth/provider']
       try {
-        const {success, classes} = await new Proxy('getClasses.php?').submit('post', {
+        const {success, error, ...data} = await new Proxy(this.endpoint).submit('post', {
           providerId,
-          providerAccessToken
+          providerAccessToken,
+          ...this.parameters
         })
 
-        this.result = classes
-        if (success && classes) {
-          this.createTable(classes)
-          this.drawChart(classes)
+        if (success && data) {
+          this.result = Object.values(data).pop()
+          this.table = new TableDataInfo(this.result)
+          this.drawChart(this.result)
         } else {
           this.tableData = []
-          this.showToast()
+          this.showToast(error)
         }
         this.isLoaded = true
       } catch (error) {
         console.log('empty table')
+        this.isLoaded = true
       }
     },
     createTable (data) {
