@@ -83,6 +83,7 @@ export default {
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
+        max-width: calc(80% + 10px);
         .name {
           font-weight: $font-weight-bold;
         }
@@ -91,6 +92,7 @@ export default {
         text-transform: uppercase;
         opacity: 0.5;
         font-size: 0.75rem;
+        min-width: 55px;
       }
       .close-btn {
         margin-left: 1rem;

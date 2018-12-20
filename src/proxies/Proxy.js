@@ -90,7 +90,9 @@ class Proxy {
    */
   submit (requestType, data = null) {
     return new Promise((resolve, reject) => {
-      Vue.$http[requestType](this.endpoint, this.getParameterString(data))
+      Vue.$http[requestType](this.endpoint, this.getParameterString(data), data instanceof FormData ? {} : {headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }})
         .then(response => {
           resolve(response.data)
         })

@@ -12,6 +12,7 @@
         <form>
           <label for="logo" class="btn btn-micro btn-primary">UPLOAD</label>
           <input type="file" name="logo" id="logo" style="visibility: hidden;" @change.prevent="onLogoChanged" accept="image/png,image/jpeg">
+          <input type="hidden" name="provider" id="provider"/>
         </form>
       </div>
       <div v-if="multiple" class="multiple-upload">
@@ -64,6 +65,10 @@ import Proxy from '@/proxies/Proxy'
         highlighted: 0
       }
     },
+    async created() {
+      const {imageKey, imageSrc} = await this.getDatasFromEndpoint('logo.php', {})
+      this.logo = imageSrc
+    },
     methods: {
       async onFileChanged(event) {
         var input = event.target;
@@ -91,7 +96,7 @@ import Proxy from '@/proxies/Proxy'
           reader.onload = async (e) => {
             this.logo = e.target.result
             await this.getDatasFromEndpoint('logo/upload.php', {
-              logo: this.logo
+              logo: encodeURIComponent(this.logo)
             })
             this.$store.dispatch('auth/notification', {
               type: 'SUCCESS',

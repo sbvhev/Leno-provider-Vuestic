@@ -7,11 +7,9 @@
         :headerText="'Plan Update' | translate"
       >
         <div class="row d-flex justify-center-center">
-          <div class="col-md-4"></div>
-          <div class="col-md-4">
+          <div class="col-md-12">
             <Plan ref="updatePlan"></Plan>
           </div>
-          <div class="col-md-4"></div>
         </div>
         <div class="row">
           <div class="col-md-3"></div>
@@ -104,7 +102,7 @@ export default {
 <style lang="scss">
 .widget.chart-widget {
   .widget-body {
-    height: 550px;
+    // height: 550px;
   }
 }
 .badge {
