@@ -46,6 +46,10 @@ export default {
       type: String,
       require: true
     },
+    type: {
+      type: String,
+      require: true
+    }
   },
   data () {
     return {
@@ -113,7 +117,7 @@ export default {
       const palette = this.$store.getters['shared/palette']
       const colorType = [palette.info, palette.warning, palette.primary, palette.fontColor, palette.success, palette.danger]
       this.donutChartData.labels = data.map(ele => {
-        return ele.class
+        return ele[this.type]
       })
       let emptyFlg = true
       this.donutChartData.datasets[0].data = data.map(ele => {
@@ -131,7 +135,7 @@ export default {
         })
 
         this.donutChartData.datasets[0].backgroundColor = Object.keys(data).map((ele, index) => {
-          if (index === 0) return '#EFF4F5'
+          if (index === 0) return '#5A79EE'
           else { return colorType[index % 7] }
         })
 
