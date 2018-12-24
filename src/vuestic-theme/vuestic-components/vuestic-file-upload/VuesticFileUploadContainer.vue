@@ -56,8 +56,6 @@
 
   .vuestic-file-upload-main {
     max-height: 300px;
-    overflow-y: scroll;
-    overflow-x: hidden;
     margin-top: -50px;
     margin-left: 15px;
   }
@@ -68,7 +66,7 @@
     display: inline-block;
     position: relative;
     top: -45px;
-    left: 500px;
+    left: calc(100% - 150px);
     &--dropzone {
       display: flex;
       align-items: center;

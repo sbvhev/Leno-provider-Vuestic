@@ -164,9 +164,7 @@
     outline: none;
     cursor: pointer;
     padding: 0;
-    & + & {
-      margin-left: 1.5rem;
-    }
+
     &--primary {
       color: $vue-green;
       &:hover {

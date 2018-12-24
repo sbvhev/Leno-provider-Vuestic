@@ -230,11 +230,11 @@
     "undo": "Undo",
     "preview": "Preview",
     "delete": "Delete",
-    "deleteFile": "Delete file",
-    "uploadFile": "Upload file",
+    "deleteFile": "Delete photo",
+    "uploadFile": "Upload",
     "uploadMedia": "Upload media",
     "addAttachment": "Add attachment",
-    "selectFile": "Set as main studio file"
+    "selectFile": "Set as the studio/class feature photo"
   },
   "tags": {
     "default": "Default",

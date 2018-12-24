@@ -134,7 +134,12 @@ export default {
 /deep/.single-upload {
   height: 250px;
 }
-.multiple-upload {
+/deep/.multiple-upload {
   height: 387px;
+  .vuestic-file-upload-main {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    max-height: 305px;
+  }
 }
 </style>

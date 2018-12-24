@@ -1,5 +1,5 @@
 <template>
-  <div class="col-xl-3 col-lg-3 col-sm-4" v-if="removed">
+  <div class="col-xl-4 col-lg-4 col-sm-5" v-if="removed">
     <div class="file-upload-gallery-item">
       <vuestic-file-upload-undo
         class="file-upload-gallery-item-undo"
@@ -8,12 +8,12 @@
     </div>
   </div>
 
-  <div class="col-xl-3 col-lg-3 col-sm-4" v-else>
+  <div class="col-xl-4 col-lg-4 col-sm-5 photo-gallery" v-else>
     <div class="file-upload-gallery-item">
       <img :src="file.image.imageSrc" alt="" class="file-upload-gallery-item-image">
         <div class="file-upload-gallery-item-overlay">
           <button v-if="multiple" type="button"
-                  class="btn-text btn-text--secondary file-upload-gallery-item-button"
+                  class="btn-text btn-text--secondary file-upload-gallery-item-button set-as-main-studio-file"
                   @click="selectImage">
             {{ $t('fileUpload.selectFile') }}
           </button>
@@ -111,6 +111,19 @@
   .multiple-upload {
     img {
       opacity: 0.25;
+    }
+  }
+
+  .photo-gallery {
+    max-width: 160px;
+    height: 160px;
+    font-size: 12px;
+    
+    button {
+      text-decoration: underline;
+    }
+    .set-as-main-studio-file {
+      font-weight: bold;
     }
   }
 
