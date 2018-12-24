@@ -67,32 +67,42 @@ import Proxy from '@/proxies/Proxy'
     },
     async created() {
       const {imageKey, imageSrc} = await this.getDatasFromEndpoint('logo.php', {})
+      const _photos = await this.getDatasFromEndpoint('photos.php', {})
+      _photos && _photos.map(({imageSrc}) => {this.photos.push(imageSrc)})
       this.logo = imageSrc
     },
     methods: {
       async onFileChanged(event) {
-        var input = event.target;
-        for(let i=0; i< input.files.length ; i++) {
-          var reader = new FileReader();
-          reader.onload = (e) => {
-            this.photos.push(e.target.result);
-          }
-          reader.readAsDataURL(input.files[i]);
-        }
-        console.log("photos: ", this,photos)
-        await this.getDatasFromEndpoint('photos/upload.php', {
-          photos: this.photos
+        let input = event.target
+        let self = this
+
+        Promise.all([].map.call(input.files, function (file) {
+          return new Promise((resolve, reject) => {
+            if( /\.(jpe?g|png|gif)$/i.test(file.name)) {
+              let reader = new FileReader()
+              reader.addEventListener('load', function (e) {
+                resolve(this.result)
+              })
+              reader.readAsDataURL(file)
+            }
+          })
+        })).then((results) => {
+            self.getDatasFromEndpoint('photos/upload.php', {
+              photos: results
+            })
+            self.$store.dispatch('auth/notification', {
+              type: 'SUCCESS',
+              title: 'SUCCESS',
+              message: 'SUCCESS!'
+            })
+            self.photos = self.photos.concat(results) 
         })
-        this.$store.dispatch('auth/notification', {
-          type: 'SUCCESS',
-          title: 'SUCCESS',
-          message: 'SUCCESS!'
-        })
+        event.preventDefault();
       },
       onLogoChanged(event) {
-        var input = event.target;
+        let input = event.target;
         if(input.files && input.files[0]) {
-          var reader = new FileReader()
+          let reader = new FileReader()
           reader.onload = async (e) => {
             this.logo = e.target.result
             await this.getDatasFromEndpoint('logo/upload.php', {

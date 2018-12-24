@@ -1,5 +1,5 @@
 <template>
-  <div class="col-xl-2 col-lg-3 col-sm-4" v-if="removed">
+  <div class="col-xl-3 col-lg-3 col-sm-4" v-if="removed">
     <div class="file-upload-gallery-item">
       <vuestic-file-upload-undo
         class="file-upload-gallery-item-undo"
@@ -8,17 +8,16 @@
     </div>
   </div>
 
-  <div class="col-xl-2 col-lg-3 col-sm-4" v-else>
+  <div class="col-xl-3 col-lg-3 col-sm-4" v-else>
     <div class="file-upload-gallery-item">
-      <img :src="previewImage" alt="" class="file-upload-gallery-item-image">
+      <img :src="file.image.imageSrc" alt="" class="file-upload-gallery-item-image">
         <div class="file-upload-gallery-item-overlay">
-          <div class="file-upload-gallery-item-name" :title="file.name">
-            {{ file.name }}
-          </div>
-          <div class="file-upload-gallery-item-size">
-            {{ file.size }}
-          </div>
-          <button type="button"
+          <button v-if="multiple" type="button"
+                  class="btn-text btn-text--secondary file-upload-gallery-item-button"
+                  @click="selectImage">
+            {{ $t('fileUpload.selectFile') }}
+          </button>
+          <button v-if="multiple" type="button"
                   class="btn-text btn-text--secondary file-upload-gallery-item-button"
                   @click="removeImage">
             {{ $t('fileUpload.deleteFile') }}
@@ -30,6 +29,7 @@
 
 <script>
   import VuesticFileUploadUndo from './VuesticFileUploadUndo'
+  import Proxy from '@/proxies/Proxy'
 
   export default {
     name: 'vuestic-file-upload-gallery-item',
@@ -45,16 +45,22 @@
     props: {
       file: {
         default: {}
+      },
+      multiple: {
+        type: Boolean,
+        default: false
       }
     },
     watch: {
       file () {
-        this.convertToImg()
       }
     },
     methods: {
-      removeImage () {
+      async removeImage () {
         this.removed = true
+        
+        await this.getDatasFromEndpoint('photo/remove.php', {imageKey: this.file.image.imageKey})
+
         setTimeout(() => {
           if (this.removed) {
             this.$emit('remove')
@@ -62,25 +68,51 @@
           }
         }, 2000)
       },
+      async selectImage () {
+        await this.getDatasFromEndpoint('photo/feature.php', {imageKey: this.file.image.imageKey, featureType: 'studio'})
+      },
       recoverImage () {
         this.removed = false
       },
-      convertToImg () {
-        const reader = new FileReader()
-        reader.readAsDataURL(this.file.image)
-        reader.onload = (e) => {
-          this.previewImage = e.target.result
+      showToast (type, title, message) {
+        this.$store.dispatch('auth/notification', {
+          type,
+          title,
+          message
+        })
+      },
+      async getDatasFromEndpoint (url, params) {
+        const {providerId, providerAccessToken} = this.$store.getters['auth/provider']
+        try {
+          const {success, error, ...data} = await new Proxy(url).submit('post', {
+            providerId,
+            providerAccessToken,
+            ...params
+          })
+          if (success) {
+            this.showToast('SUCCESS', 'SUCCESS', 'SUCCESS')
+            return Object.values(data).pop()
+          } else {
+            this.showToast('ERROR', err, err)
+          }
+        } catch (err) {
+          this.showToast()
         }
-      }
+      },
     },
     mounted () {
-      this.convertToImg()
+      console.log('file: ', this.file)
     },
   }
 </script>
 
 <style lang='scss'>
   @import '../../../sass/_variables.scss';
+  .multiple-upload {
+    img {
+      opacity: 0.25;
+    }
+  }
 
   .file-upload-gallery-item {
     position: relative;

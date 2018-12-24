@@ -54,11 +54,21 @@
     position: relative;
   }
 
+  .vuestic-file-upload-main {
+    max-height: 300px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    margin-top: -50px;
+    margin-left: 15px;
+  }
+
   .vuestic-file-upload-field {
     padding: 0 0 1.3rem;
     overflow: hidden;
     display: inline-block;
     position: relative;
+    top: -45px;
+    left: 500px;
     &--dropzone {
       display: flex;
       align-items: center;

@@ -90,9 +90,7 @@ class Proxy {
    */
   submit (requestType, data = null) {
     return new Promise((resolve, reject) => {
-      Vue.$http[requestType](this.endpoint, this.getParameterString(data), data instanceof FormData ? {} : {headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }})
+      Vue.$http[requestType](this.endpoint, this.getParameterString(data))
         .then(response => {
           resolve(response.data)
         })
@@ -177,7 +175,7 @@ class Proxy {
         ...this.browserInfo,
         ...this.appInfo
       }
-      return `data=${JSON.stringify(params)}&&logo=${logo}`
+      return `data=${JSON.stringify(params)}&&logo=${encodeURIComponent(logo)}`
     } else if (data.photos) {
       const {
         photos,
@@ -186,7 +184,7 @@ class Proxy {
         ...this.browserInfo,
         ...this.appInfo
       }
-      return `data=${JSON.stringify(params)}&&photos=${photos}`
+      return photos.reduce((a, k) => { return `${a}&&photos[]=${encodeURIComponent(k)}` }, `data=${JSON.stringify(params)}`)
     } else {
       const params = { ...data,
         ...this.browserInfo,

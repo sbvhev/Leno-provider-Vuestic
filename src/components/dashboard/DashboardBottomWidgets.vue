@@ -6,22 +6,22 @@
       </vuestic-widget>
     </div>
     <div class="col-md-6 d-flex photo-upload">
-      <vuestic-widget class="business-posts single-upload p-2" :headerText="'Logo'">
-        <vuestic-social-news
-          class="vuestic-social-news"
-          :news="news"
-          :btnText="'UPLOAD'"
-          :multiple="false"
-        ></vuestic-social-news>
-      </vuestic-widget>
-      <vuestic-widget class="business-posts multiple-upload p-2" :headerText="'Photos'">
-        <vuestic-social-news
-          class="vuestic-social-news"
-          :news="news"
-          :btnText="'UPLOAD'"
-          :multiple="true"
-        ></vuestic-social-news>
-      </vuestic-widget>
+       <vuestic-widget class="business-posts single-upload p-2" :headerText="'Logo'">
+          <vuestic-file-upload
+              type="gallery"
+              :file-types="'.png, .jpg, .jpeg, .gif'"
+              v-model="logo"
+              :multiple="false"
+          />
+        </vuestic-widget>
+       <vuestic-widget class="business-posts multiple-upload p-2" :headerText="'Photos'">
+          <vuestic-file-upload
+              type="gallery"
+              :file-types="'.png, .jpg, .jpeg, .gif'"
+              v-model="photos"
+              :multiple="true"
+          />
+        </vuestic-widget>
     </div>
   </div>
 </template>
@@ -38,6 +38,8 @@ export default {
     return {
       posts: [],
       isLoaded: false,
+      logo: [],
+      photos: [],
       news: [
         {
           photoURL: 'https://i.imgur.com/PiTDDcA.png'
@@ -130,9 +132,9 @@ export default {
   }
 }
 /deep/.single-upload {
-  height: 180px;
+  height: 250px;
 }
 .multiple-upload {
-  height: 457px;
+  height: 387px;
 }
 </style>

@@ -12,8 +12,9 @@
       <div class="row">
         <vuestic-file-upload-gallery-item
             v-for="(file, index) in filesList"
-            :key="file.name"
+            :key="index"
             :file="file"
+            :multiple="multiple"
             @remove="$emit('remove', index)"
         />
       </div>
@@ -44,6 +45,10 @@
       },
       files: {
         default: null
+      },
+      multiple: {
+        type: Boolean,
+        default: false
       }
     },
     computed: {

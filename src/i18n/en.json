@@ -233,7 +233,8 @@
     "deleteFile": "Delete file",
     "uploadFile": "Upload file",
     "uploadMedia": "Upload media",
-    "addAttachment": "Add attachment"
+    "addAttachment": "Add attachment",
+    "selectFile": "Set as main studio file"
   },
   "tags": {
     "default": "Default",
