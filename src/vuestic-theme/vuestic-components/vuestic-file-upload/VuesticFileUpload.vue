@@ -14,6 +14,7 @@
           :files="files"
           :multiple="multiple"
           @remove="removeFile"
+          @feature="selectFile"
           @remove-single="removeSingleFile"
       />
     </vuestic-file-upload-container>
@@ -58,7 +59,7 @@
       }
     },
     async created() {
-      const _photos = await this.getDatasFromEndpoint(this.multiple ? 'photos.php' : 'logo.php', {})
+      const _photos = await this.getDatasFromEndpoint(this.multiple ? 'photos.php' : 'logo.php', this.multiple ? {featureType: 'studio'} : {})
       if(this.multiple) {
         _photos && _photos.map((photo) => {this.files.push(photo)})
       } else {
@@ -89,11 +90,11 @@
               title: 'SUCCESS',
               message: 'SUCCESS!'
             })
-            const _photos = await this.getDatasFromEndpoint(this.multiple ? 'photos.php' : 'logo.php', {})
-            if(this.multiple) {
-              _photos && _photos.map((photo) => {this.files.push(photo)})
+            const _photos = await self.getDatasFromEndpoint(self.multiple ? 'photos.php' : 'logo.php', self.multiple ? {featureType: 'studio'} : {})
+            if(self.multiple) {
+              _photos && _photos.map((photo) => {self.files.push(photo)})
             } else {
-              this.files = [_photos]
+              self.files = [_photos]
             }
         })
 
@@ -104,6 +105,14 @@
       },
       removeFile (index) {
         this.files.splice(index, 1)
+      },
+      selectFile (_index) {
+        this.files = this.files.map((a, index) => {
+          if(index == _index) 
+            a.isFeatured = true; 
+          else a.isFeatured = false;
+           return a})
+        console.log("this.files: ", this.files)
       },
       removeSingleFile () {
         this.files = []

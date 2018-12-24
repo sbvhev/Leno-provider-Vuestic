@@ -1,17 +1,8 @@
 <template>
-  <div class="col-xl-4 col-lg-4 col-sm-5" v-if="removed">
+  <div class="col-xl-4 col-lg-4 col-sm-5 photo-gallery">
     <div class="file-upload-gallery-item">
-      <vuestic-file-upload-undo
-        class="file-upload-gallery-item-undo"
-        @recover="recoverImage"
-      />
-    </div>
-  </div>
-
-  <div class="col-xl-4 col-lg-4 col-sm-5 photo-gallery" v-else>
-    <div class="file-upload-gallery-item">
-      <img :src="file.image.imageSrc" alt="" class="file-upload-gallery-item-image">
-        <div class="file-upload-gallery-item-overlay">
+      <img :src="file.image.imageSrc" alt="" class="file-upload-gallery-item-image" v-bind:style="{opacity: multiple ? (featured ? 1 : 0.25) : 1}">
+        <div v-bind:class="{ 'file-upload-gallery-item-overlay': multiple}">
           <button v-if="multiple" type="button"
                   class="btn-text btn-text--secondary file-upload-gallery-item-button set-as-main-studio-file"
                   @click="selectImage">
@@ -28,18 +19,17 @@
 </template>
 
 <script>
-  import VuesticFileUploadUndo from './VuesticFileUploadUndo'
   import Proxy from '@/proxies/Proxy'
 
   export default {
     name: 'vuestic-file-upload-gallery-item',
     components: {
-      VuesticFileUploadUndo: VuesticFileUploadUndo
     },
     data () {
       return {
         previewImage: '',
-        removed: false
+        removed: false,
+        featured: this.file.image.isFeatured
       }
     },
     props: {
@@ -53,6 +43,7 @@
     },
     watch: {
       file () {
+        this.featured = this.file.image.isFeatured
       }
     },
     methods: {
@@ -70,6 +61,14 @@
       },
       async selectImage () {
         await this.getDatasFromEndpoint('photo/feature.php', {imageKey: this.file.image.imageKey, featureType: 'studio'})
+        this.featured = true
+
+        setTimeout(() => {
+          if (this.featured) {
+            this.$emit('feature')
+            this.featured = true
+          }
+        }, 1000)
       },
       recoverImage () {
         this.removed = false
@@ -108,11 +107,6 @@
 
 <style lang='scss'>
   @import '../../../sass/_variables.scss';
-  .multiple-upload {
-    img {
-      opacity: 0.25;
-    }
-  }
 
   .photo-gallery {
     max-width: 160px;
@@ -124,6 +118,7 @@
     }
     .set-as-main-studio-file {
       font-weight: bold;
+      margin-top: 0px;
     }
   }
 
@@ -132,6 +127,7 @@
     width: 100%;
     padding-top: 100%;
     margin-bottom: 1rem;
+    border: 1px solid lightgray;
     &:hover {
       .file-upload-gallery-item-overlay {
         display: flex;

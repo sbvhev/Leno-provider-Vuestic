@@ -67,7 +67,7 @@ import Proxy from '@/proxies/Proxy'
     },
     async created() {
       const {imageKey, imageSrc} = await this.getDatasFromEndpoint('logo.php', {})
-      const _photos = await this.getDatasFromEndpoint('photos.php', {})
+      const _photos = await this.getDatasFromEndpoint('photos.php', {featureType: 'class'})
       _photos && _photos.map(({imageSrc}) => {this.photos.push(imageSrc)})
       this.logo = imageSrc
     },

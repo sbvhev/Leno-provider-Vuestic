@@ -15,6 +15,7 @@
             :key="index"
             :file="file"
             :multiple="multiple"
+            @feature="$emit('feature', index)"
             @remove="$emit('remove', index)"
         />
       </div>

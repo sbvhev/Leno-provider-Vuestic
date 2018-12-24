@@ -11,8 +11,13 @@
 </template>
 
 <script>
+import Proxy from '@/proxies/Proxy'
+import Notification from '@/components/Notification'
 export default {
   name: 'customClass',
+  components: {
+    Notification
+  },
   props: {
     canEdit: {
       type: Boolean,
@@ -47,14 +52,10 @@ export default {
     async onClickEdit () {
       if (this.isEdit) {
         this.btnText = 'Edit'
+        console.log('adfadsf', this._contentText)
         await this.getDatasFromEndpoint('classDescription/save/leonInfo.php', {
           infoId: this.infoId,
           description: this._contentText
-        })
-        this.$store.dispatch('auth/notification', {
-          type: 'SUCCESS',
-          title: 'SUCCESS',
-          message: 'SUCCESS!'
         })
       } else {
         this.btnText = 'Save'
@@ -71,6 +72,11 @@ export default {
         })
         if (success) {
           return Object.values(data).pop()
+          this.$store.dispatch('auth/notification', {
+            type: 'SUCCESS',
+            title: 'SUCCESS',
+            message: 'SUCCESS!'
+          })
         } else {
           this.showToast(error)
         }
@@ -78,6 +84,13 @@ export default {
         this.showToast()
       }
     },
+    showToast (err = 'Oops, Please try again later.') {
+      this.$store.dispatch('auth/notification', {
+        type: 'ERROR',
+        title: 'Parameter error',
+        message: err
+      })
+    }
   }
 }
 </script>
