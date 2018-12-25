@@ -26,11 +26,16 @@ import {
 /* eslint-disable no-param-reassign */
 export default {
   [CHECK] (state) {
-    state.authenticated = !!localStorage.getItem('id_token')
+    let token = new URL(window.location.href).searchParams.get('id_token') || localStorage.getItem('id_token')
+    let providerId = new URL(window.location.href).searchParams.get('provider_id')
+    if (providerId) {
+      state.provider.providerId = providerId
+      state.provider.providerAccessToken = token
+    }
+    state.authenticated = !!token
+    console.log('token', token)
     if (state.authenticated) {
-      Vue.$http.defaults.headers.common.Authorization = `Bearer ${localStorage.getItem(
-        'id_token'
-      )}`
+      Vue.$http.defaults.headers.common.Authorization = `Bearer ${token}`
     }
   },
 

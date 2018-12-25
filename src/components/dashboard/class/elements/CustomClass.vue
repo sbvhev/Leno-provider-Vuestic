@@ -42,7 +42,8 @@ export default {
       description: null,
       btnText: 'Edit',
       _contentText: '',
-      isEdit: false
+      isEdit: false,
+      classId: this.$route.params.classId,
     }
   },
   created () {
@@ -52,7 +53,6 @@ export default {
     async onClickEdit () {
       if (this.isEdit) {
         this.btnText = 'Edit'
-        console.log('adfadsf', this._contentText)
         await this.getDatasFromEndpoint('classDescription/save/leonInfo.php', {
           infoId: this.infoId,
           description: this._contentText
@@ -66,17 +66,18 @@ export default {
       const {providerId, providerAccessToken} = this.$store.getters['auth/provider']
       try {
         const {success, error, ...data} = await new Proxy(url).submit('post', {
+          classDescriptionId: this.classId,
           providerId,
           providerAccessToken,
           ...params
         })
         if (success) {
-          return Object.values(data).pop()
           this.$store.dispatch('auth/notification', {
             type: 'SUCCESS',
             title: 'SUCCESS',
             message: 'SUCCESS!'
           })
+          return Object.values(data).pop()
         } else {
           this.showToast(error)
         }
