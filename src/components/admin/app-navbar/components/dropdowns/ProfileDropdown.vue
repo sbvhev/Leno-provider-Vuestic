@@ -1,9 +1,9 @@
 <template>
   <div class="profile-dropdown col nav-item dropdown navbar-dropdown" v-dropdown>
     <a class="nav-link dropdown-toggle" href="#">
-      <span class="profile-section-avatar-container">
-        <slot></slot>
+      <span class="profile-section-avatar-container">{{providerName}}
       </span>
+      <i class="i-vuestic-arrow"></i>
     </a>
     <div class="dropdown-menu last">
       <div class="dropdown-menu-content">
@@ -33,6 +33,14 @@
         ]
       }
     },
+    data () {
+      return {
+        providerName: ''
+      }
+    },
+    created () {
+      this.providerName = localStorage.getItem('providerName')
+    },
     methods: {
       logout () {
         this.$store.dispatch('auth/logout')
@@ -43,14 +51,16 @@
 
 <style lang="scss">
   .profile-dropdown {
+    a {
+      color: white !important;
+      font-family: 'Nunito', sans-serif;
+      font-weight: bold;
+      font-size: 17px;
+    }
 
     .profile-section-avatar-container {
       display: inline-block;
-      width: 50px;
-      height: 50px;
-      background-color: white;
-      border-radius: 50%;
-      border: 2px solid $lighter-gray;
+      width: auto;
       overflow: hidden;
 
       img {

@@ -62,7 +62,9 @@ export const login = async ({ commit }, user) => {
   Vue.$http.defaults.headers.common.Authorization = ''
   const response = await new Proxy('logIn.php').submit('post', user)
   const { success, error, displayError, provider } = response
+  console.log('response: ', response)
   if (success) {
+    localStorage.setItem('providerName', provider.providerName)
     commit(types.PROVIDER, provider)
     commit(types.LOGIN, provider)
     Vue.router.push({ name: 'dashboard' })
