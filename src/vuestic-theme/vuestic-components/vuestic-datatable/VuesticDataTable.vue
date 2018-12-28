@@ -335,7 +335,22 @@
     top: 40%;
     left: 50%;
   }
+}
+.classes-vuetable {
+  .vuetable-body {
+    tr {
+      td:nth-child(2) {
+        color: #4ab2e3;
+        cursor: pointer;
+        &:hover {
+          color: #219ed9;
+        }
+      }
+    }
+  }
+}
 
+.location-vuetable {
   .vuetable-body {
     tr {
       td:nth-child(2) {

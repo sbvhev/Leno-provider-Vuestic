@@ -22,6 +22,14 @@
               :multiple="true"
           />
         </vuestic-widget>
+        <vuestic-widget class="class-header-card p-2" :headerText="'Studio Bio'">
+          <div class="d-flex flex-row justify-content-between">
+            <a href="#" class="text-info save-edit" @click.prevent="onClickEdit">{{btnText}}</a>
+          </div>
+          <p class="pt-3 no-bio" v-if="!providerDescription && !isEdit">No bio</p>
+          <p class="pt-3" v-else-if="!isEdit">{{providerDescription}}</p>
+          <textarea row="5" col="50" class="edit-content pt-3" v-model="providerDescription" v-if="isEdit"></textarea>
+        </vuestic-widget>
     </div>
   </div>
 </template>
@@ -31,8 +39,10 @@ import Proxy from '@/proxies/Proxy'
 
 export default {
   name: 'dashboard-bottom-widgets',
-  created () {
-    this.initalization()
+  async created () {
+    let providerDescription = await this.getDatasFromEndpoint('studioInfo.php', {})
+    await this.initalization()
+    this.providerDescription = providerDescription
   },
   data () {
     return {
@@ -40,6 +50,9 @@ export default {
       isLoaded: false,
       logo: [],
       photos: [],
+      isEdit: false,
+      btnText: 'Edit',
+      providerDescription: '',
       news: [
         {
           photoURL: 'https://i.imgur.com/PiTDDcA.png'
@@ -97,6 +110,39 @@ export default {
         this.showToast()
       }
     },
+    async onClickEdit () {
+      if (this.isEdit) {
+        this.btnText = 'Edit'
+        await this.getDatasFromEndpoint('saveStudioInfo.php', {
+          providerDescription: this.providerDescription
+        })
+        this.$store.dispatch('auth/notification', {
+          type: 'SUCCESS',
+          title: 'SUCCESS',
+          message: 'SUCCESS!'
+        })
+      } else {
+        this.btnText = 'Save'
+      }
+      this.isEdit = !this.isEdit
+    },
+    async getDatasFromEndpoint (url, params) {
+      const {providerId, providerAccessToken} = this.$store.getters['auth/provider']
+      try {
+        const {success, error, ...data} = await new Proxy(url).submit('post', {
+          providerId,
+          providerAccessToken,
+          ...params
+        })
+        if (success) {
+          return Object.values(data).pop()
+        } else {
+          this.showToast(error)
+        }
+      } catch (err) {
+        this.showToast()
+      }
+    },
     showToast () {
       this.$store.dispatch('auth/notification', {
         type: 'ERROR',
@@ -141,5 +187,33 @@ export default {
     overflow-x: hidden;
     max-height: 305px;
   }
+}
+.save-edit {
+  margin-top: -42px;
+}
+.edit-content {
+  width: 100%;
+  height: 300px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 1rem;
+  font-weight: 300;
+  line-height: 1.5;
+  color: #34495e;
+  text-align: left;
+
+  &:focus {
+    outline: rgba(74, 227, 135, 0.5) auto 5px;
+  }
+}
+/deep/.bottom-widgets {
+  .widget-body {
+    padding: 0 1.5625rem !important;
+    .d-flex {
+      justify-content: flex-end !important;
+    }
+  }
+}
+.no-bio {
+  opacity: 0.5;
 }
 </style>

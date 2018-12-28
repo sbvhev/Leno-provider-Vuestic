@@ -49,7 +49,7 @@ export default {
     type: {
       type: String,
       require: true
-    }
+    },
   },
   data () {
     return {
@@ -147,8 +147,10 @@ export default {
       }
     },
     onRowClicked (e) {
-      const selectedClass = this.result.filter(ele => e.row === ele.row).pop()
-      this.$router.push(`dashboard/class/${selectedClass.classDescriptionId}`)
+      if (this.type !== 'employer') {
+        const selectedClass = this.result.filter(ele => e.row === ele.row).pop()
+        this.$router.push(`dashboard/class/${selectedClass.classDescriptionId}`)
+      }
     },
     showToast () {
       this.$store.dispatch('auth/notification', {

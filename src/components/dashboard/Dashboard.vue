@@ -12,12 +12,15 @@
       <dashboard-info-widgets></dashboard-info-widgets>
 
       <vuestic-widget class="no-padding no-v-padding px-4">
-        <vuestic-tabs :names="['Classes', 'Locations', 'Users']" ref="tabs">
+        <vuestic-tabs :names="['Classes', 'Locations', 'Employers', 'Users']" ref="tabs">
           <div :slot="$t('Classes')">
-            <classes-tab endpoint="getClasses.php?" type="class"></classes-tab>
+            <classes-tab endpoint="getClasses.php?" class="classes-vuetable" type="class"></classes-tab>
           </div>
           <div :slot="$t('Locations')">
-            <classes-tab endpoint="getLocationSpend.php?" type="location"></classes-tab>
+            <classes-tab endpoint="getLocationSpend.php?" class="location-vuetable" type="location"></classes-tab>
+          </div>
+          <div :slot="$t('Employers')">
+            <classes-tab endpoint="getEmployerSpend.php?" type="employer"></classes-tab>
           </div>
           <div :slot="$t('Users')">
             <inline-table endpoint="getUsers.php"></inline-table>
