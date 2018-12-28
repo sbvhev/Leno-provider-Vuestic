@@ -6,7 +6,7 @@
     </div>
     <p v-if="!_contentText && !isEdit" class="no-info">No info yet</p>
     <p v-else-if="!isEdit">{{_contentText}}</p>
-    <textarea v-if="isEdit" row="5" col="50" class="edit-content" v-model="_contentText"></textarea>
+    <textarea v-if="isEdit" row="5" col="50" maxlength="500" class="edit-content" v-model="_contentText"></textarea>
   </div>
 </template>
 
@@ -50,6 +50,11 @@ export default {
     this._contentText = this.contentText
   },
   methods: {
+    onKeyDown (e) {
+      if (e.key === 'Enter') {
+        e.preventDefault()
+      }
+    },
     async onClickEdit () {
       if (this.isEdit) {
         this.btnText = 'Edit'

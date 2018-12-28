@@ -46,6 +46,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    @media only screen and (max-width: 768px) {
+      justify-content: flex-start !important;
+    }
   }
 
   .vuestic-navbar__content {
@@ -80,6 +83,7 @@
           height: $font-size-smaller;
           padding: 0;
           font-size: $font-size-smaller;
+          margin-left: -50px;
         }
       }
     }
@@ -180,6 +184,7 @@
         height: $font-size-smaller;
         padding: 0;
         font-size: $font-size-smaller;
+        margin-left: -50px;
       }
     }
 

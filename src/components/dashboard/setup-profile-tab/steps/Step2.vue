@@ -143,6 +143,9 @@ export default {
   h1 {
   font-size: 3.5rem;
   margin-top: 40px;
+  @media only screen and (max-width: 768px) {
+    font-size: 2rem;
+  }
   }
   h5 {
     margin-bottom: 100px;

@@ -3,12 +3,13 @@
     <vuestic-pre-loader v-if="!isLoaded" class="pre-loader"></vuestic-pre-loader>
     <div class="class-details" v-if="isLoaded">
       <vuestic-widget class="class-header-card" ref="widgetHeader" :isEdit="isEdit" @onChangeHeader="onChangeHeader(val)" :headerText="generalInfo.name">
-        <div class="d-flex flex-row justify-content-between">
+        <a href="#" class="text-info save-edit" @click.prevent="onClickEdit">{{btnText}}</a>
+        <div class="d-flex flex-row justify-content-between length-div">
           <h5>Description</h5>
-          <a href="#" class="text-info save-edit" @click.prevent="onClickEdit">{{btnText}}</a>
+          <p class="length-show" v-if="isEdit">{{`${generalInfo.description.length}/500`}}</p>
         </div>
         <p v-if="!isEdit">{{generalInfo.description}}</p>
-        <textarea row="5" col="50" class="edit-content" v-model="generalInfo.description" v-else></textarea>
+        <textarea row="5" col="50" class="edit-content" maxlength="500" v-model="generalInfo.description" @keydown="onKeyDown" v-else></textarea>
         <div class="d-flex flex-row justify-content-between align-items-end">
           <div>
             <h6 class="d-inline pr-3">Price</h6>
@@ -114,6 +115,11 @@ export default {
     this.initalization()
   },
   methods: {
+    onKeyDown (e) {
+      if (e.key === 'Enter') {
+        e.preventDefault()
+      }
+    },
     async initalization () {
       this.isLoaded = false
       this.leonInfo = await this.getDatasFromEndpoint('classDescription/leonInfo.php', {classDescriptionId: this.classId})
@@ -212,7 +218,9 @@ export default {
     }
   }
   .save-edit {
-    margin-top: -50px;
+    position: absolute;
+    right: 50px;
+    top: 110px;
   }
 
   .leonInfo-explanation {
@@ -227,6 +235,12 @@ export default {
   }
   .leonInfo-div {
     position: relative;
+  }
+  .length-show {
+    padding-left: 20px;
+  }
+  .length-div {
+    justify-content: flex-start !important;
   }
 }
 </style>

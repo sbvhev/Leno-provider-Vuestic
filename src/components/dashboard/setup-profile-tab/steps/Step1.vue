@@ -18,11 +18,13 @@
             style="background-color: #f9d867;"
           >Site Owner</span> to activate account.
         </p>
-        <button
-          class="btn btn-info my-5 btn-activate"
-          @click.prevent="activateAccount()"
-        >Activate Account</button>
       </div>
+    </div>
+    <div class="activate-div">
+      <button
+        class="btn btn-info my-5 btn-activate"
+        @click.prevent="activateAccount()"
+      >Activate Account</button>
     </div>
     <div class="row justify-center align-center my-3">
       <div class="col-md-1 paragraph paragraph-head">
@@ -64,9 +66,17 @@ export default {
 
 <style lang="scss">
 .step1 {
+  .row {
+    @media only screen and (max-width: 768px) {
+      flex-wrap: initial;
+    }
+  }
   h1 {
-  font-size: 3.5rem;
   margin-top: 40px;
+  font-size: 3.5rem;
+  @media only screen and (max-width: 768px) {
+    font-size: 2rem;
+  }
   }
   h5 {
     margin-bottom: 100px;
@@ -78,9 +88,16 @@ export default {
     }
     &.paragraph-head {
       text-align: right;
+      @media only screen and (max-width: 768px) {
+        width: auto !important;
+      }
     }
     &.paragraph-body {
       padding-left: 3rem;
+      @media only screen and (max-width: 768px) {
+        width: auto !important;
+        padding-left: 0;
+      }
     }
   }
   @include media-breakpoint-down(md) {
@@ -91,6 +108,11 @@ export default {
     .btn-activate {
       padding: 1.1rem 2.5rem;
     }
+  }
+  .activate-div {
+    display: flex;
+    justify-content: center;
+    width: 100%;
   }
 }
 </style>

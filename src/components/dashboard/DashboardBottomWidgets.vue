@@ -24,11 +24,12 @@
         </vuestic-widget>
         <vuestic-widget class="class-header-card p-2" :headerText="'Studio Bio'">
           <div class="d-flex flex-row justify-content-between">
+            <p class="length-show" v-if="isEdit">{{`${providerDescription.length}/500`}}</p>
             <a href="#" class="text-info save-edit" @click.prevent="onClickEdit">{{btnText}}</a>
           </div>
           <p class="pt-3 no-bio" v-if="!providerDescription && !isEdit">No bio</p>
           <p class="pt-3 bio" v-else-if="!isEdit">{{providerDescription}}</p>
-          <textarea row="5" col="50" class="edit-content pt-3" v-model="providerDescription" v-if="isEdit"></textarea>
+          <textarea class="edit-content"   maxlength="500" v-model="providerDescription" v-if="isEdit" @keydown="onKeyDown"></textarea>
         </vuestic-widget>
     </div>
   </div>
@@ -91,6 +92,11 @@ export default {
     }
   },
   methods: {
+    onKeyDown (e) {
+      if (e.key === 'Enter') {
+        e.preventDefault()
+      }
+    },
     async initalization () {
       const {providerId, providerAccessToken} = this.$store.getters['auth/provider']
       try {
@@ -191,6 +197,10 @@ export default {
 .save-edit {
   margin-top: -42px;
 }
+.length-show {
+  margin-top: -42px;
+  padding-right: 20px;
+}
 .edit-content {
   width: 100%;
   height: 200px;
@@ -203,6 +213,21 @@ export default {
 
   &:focus {
     outline: rgba(74, 227, 135, 0.5) auto 5px;
+  }
+}
+.display-content {
+  width: 100%;
+  height: 200px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 1rem;
+  font-weight: 300;
+  line-height: 1.5;
+  color: #34495e;
+  text-align: left;
+  border: 0;
+
+  &:focus {
+    outline: 0;
   }
 }
 /deep/.bottom-widgets {

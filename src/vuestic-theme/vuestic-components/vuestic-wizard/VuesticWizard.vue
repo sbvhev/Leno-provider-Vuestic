@@ -4,23 +4,6 @@
     :class="computedLayout"
     v-orientation-handler="{ layout: wizardLayout,  breakPoint: orientationBreakPoint }"
   >
-    <div
-      v-if="computedLayout === 'horizontal'"
-      class="indicator-container indicator-container-horizontal"
-    >
-      <simple-horizontal-indicator
-        v-if="wizardType === 'simple'"
-        :steps="steps"
-        :currentStep="currentStep"
-        :completed="wizardCompleted"
-      ></simple-horizontal-indicator>
-      <rich-horizontal-indicator
-        v-if="wizardType === 'rich'"
-        :steps="steps"
-        :currentStep="currentStep"
-        :completed="wizardCompleted"
-      ></rich-horizontal-indicator>
-    </div>
 
     <div
       v-if="computedLayout === 'vertical'"
@@ -41,6 +24,23 @@
     </div>
 
     <div class="wizard-body">
+      <div
+        v-if="computedLayout === 'horizontal'"
+        class="indicator-container indicator-container-horizontal"
+      >
+        <simple-horizontal-indicator
+          v-if="wizardType === 'simple'"
+          :steps="steps"
+          :currentStep="currentStep"
+          :completed="wizardCompleted"
+        ></simple-horizontal-indicator>
+        <rich-horizontal-indicator
+          v-if="wizardType === 'rich'"
+          :steps="steps"
+          :currentStep="currentStep"
+          :completed="wizardCompleted"
+        ></rich-horizontal-indicator>
+      </div>
       <div
         class="wizard-body-step"
         v-for="(step, index) in steps"

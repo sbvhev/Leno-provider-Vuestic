@@ -42,7 +42,6 @@
                 data-vv-as="Address2"
                 v-model="address2"
                 v-validate="'required'"
-                required
               >
               <i class="fa fa-check valid-icon icon-right input-icon"></i>
               <label class="control-label">Address2</label>
@@ -277,6 +276,9 @@ export default {
   h1 {
   font-size: 3.5rem;
   margin-top: 40px;
+  @media only screen and (max-width: 768px) {
+    font-size: 2rem;
+  }
   }
   h5 {
     margin-bottom: 100px;
