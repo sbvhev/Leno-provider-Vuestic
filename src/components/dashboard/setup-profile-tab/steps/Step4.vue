@@ -41,7 +41,7 @@
                 name="address2"
                 data-vv-as="Address2"
                 v-model="address2"
-                v-validate="'required'"
+                required
               >
               <i class="fa fa-check valid-icon icon-right input-icon"></i>
               <label class="control-label">Address2</label>
