@@ -27,7 +27,7 @@
             <a href="#" class="text-info save-edit" @click.prevent="onClickEdit">{{btnText}}</a>
           </div>
           <p class="pt-3 no-bio" v-if="!providerDescription && !isEdit">No bio</p>
-          <p class="pt-3" v-else-if="!isEdit">{{providerDescription}}</p>
+          <p class="pt-3 bio" v-else-if="!isEdit">{{providerDescription}}</p>
           <textarea row="5" col="50" class="edit-content pt-3" v-model="providerDescription" v-if="isEdit"></textarea>
         </vuestic-widget>
     </div>
@@ -172,7 +172,7 @@ export default {
 }
 /deep/.vuestic-activity-feed {
   .widget-body {
-    max-height: 600px;
+    max-height: 900px;
     overflow-y: scroll;
     margin: 5px;
   }
@@ -193,7 +193,7 @@ export default {
 }
 .edit-content {
   width: 100%;
-  height: 300px;
+  height: 200px;
   font-family: 'Nunito', sans-serif;
   font-size: 1rem;
   font-weight: 300;
@@ -215,5 +215,9 @@ export default {
 }
 .no-bio {
   opacity: 0.5;
+  min-height: 180px;
+}
+.bio {
+  min-height: 180px;
 }
 </style>
