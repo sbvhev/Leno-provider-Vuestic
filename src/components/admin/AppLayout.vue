@@ -56,3 +56,9 @@ export default {
   },
 }
 </script>
+
+<style lang="scss">
+.sidebar-menu-pricing {
+  margin-right: 22px !important;
+}
+</style>

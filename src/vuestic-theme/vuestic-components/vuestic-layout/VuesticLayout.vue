@@ -4,7 +4,10 @@
        :class="classObject">
     <slot></slot>
     <div class="content-wrap" id="content-wrap">
-      <slot name="content"></slot>
+      <vuestic-widget v-if="!isDashboard">
+        <slot name="content"></slot>
+      </vuestic-widget>
+      <slot name="content" v-else></slot>
     </div>
     <div class="made-by-footer">
       <slot name="footer"></slot>
@@ -27,8 +30,14 @@
     directives: {
       resize: Resize,
     },
+    data() {
+      return {
+        isDashboard: false
+      }
+    },
     computed: {
       classObject: function () {
+        this.isDashboard = this.$route.path.includes('dashboard')
         return {
           'layout-fixed': this.fixed
         }

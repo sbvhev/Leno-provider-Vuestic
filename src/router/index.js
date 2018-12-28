@@ -67,9 +67,9 @@ export default new Router({
           component: lazyLoading('users/Users')
         },
         {
-          name: 'payment',
-          path: 'payment',
-          component: lazyLoading('payment/Payment')
+          name: 'locations',
+          path: 'locations',
+          component: lazyLoading('dashboard/setup-profile-tab/steps/Step2')
         },
         {
           name: 'class',
@@ -77,9 +77,14 @@ export default new Router({
           component: lazyLoading('dashboard/class/Class')
         },
         {
-          name: 'plan',
-          path: 'plan',
-          component: lazyLoading('plan/Plan')
+          name: 'pricing',
+          path: 'pricing',
+          component: lazyLoading('dashboard/setup-profile-tab/steps/Step3')
+        },
+        {
+          name: 'payment',
+          path: 'payment',
+          component: lazyLoading('dashboard/setup-profile-tab/steps/Step4')
         }
       ],
       // If the user needs to be authenticated to view this page.

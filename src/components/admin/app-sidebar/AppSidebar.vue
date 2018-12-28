@@ -9,24 +9,24 @@
           <span>{{ $t('menu.dashboard') }}</span>
         </span>
       </sidebar-link>
-      <sidebar-link :to="{ name: 'plan' }">
+      <sidebar-link :to="{ name: 'locations' }">
         <span slot="title">
           <span
             class="sidebar-menu-item-icon vuestic-icon vuestic-icon-statistics"
           ></span>
-          <span>Plan</span>
+          <span>Locations</span>
+        </span>
+      </sidebar-link>
+      <sidebar-link :to="{ name: 'pricing' }">
+        <span slot="title">
+          <span class="sidebar-menu-item-icon fa fa-usd sidebar-menu-pricing"></span>
+          <span>Pricing</span>
         </span>
       </sidebar-link>
       <sidebar-link :to="{ name: 'payment' }">
         <span slot="title">
-          <span class="sidebar-menu-item-icon fa fa-usd"></span>
-          <span>Payment</span>
-        </span>
-      </sidebar-link>
-      <sidebar-link :to="{ name: 'users' }">
-        <span slot="title">
           <span class="sidebar-menu-item-icon vuestic-icon vuestic-icon-user"></span>
-          <span>Users</span>
+          <span>Payment</span>
         </span>
       </sidebar-link>
     </template>

@@ -10,6 +10,7 @@
             :key="index"
             :value="index == expandIndex"
             :index="index"
+            class="pb-4"
             @onClickHeader="handleExpandIndex"
           >
             <span slot="header">{{pricing.title}}</span>
@@ -78,6 +79,18 @@
               </div>
             </div>
           </vuestic-collapse>
+          <div class="wizard-body-actions">
+            <div class="btn-container ladda-div">
+              <vue-ladda
+              :loading="nextBtn.loading"
+              :key="nextBtn.dataStyle"
+              :data-style="nextBtn.dataStyle"
+              class="btn btn-primary wizard-next"
+              v-if="!isDashboard"
+              @click.prevent="save()"
+            >Save</vue-ladda>
+            </div>
+          </div>
         </vuestic-accordion>
       </div>
     </div>
@@ -90,6 +103,8 @@ import VuesticCollapse from '../elements/VuesticCollapse.vue'
 import VuesticAccordion from '../elements/VuesticAccordion.vue'
 import PriceForm from '../elements/PriceForm.vue'
 import {mapGetters} from 'vuex'
+import VueLadda from 'vue-ladda'
+import Proxy from '@/proxies/Proxy'
 
 export default {
   name: 'step3',
@@ -97,12 +112,34 @@ export default {
     ToggleSwitch,
     VuesticCollapse,
     VuesticAccordion,
-    PriceForm
+    PriceForm,
+    VueLadda
   },
   computed: {
     ...mapGetters({
       pricings: 'auth/pricings',
     }),
+    getPricings () {
+      if (Object.keys(this.$store.getters).includes('auth/pricings')) {
+        return this.$store.getters['auth/pricings']
+      } else {
+        return null
+      }
+    },
+    getFormData () {
+      if (Object.keys(this.$store.getters).includes('auth/getFormData')) {
+        return this.$store.getters['auth/getFormData']
+      } else {
+        return null
+      }
+    },
+    getProvider () {
+      if (Object.keys(this.$store.getters).includes('auth/provider')) {
+        return this.$store.getters['auth/provider']
+      } else {
+        return null
+      }
+    }
   },
   watch: {
     pricings: {
@@ -115,6 +152,14 @@ export default {
     return {
       expandIndex: 0,
       pricingInstance: [],
+      nextBtn: {
+        loading: false,
+        dataStyle: 'zoom-in',
+        progress: 0
+      },
+      isDashboard: false,
+      formData: {},
+      provider: ''
     }
   },
   methods: {
@@ -128,8 +173,44 @@ export default {
     },
     isOnChange () {
       this.$store.commit('auth/CHANGEPRICEISON', this.expandIndex)
+    },
+    async save () {
+      this.nextBtn.loading = true
+      const {pricings} = this.formData
+      const {mindbodyActivationLink, siteId, ...providerData} = this.provider
+      const {success, error} = await new Proxy('savePricings.php?').submit('post', {pricings, providerData})
+
+      if (success) {
+        this.nextBtn.loading = false
+        this.$store.dispatch('auth/notification', {
+          type: 'SUCCESS',
+          title: 'SUCCESS',
+          message: 'SUCCESS'
+        })
+        return true
+      } else {
+        this.showToast()
+        console.log(error)
+        this.nextBtn.loading = false
+        return false
+      }
+    },
+    showToast (errMessage = 'Oops, Please try again later.') {
+      this.$store.dispatch('auth/notification', {
+        type: 'ERROR',
+        title: 'SERVER ERROR',
+        message: errMessage
+      })
     }
   },
+  created () {
+    this.isDashboard = this.$route.path.includes('dashboard')
+    this.formData = this.getFormData
+    this.provider = this.getProvider
+    if (this.getPricings) {
+      this.pricingInstance = JSON.parse(JSON.stringify(this.getPricings))
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>
@@ -201,6 +282,10 @@ $info-color: #76c5ea;
   .show-leon {
     color: #e34a4a;
   }
+  .ladda-button {
+    border-radius: 25px;
+    width: 150px;
+  }
 }
 .badge {
   font-size: 1.225rem;
@@ -211,5 +296,11 @@ $info-color: #76c5ea;
 .abc-radio {
   margin-bottom: 11.5%;
   padding-left: 80px;
+}
+
+.ladda-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>

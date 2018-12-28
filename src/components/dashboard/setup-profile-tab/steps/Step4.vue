@@ -114,7 +114,7 @@
       <div class="col-md-12">
         <fieldset>
           <div
-            class="form-group with-icon-right"
+            class="form-group with-icon-right pb-3"
             :class="{'has-error': errors.has('zipcode'), 'valid': isFormFieldValid('zipcode')}"
           >
             <div class="input-group">
@@ -130,8 +130,20 @@
               <i class="bar"></i>
               <small
                 v-show="errors.has('zipcode')"
-                class="help text-danger"
+                class="help text-danger pb-2"
               >{{ errors.first('zipcode') }}</small>
+            </div>
+          </div>
+          <div class="wizard-body-actions">
+            <div class="btn-container ladda-div">
+              <vue-ladda
+                :loading="nextBtn.loading"
+                :key="nextBtn.dataStyle"
+                :data-style="nextBtn.dataStyle"
+                class="btn btn-primary wizard-next pull-right"
+                v-if="!isDashboard"
+                @click.prevent="save()"
+              >Save</vue-ladda>
             </div>
           </div>
         </fieldset>
@@ -142,10 +154,13 @@
 
 <script>
 import stripeAsPromised from 'stripe-as-promised'
+import VueLadda from 'vue-ladda'
+import Proxy from '@/proxies/Proxy'
 
 export default {
   name: 'step4',
   components: {
+    VueLadda
   },
   data () {
     return {
@@ -154,6 +169,35 @@ export default {
       city: '',
       state: '',
       zipcode: '',
+      nextBtn: {
+        loading: false,
+        dataStyle: 'zoom-in',
+        progress: 0
+      },
+      isDashboard: false,
+      formData: {},
+      provider: ''
+    }
+  },
+  created () {
+    this.isDashboard = this.$route.path.includes('dashboard')
+    this.formData = this.getFormData
+    this.provider = this.getProvider
+  },
+  computed: {
+    getFormData () {
+      if (Object.keys(this.$store.getters).includes('auth/getFormData')) {
+        return this.$store.getters['auth/getFormData']
+      } else {
+        return null
+      }
+    },
+    getProvider () {
+      if (Object.keys(this.$store.getters).includes('auth/provider')) {
+        return this.$store.getters['auth/provider']
+      } else {
+        return null
+      }
     }
   },
   methods: {
@@ -186,6 +230,44 @@ export default {
           stripePaymentToken: null,
         }
       }
+    },
+    async save () {
+      let that = this
+      Object.keys(that.formFields).map(field => {
+        that.validateFormField(field)
+      })
+      // validation check
+      const validOk = Object.keys(that.formFields).every(field => {
+        return that.isFormFieldValid(field)
+      })
+
+      if (validOk) {
+        const data = that.$data
+        const {mindbodyActivationLink, siteId, ...providerData} = this.provider
+        const {success, error} = await new Proxy('savePayment.php?').submit('post', {data, providerData})
+
+        if (success) {
+          this.$store.dispatch('auth/notification', {
+            type: 'SUCCESS',
+            title: 'SUCCESS!',
+            message: 'SUCCESS'})
+          this.$store.commit('auth/COMPLETE_SETUP_PROFILE')
+          return true
+        } else {
+          this.showToast()
+          console.log(error)
+          return false
+        }
+      }
+
+      return false
+    },
+    showToast (errMessage = 'Oops, Please try again later.') {
+      this.$store.dispatch('auth/notification', {
+        type: 'ERROR',
+        title: 'SERVER ERROR',
+        message: errMessage
+      })
     }
   }
 }
@@ -204,6 +286,15 @@ export default {
   @include media-breakpoint-down(sm) {
     padding-left: 2%;
     padding-right: 2%;
+  }
+  .ladda-div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .ladda-button {
+    border-radius: 25px;
+    width: 150px;
   }
 }
 </style>
