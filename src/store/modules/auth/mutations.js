@@ -33,7 +33,6 @@ export default {
       state.provider.providerAccessToken = token
     }
     state.authenticated = !!token
-    console.log('token', token)
     if (state.authenticated) {
       Vue.$http.defaults.headers.common.Authorization = `Bearer ${token}`
     }
@@ -109,7 +108,7 @@ export default {
     state.formData.pricings[index].isOn = tempFlg
   },
 
-  [COMPLETE_SETUP_PROFILE] (state) {
-    state.isSetupProfile = true
+  [COMPLETE_SETUP_PROFILE] (state, payload) {
+    state.isSetupProfile = payload
   }
 }

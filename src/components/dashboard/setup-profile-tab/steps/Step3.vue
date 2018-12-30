@@ -287,7 +287,7 @@ $info-color: #76c5ea;
   }
   .ladda-button {
     border-radius: 25px;
-    width: 150px;
+    width: 180px;
   }
 }
 .badge {

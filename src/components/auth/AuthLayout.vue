@@ -1,7 +1,7 @@
 <template>
   <div class="auth-layout">
     <div class="nav d-lg-none">
-      <router-link :to="{path: '/'}"></router-link>
+      <router-link class="i-vuestic" :to="{path: '/'}"></router-link>
     </div>
     <div class="main row">
       <div class="auth-content col-lg-6 col-12">

@@ -157,7 +157,7 @@ export default {
   }
   .ladda-button {
     border-radius: 25px;
-    width: 150px;
+    width: 180px;
   }
 }
 </style>

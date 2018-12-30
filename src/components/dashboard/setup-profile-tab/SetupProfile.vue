@@ -167,7 +167,7 @@ export default {
                   title: 'Conguratulation!',
                   message: 'Your account was activated'
                 })
-                this.$store.commit('auth/COMPLETE_SETUP_PROFILE')
+                this.$store.commit('auth/COMPLETE_SETUP_PROFILE', true)
                 return true
               } else {
                 this.showToast()

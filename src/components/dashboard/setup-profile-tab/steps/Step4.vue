@@ -250,7 +250,7 @@ export default {
             type: 'SUCCESS',
             title: 'SUCCESS!',
             message: 'SUCCESS'})
-          this.$store.commit('auth/COMPLETE_SETUP_PROFILE')
+          this.$store.commit('auth/COMPLETE_SETUP_PROFILE', true)
           return true
         } else {
           this.showToast()
@@ -296,7 +296,7 @@ export default {
   }
   .ladda-button {
     border-radius: 25px;
-    width: 150px;
+    width: 180px;
   }
 }
 </style>
