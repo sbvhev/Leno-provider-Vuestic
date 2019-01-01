@@ -62,6 +62,7 @@
       display: inline-block;
       width: auto;
       overflow: hidden;
+      color: black;
 
       img {
         height: 100%;

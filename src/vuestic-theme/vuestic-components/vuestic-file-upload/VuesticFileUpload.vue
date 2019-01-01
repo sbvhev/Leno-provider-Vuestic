@@ -92,7 +92,7 @@
             })
             const _photos = await self.getDatasFromEndpoint(self.multiple ? 'photos.php' : 'logo.php', self.multiple ? {featureType: 'studio'} : {})
             if(self.multiple) {
-              _photos && _photos.map((photo) => {self.files.push(photo)})
+              self.files = _photos
             } else {
               self.files = [_photos]
             }

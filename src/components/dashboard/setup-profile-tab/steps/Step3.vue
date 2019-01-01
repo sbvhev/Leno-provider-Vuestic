@@ -178,7 +178,7 @@ export default {
       this.nextBtn.loading = true
       const {pricings} = this.formData
       const {mindbodyActivationLink, siteId, ...providerData} = this.provider
-      const {success, error} = await new Proxy('savePricings.php?').submit('post', {pricings, providerData})
+      const {success, error} = await new Proxy('savePricing.php?').submit('post', {pricings, providerData})
 
       if (success) {
         this.nextBtn.loading = false

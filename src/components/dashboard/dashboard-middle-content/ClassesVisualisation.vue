@@ -98,6 +98,7 @@ export default {
           this.result = Object.values(data).pop()
           this.table = new TableDataInfo(this.result)
           this.drawChart(this.result)
+          console.log('this.table', this.table)
         } else {
           this.tableData = []
           this.showToast(error)
