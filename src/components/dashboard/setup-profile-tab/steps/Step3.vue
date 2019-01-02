@@ -91,13 +91,13 @@
                 <div
                   class="table-header pt-3 d-flex flex-row flex-wrap justify-content-between align-content-center"
                 >
-                  <div class="col-md-4 location pr-3">
+                  <div class="col-md-4 col-sm-4 location pr-3">
                     <div class="location-title">
                       <p>optional</p>
                     </div>
                   </div>
                   <div
-                    class="col-md-8 d-flex flex-row align-items-center flex-wrap"
+                    class="col-md-8 col-sm-8 d-flex flex-row align-items-center flex-wrap"
                   >
                     <div class="font-weight-bold text-center mr-1">
                       <h3>Packs & Memberships</h3>
@@ -192,7 +192,7 @@ import VuesticAccordion from '../elements/VuesticAccordion.vue'
 import PriceForm from '../elements/PriceForm.vue'
 import {mapGetters} from 'vuex'
 import VueLadda from 'vue-ladda'
-// import Proxy from '@/proxies/Proxy'
+import Proxy from '@/proxies/Proxy'
 
 export default {
   name: 'step3',
@@ -259,6 +259,27 @@ export default {
       this.priceModels[key].price_cents = evt.target.value * 100
       this.$store.commit('auth/CHANGEPRICEISON', { key, value: evt.target.value })
     },
+    async save () {
+      this.nextBtn.loading = true
+      const {pricings: pricing} = this.getFormData
+      const {mindbodyActivationLink, siteId, ...providerData} = this.provider
+      const {success, error} = await new Proxy('savePricing.php?').submit('post', { pricing, ...providerData })
+
+      if (success) {
+        this.nextBtn.loading = false
+        this.$store.dispatch('auth/notification', {
+          type: 'SUCCESS',
+          title: 'SUCCESS!',
+          message: 'SUCCESS!'
+        })
+        return true
+      } else {
+        this.showToast()
+        console.log(error)
+        this.nextBtn.loading = false
+        return false
+      }
+    },
     showToast (errMessage = 'Oops, Please try again later.') {
       this.$store.dispatch('auth/notification', {
         type: 'ERROR',
@@ -299,6 +320,21 @@ $info-color: #76c5ea;
     @include media-breakpoint-down(sm) {
       padding-left: 2%;
       padding-right: 2%;
+    }
+  }
+  input {
+    border-width: 1px;
+  }
+  select {
+    border: 1px solid grey;
+    @media only screen and (max-width: 768px) {
+      width: 100% !important;
+    }
+  }
+  .col-sm-12 {
+    @media only screen and (max-width: 768px) {
+      padding-left: 0px;
+      padding-right: 0px;
     }
   }
   .table-body {
