@@ -102,10 +102,8 @@ export default {
     }
   },
 
-  [CHANGEPRICEISON] (state, index) {
-    let tempFlg = true
-    if (state.formData.pricings[index].isOn) tempFlg = false
-    state.formData.pricings[index].isOn = tempFlg
+  [CHANGEPRICEISON] (state, payload) {
+    state.formData.pricings.prices[payload.key].price_cents = payload.value * 100
   },
 
   [COMPLETE_SETUP_PROFILE] (state, payload) {

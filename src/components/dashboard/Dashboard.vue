@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard">
-    <div v-if="!isSetupProfile">
+    <div v-if="isSetupProfile">
       <vuestic-widget
         class="no-padding no-v-padding"
         :headerText="$t('Setup Profile')"

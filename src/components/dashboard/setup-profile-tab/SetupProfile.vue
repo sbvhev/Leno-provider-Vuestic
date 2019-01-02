@@ -101,10 +101,9 @@ export default {
             const {mindbodyActivationLink, siteId, ...providerData} = this.provider
             const {success, error} = await new Proxy('saveLocations.php?').submit('post', {locations, providerData})
             if (success) {
-              const {pricings, success, error} = await new Proxy('getPricing.php?').submit('post', providerData)
-              console.log('pricings:', pricings)
+              const {pricing, success, error} = await new Proxy('getPricing.php?').submit('post', providerData)
               if (success) {
-                this.$store.commit('auth/FORMDATA', {key: 'pricings', value: pricings})
+                this.$store.commit('auth/FORMDATA', {key: 'pricings', value: pricing})
               } else {
                 this.showToast(error)
               }
@@ -122,9 +121,9 @@ export default {
           slot: 'page3',
           isValid: async () => {
             this.nextBtn.loading = true
-            const {pricings} = this.formData
+            const {pricings: pricing} = this.formData
             const {mindbodyActivationLink, siteId, ...providerData} = this.provider
-            const {success, error} = await new Proxy('savePricing.php?').submit('post', {pricings, providerData})
+            const {success, error} = await new Proxy('savePricing.php?').submit('post', { pricing, ...providerData })
 
             if (success) {
               this.nextBtn.loading = false

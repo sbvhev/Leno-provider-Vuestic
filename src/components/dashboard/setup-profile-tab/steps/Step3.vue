@@ -3,95 +3,183 @@
     <h1 class="text-center">Set your pricing category and pricing options</h1>
     <h5 class="text-center justify-center align-center mt-5">LEON allows you to sell single class, multi class, unlimited memberships and even an intro option directly on the platform! Simply toggle on or off which pricing category you wish to offer.</h5>
     <div class="row justify-center align-center mt-5">
-      <div class="col-sm-12 text-right">
-        <vuestic-accordion>
-          <vuestic-collapse
-            v-for="(pricing, index) in pricingInstance"
-            :key="index"
-            :value="index == expandIndex"
-            :index="index"
-            class="pb-4"
-            @onClickHeader="handleExpandIndex"
-          >
-            <span slot="header">{{pricing.title}}</span>
-            <div slot="body">
-              <div class="row pt-2">
-                <div class="col-sm-12">
+      <div class="col-sm-12 text-left">
+        <div slot="body">
+          <div class="row justify-center align-center mt-2">
+            <div class="col-md-6">
+              <vuestic-widget class="info-widget">
+                <div
+                  class="table-header pt-3 d-flex flex-row flex-wrap justify-content-between align-content-center"
+                >
+                  <div class="col-md-4 location pr-3">
+                    <div class="location-title">
+                      <p>required</p>
+                    </div>
+                  </div>
                   <div
-                    class="d-flex justify-content-sm-end flex-row align-items-center flex-wrap"
+                    class="col-md-8 d-flex flex-row align-items-center flex-wrap"
                   >
-                    <div
-                      class="font-weight-bold text-center mr-1 show-leon font-weight-bold"
-                    >Show on LEON?</div>
-                    <div>
-                      <toggle-switch
-                        :locationIsOn="pricing.isOn"
-                        @checkChange="isOnChange"
-                      ></toggle-switch>
+                    <div class="font-weight-bold text-center mr-1">
+                      <h3>Drop-In Classes</h3>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="row justify-center align-center mt-2">
-                <div class="col-md-6">
-                  <vuestic-widget class="info-widget">
-                    <div
-                      class="table-header pt-3 d-flex flex-row flex-wrap justify-content-between align-content-center border-bottom-2"
-                    >
-                      <div class="location pr-3">
-                        <div class="location-title">
-                          <h5>Classname</h5>
-                        </div>
-                      </div>
-                      <div
-                        class="d-flex justify-content-center flex-row align-items-center flex-wrap"
+                <div class="table-body py-2">
+                  <div v-bind:class="['pt-3 pb-3', 'row']">
+                    <div class="col-4 text-left widget-element input">
+                      <input
+                        type="number"
+                        align="right"
+                        class="h-100"
+                        :value="priceModels['dropIn-short'].price_cents | exchangeDoller"
+                        @input="handleInput($event, 'dropIn-short')"
                       >
-                        <div class="font-weight-bold text-center mr-1">
-                          <h5>30 day count</h5>
-                        </div>
-                      </div>
                     </div>
-                    <div
-                      class="py-0 row table-body"
-                      v-for="ele in pricing.classes"
-                      :key="ele.id"
-                    >
-                      <div
-                        class="col-10 text-left widget-element pl-1"
-                      >{{ele.name}}</div>
-                      <div
-                        class="col-2 text-right widget-element pr-1"
-                      >{{ele.count}}</div>
+                    <div class="col-8 text-left widget-element pl-1">
+                      <h6>Short Classes(<45m)</h6>
+                      <p>15% of your scheduled classes fall in this category</p>
                     </div>
-                  </vuestic-widget>
+                  </div>
+                  <div v-bind:class="['pt-3 pb-3', 'row']">
+                    <div class="col-4 text-left widget-element input">
+                      <input
+                        type="number"
+                        align="right"
+                        class="h-100"
+                        :value="priceModels['dropIn-primary'].price_cents | exchangeDoller"
+                        @input="handleInput($event, 'dropIn-primary')"
+                      >
+                    </div>
+                    <div class="col-8 text-left widget-element pl-1">
+                      <h6>Primary Classes(45-70m)</h6>
+                      <p>83% of your scheduled classes fall in this category</p>
+                    </div>
+                  </div>
+                  <div v-bind:class="['pt-3 pb-3', 'row']">
+                    <div class="col-4 text-left widget-element input">
+                      <input
+                        type="number"
+                        align="right"
+                        class="h-100"
+                        :value="priceModels['dropIn-long'].price_cents | exchangeDoller"
+                        @input="handleInput($event, 'dropIn-long')"
+                      >
+                    </div>
+                    <div class="col-8 text-left widget-element pl-1">
+                      <h6>Long Classes(>70m)</h6>
+                      <p>2% of your scheduled classes fall in this category</p>
+                    </div>
+                  </div>
+                  <div v-bind:class="['pt-3 pb-3', 'row']">
+                    <div class="col-4 text-left widget-element input">
+                      <select align="right" class="h-100 w-50">
+                        <option v-for="(discount, index) in pricingInstance.discounts.multi" v-bind:key="index" :value="discount">
+                          {{discount}}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="col-8 text-left widget-element pl-1">
+                      <h6>Introductory Discount</h6>
+                      <p>Applied to a user's first class with your studio</p>
+                    </div>
+                  </div>
                 </div>
-                <div class="col-md-6">
-                  <price-form ref="priceForm" :options="pricing.options"></price-form>
-                </div>
-              </div>
-              <div
-                class="d-flex flex-row justify-content-center align-content-center pt-2 pb-4"
-              >
-                <button
-                  class="btn btn-info"
-                  @click.prevent="nextCollapse()"
-                >{{'auth.submit' | translate}}</button>
-              </div>
+              </vuestic-widget>
             </div>
-          </vuestic-collapse>
-          <div class="wizard-body-actions">
-            <div class="btn-container ladda-div">
-              <vue-ladda
-              :loading="nextBtn.loading"
-              :key="nextBtn.dataStyle"
-              :data-style="nextBtn.dataStyle"
-              class="btn btn-primary wizard-next"
-              v-if="!isDashboard"
-              @click.prevent="save()"
-            >Save</vue-ladda>
+            <div class="col-md-6">
+              <vuestic-widget class="info-widget">
+                <div
+                  class="table-header pt-3 d-flex flex-row flex-wrap justify-content-between align-content-center"
+                >
+                  <div class="col-md-4 location pr-3">
+                    <div class="location-title">
+                      <p>optional</p>
+                    </div>
+                  </div>
+                  <div
+                    class="col-md-8 d-flex flex-row align-items-center flex-wrap"
+                  >
+                    <div class="font-weight-bold text-center mr-1">
+                      <h3>Packs & Memberships</h3>
+                    </div>
+                  </div>
+                </div>
+                <div class="table-body py-2">
+                  <div v-bind:class="['pt-3 pb-3', 'row']">
+                    <div class="col-4 text-left widget-element input">
+                      <input
+                        type="number"
+                        align="right"
+                        class="h-100"
+                        :value="priceModels['pack-5'].price_cents | exchangeDoller"
+                        @input="handleInput($event, 'pack-5')"
+                      >
+                    </div>
+                    <div class="col-8 text-left widget-element pl-1">
+                      <h6>5 Pack</h6>
+                      <p>Valid for any 5 classes; does not expire</p>
+                    </div>
+                  </div>
+                  <div v-bind:class="['pt-3 pb-3', 'row']">
+                    <div class="col-4 text-left widget-element input">
+                      <input
+                        type="number"
+                        align="right"
+                        class="h-100"
+                        :value="priceModels['pack-10'].price_cents | exchangeDoller"
+                        @input="handleInput($event, 'pack-10')"
+                      >
+                    </div>
+                    <div class="col-8 text-left widget-element pl-1">
+                      <h6>10 Pack</h6>
+                      <p>Valid for any 10 classes; does not expire</p>
+                    </div>
+                  </div>
+                  <div v-bind:class="['pt-3 pb-3', 'row']">
+                    <div class="col-4 text-left widget-element input">
+                      <input
+                        type="number"
+                        align="right"
+                        class="h-100"
+                        :value="priceModels['membership'].price_cents | exchangeDoller"
+                        @input="handleInput($event, 'membership')"
+                      >
+                    </div>
+                    <div class="col-8 text-left widget-element pl-1">
+                      <h6>Monthly Unlimited</h6>
+                      <p>Valid for up to 1 class per day; renews each month</p>
+                    </div>
+                  </div>
+                  <div v-bind:class="['pt-3 pb-3', 'row']">
+                    <div class="col-4 text-left widget-element input">
+                      <select align="right" class="w-50 h-100">
+                        <option v-for="(discount, index) in pricingInstance.discounts.multi" v-bind:key="index" :value="discount">
+                          {{discount}}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="col-8 text-left widget-element pl-1">
+                      <h6>Introductory Discount</h6>
+                      <p>Applied to a user's first pack/membership with your studio</p>
+                    </div>
+                  </div>
+                </div>
+              </vuestic-widget>
             </div>
           </div>
-        </vuestic-accordion>
+        </div>
+        <div class="wizard-body-actions">
+          <div class="btn-container ladda-div">
+            <vue-ladda
+            :loading="nextBtn.loading"
+            :key="nextBtn.dataStyle"
+            :data-style="nextBtn.dataStyle"
+            class="btn btn-primary wizard-next"
+            v-if="!isDashboard"
+            @click.prevent="save()"
+          >Save</vue-ladda>
+          </div>
+        </div>
       </div>
     </div>
   </form>
@@ -104,7 +192,7 @@ import VuesticAccordion from '../elements/VuesticAccordion.vue'
 import PriceForm from '../elements/PriceForm.vue'
 import {mapGetters} from 'vuex'
 import VueLadda from 'vue-ladda'
-import Proxy from '@/proxies/Proxy'
+// import Proxy from '@/proxies/Proxy'
 
 export default {
   name: 'step3',
@@ -159,41 +247,17 @@ export default {
       },
       isDashboard: false,
       formData: {},
-      provider: ''
+      provider: '',
+      priceModels: {}
     }
   },
   methods: {
-    nextCollapse () {
-      const {priceModels} = this.$refs.priceForm[this.expandIndex].$data
-      this.$store.commit('auth/CHANGEPRICING', {key: this.expandIndex, value: priceModels})
-      this.expandIndex++
-    },
     handleExpandIndex (index) {
       this.expandIndex = index
     },
-    isOnChange () {
-      this.$store.commit('auth/CHANGEPRICEISON', this.expandIndex)
-    },
-    async save () {
-      this.nextBtn.loading = true
-      const {pricings} = this.formData
-      const {mindbodyActivationLink, siteId, ...providerData} = this.provider
-      const {success, error} = await new Proxy('savePricing.php?').submit('post', {pricings, providerData})
-
-      if (success) {
-        this.nextBtn.loading = false
-        this.$store.dispatch('auth/notification', {
-          type: 'SUCCESS',
-          title: 'SUCCESS',
-          message: 'SUCCESS'
-        })
-        return true
-      } else {
-        this.showToast()
-        console.log(error)
-        this.nextBtn.loading = false
-        return false
-      }
+    handleInput (evt, key) {
+      this.priceModels[key].price_cents = evt.target.value * 100
+      this.$store.commit('auth/CHANGEPRICEISON', { key, value: evt.target.value })
     },
     showToast (errMessage = 'Oops, Please try again later.') {
       this.$store.dispatch('auth/notification', {
@@ -209,6 +273,8 @@ export default {
     this.provider = this.getProvider
     if (this.getPricings) {
       this.pricingInstance = JSON.parse(JSON.stringify(this.getPricings))
+      this.priceModels = this.pricingInstance.prices
+      console.log('priceModels: ', this.pricingInstance)
     }
   }
 }
@@ -288,6 +354,12 @@ $info-color: #76c5ea;
   .ladda-button {
     border-radius: 25px;
     width: 180px;
+  }
+  h6 {
+    font-size: 1.3rem;
+  }
+  p {
+    font-size: 0.8rem;
   }
 }
 .badge {

@@ -108,10 +108,10 @@ export default {
       const {mindbodyActivationLink, siteId, ...providerData} = this.provider
       const {success, error} = await new Proxy('saveLocations.php?').submit('post', {locations, providerData})
       if (success) {
-        const {pricings, success, error} = await new Proxy('getPricing.php?').submit('post', providerData)
-        console.log('pricings:', pricings)
+        const {pricing, success, error} = await new Proxy('getPricing.php?').submit('post', providerData)
+        console.log('pricings:', pricing)
         if (success) {
-          this.$store.commit('auth/FORMDATA', {key: 'pricings', value: pricings})
+          this.$store.commit('auth/FORMDATA', {key: 'pricing', value: pricing})
           this.$store.dispatch('auth/notification', {
             type: 'SUCCESS',
             title: 'SUCCESS',

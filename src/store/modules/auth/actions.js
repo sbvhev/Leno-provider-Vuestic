@@ -64,9 +64,9 @@ export const login = async ({ commit }, user) => {
   const { success, error, displayError, provider } = response
   const locations = await new Proxy('getLocations.php?').submit('post', provider)
   commit(types.FORMDATA, {key: 'locations', 'value': locations})
-  const {pricings} = await new Proxy('getPricing.php?').submit('post', provider)
-  console.log('pricings:', pricings)
-  commit(types.FORMDATA, {key: 'pricings', value: pricings})
+  const {pricing} = await new Proxy('getPricing.php?').submit('post', provider)
+  console.log('pricings:', pricing)
+  commit(types.FORMDATA, {key: 'pricings', value: pricing})
   if (success) {
     localStorage.setItem('providerName', provider.providerName)
     commit(types.PROVIDER, provider)
