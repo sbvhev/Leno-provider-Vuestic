@@ -62,12 +62,12 @@ export const login = async ({ commit }, user) => {
   Vue.$http.defaults.headers.common.Authorization = ''
   const response = await new Proxy('logIn.php').submit('post', user)
   const { success, error, displayError, provider } = response
-  const locations = await new Proxy('getLocations.php?').submit('post', provider)
-  commit(types.FORMDATA, {key: 'locations', 'value': locations})
-  const {pricing} = await new Proxy('getPricing.php?').submit('post', provider)
-  console.log('pricings:', pricing)
-  commit(types.FORMDATA, {key: 'pricings', value: pricing})
+
   if (success) {
+    const {locations} = await new Proxy('getLocations.php?').submit('post', provider)
+    commit(types.FORMDATA, {key: 'locations', 'value': locations})
+    const {pricing} = await new Proxy('getPricing.php?').submit('post', provider)
+    commit(types.FORMDATA, {key: 'pricings', value: pricing})
     localStorage.setItem('providerName', provider.providerName)
     commit(types.PROVIDER, provider)
     commit(types.LOGIN, provider)

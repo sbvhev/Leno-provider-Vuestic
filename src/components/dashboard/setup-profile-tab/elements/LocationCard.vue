@@ -1,6 +1,6 @@
 <template>
   <vuestic-widget
-    :class="['info-widget', {'disable-info-widget': item.isOutsideCoverage === 'true'}]"
+    :class="['info-widget', {'disable-info-widget': item.userCanEdit === false}]"
     v-if="item.name"
   >
     <div
@@ -12,12 +12,7 @@
         </div>
         <div class="location-address">{{item.address}}</div>
       </div>
-      <div v-if="item.isOutsideCoverage === 'true'">
-        <div class="font-weight-bold text-right mr-1">Location currently beyond</div>
-        <div class="font-weight-bold text-right mr-1">LEON coverage</div>
-      </div>
       <div
-        v-else
         class="d-flex justify-content-center flex-row align-items-center flex-wrap"
       >
         <div class="font-weight-bold text-center mr-1">Show on LEON?</div>
@@ -47,7 +42,7 @@ export default {
           address: '',
           id: '',
           isOn: false,
-          isOutsideCoverage: false,
+          userCanEdit: false,
           name: ''
         }
       }
@@ -74,6 +69,7 @@ export default {
   &.disable-info-widget {
     border-top: 0.5rem solid #a0a0a0;
     color: #c5c5c5;
+    pointer-events: none;
   }
   padding-top: 3%;
   padding-bottom: 3%;

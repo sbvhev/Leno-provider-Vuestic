@@ -13,9 +13,9 @@
         <div class="d-flex flex-row justify-content-between align-items-end">
           <div>
             <h6 class="price-header">Drop-in Price Override:</h6>
-            <p v-if="!!price" class="dollar-sign">$</p>
+            <p v-if="!price ? ((this.price === 0) ? true : false) : true" class="dollar-sign">$</p>
             <p v-if="!isEdit" class="price-content" v-bind:style=
-            "{opacity: !price ? 0.5 : 1}">{{!!price ? price : 'None'}}</p>
+            "{opacity: !price ? ((this.price === 0) ? 1 : 0.5) : 1}">{{!price ? ((this.price === 0) ? this.price : 'None') : this.price}}</p>
             <fieldset v-else>
               <div
                 class="form-group with-icon-right"
@@ -57,6 +57,7 @@
                 v-model="photos"
                 :multiple="true"
                 :sort="'class'"
+                :classId="classId"
             />
           </vuestic-widget>
           <table-widget headerText="Instructors" endpoint="classDescription/instructors.php" :parameters="{classDescriptionId: classId}"></table-widget>
@@ -167,7 +168,8 @@ export default {
         name: data.editedHeaderText,
         description: this.generalInfo.description,
         showOnLeon: this.localIsOn,
-        classDescriptionId: this.classId
+        classDescriptionId: this.classId,
+        overridePrice_cents: this.price
       })
 
       this.$store.dispatch('auth/notification', {
@@ -185,7 +187,6 @@ export default {
       this.isLoaded = false
       this.leonInfo = await this.getDatasFromEndpoint('classDescription/leonInfo.php', {classDescriptionId: this.classId})
       this.generalInfo = await this.getDatasFromEndpoint('classDescription/generalInfo.php', {classDescriptionId: this.classId})
-      console.log('showOnLeon:', this.generalInfo.showOnLeon)
       this.priceIsOn = this.generalInfo.showOnLeon
       this.price = this.generalInfo.overridePrice_cents !== null ? this.generalInfo.overridePrice_cents / 100 : null
       this.isLoaded = true
@@ -202,7 +203,7 @@ export default {
           description: this.generalInfo.description,
           classDescriptionId: this.classId,
           showOnLeon: this.localIsOn,
-          overridePrice_cents: (this.price !== null || this.price !== '') ? this.price * 100 : null
+          overridePrice_cents: !this.price ? ((this.price === 0) ? 0 : null) : this.price * 100
         })
 
         this.$store.dispatch('auth/notification', {
@@ -230,7 +231,7 @@ export default {
           this.showToast(error)
         }
       } catch (err) {
-        this.showToast()
+        this.showToast(err)
       }
     },
     showToast (err = 'Oops, Please try again later.') {

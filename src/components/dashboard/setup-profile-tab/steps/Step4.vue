@@ -243,7 +243,7 @@ export default {
       if (validOk) {
         const data = that.$data
         const {mindbodyActivationLink, siteId, ...providerData} = this.provider
-        const {success, error} = await new Proxy('savePayment.php?').submit('post', {data, providerData})
+        const {success, error} = await new Proxy('savePayment.php?').submit('post', {...data, ...providerData})
 
         if (success) {
           this.$store.dispatch('auth/notification', {

@@ -77,7 +77,7 @@ export default {
             const {mindbodyActivationLink, ...providerData} = this.provider
             const {success, error} = await new Proxy('checkSiteActivation.php?').submit('post', providerData)
             if (success) {
-              const locations = await new Proxy('getLocations.php?').submit('post', providerData)
+              const {locations} = await new Proxy('getLocations.php?').submit('post', providerData)
               this.$store.commit('auth/FORMDATA', {key: 'locations', 'value': locations})
               this.nextBtn.loading = false
               return true
@@ -99,7 +99,7 @@ export default {
             this.nextBtn.loading = true
             const {locations} = this.formData
             const {mindbodyActivationLink, siteId, ...providerData} = this.provider
-            const {success, error} = await new Proxy('saveLocations.php?').submit('post', {locations, providerData})
+            const {success, error} = await new Proxy('saveLocations.php?').submit('post', {locations, ...providerData})
             if (success) {
               const {pricing, success, error} = await new Proxy('getPricing.php?').submit('post', providerData)
               if (success) {

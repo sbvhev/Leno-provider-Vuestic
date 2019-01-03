@@ -33,6 +33,11 @@
       VuesticFileUploadList: VuesticFileUploadList,
       VuesticFileUploadContainer: VuesticFileUploadContainer
     },
+    data () {
+      return {
+        classId: this.$route.params.classId
+      };
+    },
     props: {
       type: {
         type: String,
@@ -64,7 +69,7 @@
       }
     },
     async created() {
-      const _photos = await this.getDatasFromEndpoint(this.multiple ? 'photos.php' : 'logo.php', this.multiple ? {featureType: this.sort} : {})
+      const _photos = await this.getDatasFromEndpoint(this.multiple ? 'photos.php' : 'logo.php', this.multiple ? {featureType: this.sort, classDescriptionId: this.classId} : {})
       if(this.multiple) {
         _photos && _photos.map((photo) => {this.files.push(photo)})
       } else {
@@ -89,14 +94,15 @@
           })
         })).then(async (results) => {
             await self.getDatasFromEndpoint(self.multiple ? 'photos/upload.php': 'logo/upload.php', self.multiple ? {
-               photos: results
+               photos: results,
+               classDescriptionId: this.classId
             } : { logo: results[0] })
             self.$store.dispatch('auth/notification', {
               type: 'SUCCESS',
               title: 'SUCCESS',
               message: 'SUCCESS!'
             })
-            const _photos = await self.getDatasFromEndpoint(self.multiple ? 'photos.php' : 'logo.php', self.multiple ? {featureType: this.sort} : {})
+            const _photos = await self.getDatasFromEndpoint(self.multiple ? 'photos.php' : 'logo.php', self.multiple ? {featureType: this.sort , classDescriptionId: this.classId} : {classDescriptionId: this.classId})
             if(self.multiple) {
               self.files = _photos
             } else {

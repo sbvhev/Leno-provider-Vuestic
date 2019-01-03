@@ -29,7 +29,8 @@
       return {
         previewImage: '',
         removed: false,
-        featured: this.file.image.isFeatured
+        featured: this.file.image.isFeatured,
+        classId: this.$route.params.classId
       }
     },
     props: {
@@ -64,7 +65,7 @@
         }, 2000)
       },
       async selectImage () {
-        await this.getDatasFromEndpoint('photo/feature.php', {imageKey: this.file.image.imageKey, featureType: this.sort})
+        await this.getDatasFromEndpoint('photo/feature.php', (this.sort === 'studio)' ? {imageKey: this.file.image.imageKey, featureType: this.sort} : {imageKey: this.file.image.imageKey, featureType: this.sort, classDescriptionId: this.classId}))
         this.featured = true
 
         setTimeout(() => {

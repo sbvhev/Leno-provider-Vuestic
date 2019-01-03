@@ -106,7 +106,7 @@ export default {
       this.nextBtn.loading = true
       const {locations} = this.formData
       const {mindbodyActivationLink, siteId, ...providerData} = this.provider
-      const {success, error} = await new Proxy('saveLocations.php?').submit('post', {locations, providerData})
+      const {success, error} = await new Proxy('saveLocations.php?').submit('post', {locations, ...providerData})
       if (success) {
         const {pricing, success, error} = await new Proxy('getPricing.php?').submit('post', providerData)
         console.log('pricings:', pricing)
