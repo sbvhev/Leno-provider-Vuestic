@@ -13,6 +13,7 @@
           :type="type"
           :files="files"
           :multiple="multiple"
+          :sort="sort"
           @remove="removeFile"
           @feature="selectFile"
           @remove-single="removeSingleFile"
@@ -56,15 +57,20 @@
       multiple: {
         type: Boolean,
         default: false
+      },
+      sort: {
+        type: String,
+        default: 'studio'
       }
     },
     async created() {
-      const _photos = await this.getDatasFromEndpoint(this.multiple ? 'photos.php' : 'logo.php', this.multiple ? {featureType: 'studio'} : {})
+      const _photos = await this.getDatasFromEndpoint(this.multiple ? 'photos.php' : 'logo.php', this.multiple ? {featureType: this.sort} : {})
       if(this.multiple) {
         _photos && _photos.map((photo) => {this.files.push(photo)})
       } else {
         this.files.push(_photos)
       }
+      this.sorttype = this.sort
     },
     methods: {
       uploadFile (e) {
@@ -90,7 +96,7 @@
               title: 'SUCCESS',
               message: 'SUCCESS!'
             })
-            const _photos = await self.getDatasFromEndpoint(self.multiple ? 'photos.php' : 'logo.php', self.multiple ? {featureType: 'studio'} : {})
+            const _photos = await self.getDatasFromEndpoint(self.multiple ? 'photos.php' : 'logo.php', self.multiple ? {featureType: sort} : {})
             if(self.multiple) {
               self.files = _photos
             } else {

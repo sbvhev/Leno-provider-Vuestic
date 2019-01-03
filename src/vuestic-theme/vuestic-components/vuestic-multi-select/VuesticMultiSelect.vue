@@ -119,7 +119,7 @@ export default {
       return hasErrors
     },
     showRequiredError () {
-      return `The ${this.name} field is required`
+      return `Required`
     }
   },
   computed: {

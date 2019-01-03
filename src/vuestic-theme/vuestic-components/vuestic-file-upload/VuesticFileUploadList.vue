@@ -15,6 +15,7 @@
             :key="index"
             :file="file"
             :multiple="multiple"
+            :sort="sort"
             @feature="$emit('feature', index)"
             @remove="$emit('remove', index)"
         />
@@ -50,6 +51,10 @@
       multiple: {
         type: Boolean,
         default: false
+      },
+      sort: {
+        type: String,
+        default: 'studio'
       }
     },
     computed: {

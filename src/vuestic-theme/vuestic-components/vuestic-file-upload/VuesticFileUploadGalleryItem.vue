@@ -39,6 +39,10 @@
       multiple: {
         type: Boolean,
         default: false
+      },
+      sort: {
+        type: String,
+        default: 'studio'
       }
     },
     watch: {
@@ -60,7 +64,7 @@
         }, 2000)
       },
       async selectImage () {
-        await this.getDatasFromEndpoint('photo/feature.php', {imageKey: this.file.image.imageKey, featureType: 'studio'})
+        await this.getDatasFromEndpoint('photo/feature.php', {imageKey: this.file.image.imageKey, featureType: sort})
         this.featured = true
 
         setTimeout(() => {

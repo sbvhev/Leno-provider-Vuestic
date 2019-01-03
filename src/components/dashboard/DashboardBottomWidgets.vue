@@ -12,6 +12,7 @@
               :file-types="'.png, .jpg, .jpeg, .gif'"
               v-model="logo"
               :multiple="false"
+              :sort="'studio'"
           />
         </vuestic-widget>
        <vuestic-widget class="business-posts multiple-upload p-2" :headerText="'Photos'">
@@ -20,6 +21,7 @@
               :file-types="'.png, .jpg, .jpeg, .gif'"
               v-model="photos"
               :multiple="true"
+              :sort="'studio'"
           />
         </vuestic-widget>
         <vuestic-widget class="class-header-card p-2" :headerText="'Studio Bio'">

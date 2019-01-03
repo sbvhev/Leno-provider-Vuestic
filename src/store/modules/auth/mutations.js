@@ -20,7 +20,8 @@ import {
   CHANGEISON,
   CHANGEPRICING,
   CHANGEPRICEISON,
-  COMPLETE_SETUP_PROFILE
+  COMPLETE_SETUP_PROFILE,
+  CHANGEDISCOUNT
 } from './mutation-types'
 
 /* eslint-disable no-param-reassign */
@@ -103,7 +104,11 @@ export default {
   },
 
   [CHANGEPRICEISON] (state, payload) {
-    state.formData.pricings.prices[payload.key].price_cents = payload.value * 100
+    state.formData.pricings.prices[payload.key].price_cents = payload.value !== null ? payload.value * 100 : null
+  },
+
+  [CHANGEDISCOUNT] (state, payload) {
+    state.formData.pricings.discounts[payload.key] = payload.value !== null ? payload.value : null
   },
 
   [COMPLETE_SETUP_PROFILE] (state, payload) {

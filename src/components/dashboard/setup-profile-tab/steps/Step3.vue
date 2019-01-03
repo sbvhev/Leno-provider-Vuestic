@@ -11,7 +11,7 @@
                 <div
                   class="table-header pt-3 d-flex flex-row flex-wrap justify-content-between align-content-center"
                 >
-                  <div class="col-md-4 location pr-3">
+                  <div class="col-md-3 col-md-offset-1 location pr-3">
                     <div class="location-title">
                       <p>required</p>
                     </div>
@@ -26,59 +26,128 @@
                 </div>
                 <div class="table-body py-2">
                   <div v-bind:class="['pt-3 pb-3', 'row']">
-                    <div class="col-4 text-left widget-element input">
-                      <input
-                        type="number"
-                        align="right"
-                        class="h-100"
-                        :value="priceModels['dropIn-short'].price_cents | exchangeDoller"
-                        @input="handleInput($event, 'dropIn-short')"
-                      >
+                    <div class="col-3 text-left widget-element input">
+                      <p class="dollar-sign">$</p>
+                      <fieldset>
+                        <div
+                          class="form-group with-icon-right"
+                          :class="{'has-error': errors.has('dropInshort'), 'valid': isFormFieldValid('dropInshort')}"
+                        >
+                          <div class="input-group">
+                            <input
+                              name="dropInshort"
+                              data-vv-as="dropInshort"
+                              v-model="dropInshort"
+                              @input="handleInput($event, 'dropIn-short')"
+                              @keydown="onKeyDown"
+                              v-validate="'required'"
+                              required
+                            >
+                            <i class="bar"></i>
+                            <small
+                              v-show="errors.has('dropInshort')"
+                              class="help text-danger"
+                            >Required</small>
+                          </div>
+                        </div>
+                      </fieldset>
                     </div>
-                    <div class="col-8 text-left widget-element pl-1">
-                      <h6>Short Classes(<45m)</h6>
-                      <p>15% of your scheduled classes fall in this category</p>
-                    </div>
-                  </div>
-                  <div v-bind:class="['pt-3 pb-3', 'row']">
-                    <div class="col-4 text-left widget-element input">
-                      <input
-                        type="number"
-                        align="right"
-                        class="h-100"
-                        :value="priceModels['dropIn-primary'].price_cents | exchangeDoller"
-                        @input="handleInput($event, 'dropIn-primary')"
-                      >
-                    </div>
-                    <div class="col-8 text-left widget-element pl-1">
-                      <h6>Primary Classes(45-70m)</h6>
-                      <p>83% of your scheduled classes fall in this category</p>
-                    </div>
-                  </div>
-                  <div v-bind:class="['pt-3 pb-3', 'row']">
-                    <div class="col-4 text-left widget-element input">
-                      <input
-                        type="number"
-                        align="right"
-                        class="h-100"
-                        :value="priceModels['dropIn-long'].price_cents | exchangeDoller"
-                        @input="handleInput($event, 'dropIn-long')"
-                      >
-                    </div>
-                    <div class="col-8 text-left widget-element pl-1">
-                      <h6>Long Classes(>70m)</h6>
-                      <p>2% of your scheduled classes fall in this category</p>
+                    <div class="col-9 text-left widget-element pl-1">
+                      <h6>Short Classes (<45m)</h6>
+                      <p>{{parseInt(this.pricingInstance.prices['dropIn-short'].percentage)}}% of your scheduled classes fall in this category</p>
                     </div>
                   </div>
                   <div v-bind:class="['pt-3 pb-3', 'row']">
-                    <div class="col-4 text-left widget-element input">
-                      <select align="right" class="h-100 w-50">
-                        <option v-for="(discount, index) in pricingInstance.discounts.multi" v-bind:key="index" :value="discount">
-                          {{discount}}
-                        </option>
+                    <div class="col-3 text-left widget-element input">
+                      <p class="dollar-sign">$</p>
+                      <fieldset>
+                        <div
+                          class="form-group with-icon-right"
+                          :class="{'has-error': errors.has('dropInprimary'), 'valid': isFormFieldValid('dropInprimary')}"
+                        >
+                          <div class="input-group">
+                            <input
+                              name="dropInprimary"
+                              data-vv-as="dropInprimary"
+                              v-model="dropInprimary"
+                              @input="handleInput($event, 'dropIn-primary')"
+                              @keydown="onKeyDown"
+                              v-validate="'required'"
+                              required
+                            >
+                            <i class="bar"></i>
+                            <small
+                              v-show="errors.has('dropInprimary')"
+                              class="help text-danger"
+                            >Required</small>
+                          </div>
+                        </div>
+                      </fieldset>
+                    </div>
+                    <div class="col-9 text-left widget-element pl-1">
+                      <h6>Primary Classes (45-70m)</h6>
+                      <p>{{parseInt(this.pricingInstance.prices['dropIn-primary'].percentage)}}% of your scheduled classes fall in this category</p>
+                    </div>
+                  </div>
+                  <div v-bind:class="['pt-3 pb-3', 'row']">
+                    <div class="col-3 text-left widget-element input">
+                      <p class="dollar-sign">$</p>
+                      <fieldset>
+                        <div
+                          class="form-group with-icon-right"
+                          :class="{'has-error': errors.has('dropInlong'), 'valid': isFormFieldValid('dropInlong')}"
+                        >
+                          <div class="input-group">
+                            <input
+                              name="dropInlong"
+                              data-vv-as="dropInlong"
+                              v-model="dropInlong"
+                              @input="handleInput($event, 'dropIn-long')"
+                              @keydown="onKeyDown"
+                              v-validate="'required'"
+                              required
+                            >
+                            <i class="bar"></i>
+                            <small
+                              v-show="errors.has('dropInlong')"
+                              class="help text-danger"
+                            >Required</small>
+                          </div>
+                        </div>
+                      </fieldset>
+                    </div>
+                    <div class="col-9 text-left widget-element pl-1">
+                      <h6>Long Classes (>70m)</h6>
+                      <p>{{parseInt(this.pricingInstance.prices['dropIn-long'].percentage)}}% of your scheduled classes fall in this category</p>
+                    </div>
+                  </div>
+                  <div v-bind:class="['pt-3 pb-3', 'row']">
+                    <div class="col-3 text-left widget-element input">
+                      <select @change="onChange($event, 'single')" v-model="singlediscount">
+                        <option value="0">None</option>
+                        <option value="0.05">5% off</option>
+                        <option value="0.1">10% off</option>
+                        <option value="0.15">15% off</option>
+                        <option value="0.2">20% off</option>
+                        <option value="0.25">25% off</option>
+                        <option value="0.3">30% off</option>
+                        <option value="0.35">35% off</option>
+                        <option value="0.4">40% off</option>
+                        <option value="0.45">45% off</option>
+                        <option value="0.5">50% off</option>
+                        <option value="0.55">55% off</option>
+                        <option value="0.6">60% off</option>
+                        <option value="0.65">65% off</option>
+                        <option value="0.7">70% off</option>
+                        <option value="0.75">75% off</option>
+                        <option value="0.8">80% off</option>
+                        <option value="0.85">85% off</option>
+                        <option value="0.9">90% off</option>
+                        <option value="0.95">95% off</option>
+                        <option value="1">Free</option>
                       </select>
                     </div>
-                    <div class="col-8 text-left widget-element pl-1">
+                    <div class="col-9 text-left widget-element pl-1">
                       <h6>Introductory Discount</h6>
                       <p>Applied to a user's first class with your studio</p>
                     </div>
@@ -91,13 +160,13 @@
                 <div
                   class="table-header pt-3 d-flex flex-row flex-wrap justify-content-between align-content-center"
                 >
-                  <div class="col-md-4 col-sm-4 location pr-3">
+                  <div class="col-md-3 col-md-offset-1 col-sm-3 location pr-3">
                     <div class="location-title">
                       <p>optional</p>
                     </div>
                   </div>
                   <div
-                    class="col-md-8 col-sm-8 d-flex flex-row align-items-center flex-wrap"
+                    class="col-md-8 col-sm-9 d-flex flex-row align-items-center flex-wrap"
                   >
                     <div class="font-weight-bold text-center mr-1">
                       <h3>Packs & Memberships</h3>
@@ -106,59 +175,113 @@
                 </div>
                 <div class="table-body py-2">
                   <div v-bind:class="['pt-3 pb-3', 'row']">
-                    <div class="col-4 text-left widget-element input">
-                      <input
-                        type="number"
-                        align="right"
-                        class="h-100"
-                        :value="priceModels['pack-5'].price_cents | exchangeDoller"
-                        @input="handleInput($event, 'pack-5')"
-                      >
+                    <div class="col-3 text-left widget-element input">
+                      <p class="dollar-sign">$</p>
+                      <fieldset>
+                        <div
+                          class="form-group with-icon-right"
+                          :class="{'has-error': errors.has('pack5'), 'valid': isFormFieldValid('pack5')}"
+                        >
+                          <div class="input-group">
+                            <input
+                              name="pack5"
+                              data-vv-as="pack5"
+                              v-model="pack5"
+                              placeholder="Not offered"
+                              @input="handleInput($event, 'pack-5')"
+                              @keydown="onKeyDown"
+                            >
+                            <i class="bar"></i>
+                          </div>
+                        </div>
+                      </fieldset>
                     </div>
-                    <div class="col-8 text-left widget-element pl-1">
+                    <div class="col-9 text-left widget-element pl-1">
                       <h6>5 Pack</h6>
                       <p>Valid for any 5 classes; does not expire</p>
                     </div>
                   </div>
                   <div v-bind:class="['pt-3 pb-3', 'row']">
-                    <div class="col-4 text-left widget-element input">
-                      <input
-                        type="number"
-                        align="right"
-                        class="h-100"
-                        :value="priceModels['pack-10'].price_cents | exchangeDoller"
-                        @input="handleInput($event, 'pack-10')"
-                      >
+                    <div class="col-3 text-left widget-element input">
+                      <p class="dollar-sign">$</p>
+                      <fieldset>
+                        <div
+                          class="form-group with-icon-right"
+                          :class="{'has-error': errors.has('pack10'), 'valid': isFormFieldValid('pack10')}"
+                        >
+                          <div class="input-group">
+                            <input
+                              name="pack10"
+                              data-vv-as="pack10"
+                              v-model="pack10"
+                              placeholder="Not offered"
+                              @input="handleInput($event, 'pack-10')"
+                              @keydown="onKeyDown"
+                            >
+                            <i class="bar"></i>
+                          </div>
+                        </div>
+                      </fieldset>
                     </div>
-                    <div class="col-8 text-left widget-element pl-1">
+                    <div class="col-9 text-left widget-element pl-1">
                       <h6>10 Pack</h6>
                       <p>Valid for any 10 classes; does not expire</p>
                     </div>
                   </div>
                   <div v-bind:class="['pt-3 pb-3', 'row']">
-                    <div class="col-4 text-left widget-element input">
-                      <input
-                        type="number"
-                        align="right"
-                        class="h-100"
-                        :value="priceModels['membership'].price_cents | exchangeDoller"
-                        @input="handleInput($event, 'membership')"
-                      >
+                    <div class="col-3 text-left widget-element input">
+                      <p class="dollar-sign">$</p>
+                      <fieldset>
+                        <div
+                          class="form-group with-icon-right"
+                          :class="{'has-error': errors.has('membership'), 'valid': isFormFieldValid('membership')}"
+                        >
+                          <div class="input-group">
+                            <input
+                              name="membership"
+                              data-vv-as="membership"
+                              v-model="membership"
+                              placeholder="Not offered"
+                              @input="handleInput($event, 'membership')"
+                              @keydown="onKeyDown"
+                            >
+                            <i class="bar"></i>
+                          </div>
+                        </div>
+                      </fieldset>
                     </div>
-                    <div class="col-8 text-left widget-element pl-1">
+                    <div class="col-9 text-left widget-element pl-1">
                       <h6>Monthly Unlimited</h6>
                       <p>Valid for up to 1 class per day; renews each month</p>
                     </div>
                   </div>
                   <div v-bind:class="['pt-3 pb-3', 'row']">
-                    <div class="col-4 text-left widget-element input">
-                      <select align="right" class="w-50 h-100">
-                        <option v-for="(discount, index) in pricingInstance.discounts.multi" v-bind:key="index" :value="discount">
-                          {{discount}}
-                        </option>
+                    <div class="col-3 text-left widget-element input">
+                      <select @change="onChange($event, 'multi')" v-model="multidiscount">
+                        <option value="0">None</option>
+                        <option value="0.05">5% off</option>
+                        <option value="0.1">10% off</option>
+                        <option value="0.15">15% off</option>
+                        <option value="0.2">20% off</option>
+                        <option value="0.25">25% off</option>
+                        <option value="0.3">30% off</option>
+                        <option value="0.35">35% off</option>
+                        <option value="0.4">40% off</option>
+                        <option value="0.45">45% off</option>
+                        <option value="0.5">50% off</option>
+                        <option value="0.55">55% off</option>
+                        <option value="0.6">60% off</option>
+                        <option value="0.65">65% off</option>
+                        <option value="0.7">70% off</option>
+                        <option value="0.75">75% off</option>
+                        <option value="0.8">80% off</option>
+                        <option value="0.85">85% off</option>
+                        <option value="0.9">90% off</option>
+                        <option value="0.95">95% off</option>
+                        <option value="1">Free</option>
                       </select>
                     </div>
-                    <div class="col-8 text-left widget-element pl-1">
+                    <div class="col-9 text-left widget-element pl-1">
                       <h6>Introductory Discount</h6>
                       <p>Applied to a user's first pack/membership with your studio</p>
                     </div>
@@ -238,6 +361,14 @@ export default {
   },
   data () {
     return {
+      dropInshort: '',
+      dropInprimary: '',
+      dropInlong: '',
+      pack5: '',
+      pack10: '',
+      membership: '',
+      singlediscount: '',
+      multidiscount: '',
       expandIndex: 0,
       pricingInstance: [],
       nextBtn: {
@@ -252,32 +383,66 @@ export default {
     }
   },
   methods: {
+    isFormFieldValid (field) {
+      let isValid = false
+      if (this.formFields[field]) {
+        isValid =
+          this.formFields[field].validated && this.formFields[field].valid
+      }
+      return isValid
+    },
+    validateFormField (fieldName) {
+      this.$validator.validate(fieldName, this[fieldName])
+    },
+    wrapDiscount (val) {
+      return (val * 100) === 0 ? 'None' : (val * 100) === 100 ? 'Free' : `${val * 100}% off`
+    },
     handleExpandIndex (index) {
       this.expandIndex = index
     },
-    handleInput (evt, key) {
-      this.priceModels[key].price_cents = evt.target.value * 100
-      this.$store.commit('auth/CHANGEPRICEISON', { key, value: evt.target.value })
+    handleInput (e, key) {
+      this.priceModels[key].price_cents = e.target.value * 100
+      console.log('aaaaaaa->', e.target.value !== '' ? e.target.value : null)
+      this.$store.commit('auth/CHANGEPRICEISON', { key, value: e.target.value !== '' ? e.target.value : null })
+    },
+    onKeyDown (e) {
+      if ((e.keyCode > 31 && (e.keyCode < 48 || e.keyCode > 57)) && e.keyCode !== 46) {
+        e.preventDefault()
+      }
+    },
+    onChange (e, type) {
+      this.$store.commit('auth/CHANGEDISCOUNT', { key: type, value: e.target.value })
     },
     async save () {
-      this.nextBtn.loading = true
-      const {pricings: pricing} = this.getFormData
-      const {mindbodyActivationLink, siteId, ...providerData} = this.provider
-      const {success, error} = await new Proxy('savePricing.php?').submit('post', { pricing, ...providerData })
+      let that = this
+      Object.keys(that.formFields).map(field => {
+        that.validateFormField(field)
+      })
+      // validation check
+      const validOk = Object.keys(that.formFields).every(field => {
+        return that.isFormFieldValid(field)
+      })
 
-      if (success) {
-        this.nextBtn.loading = false
-        this.$store.dispatch('auth/notification', {
-          type: 'SUCCESS',
-          title: 'SUCCESS!',
-          message: 'SUCCESS!'
-        })
-        return true
-      } else {
-        this.showToast()
-        console.log(error)
-        this.nextBtn.loading = false
-        return false
+      if (validOk) {
+        this.nextBtn.loading = true
+        const {pricings: pricing} = this.getFormData
+        const {mindbodyActivationLink, siteId, ...providerData} = this.provider
+        const {success, error} = await new Proxy('savePricing.php?').submit('post', { pricing, ...providerData })
+
+        if (success) {
+          this.nextBtn.loading = false
+          this.$store.dispatch('auth/notification', {
+            type: 'SUCCESS',
+            title: 'SUCCESS!',
+            message: 'SUCCESS!'
+          })
+          return true
+        } else {
+          this.showToast()
+          console.log(error)
+          this.nextBtn.loading = false
+          return false
+        }
       }
     },
     showToast (errMessage = 'Oops, Please try again later.') {
@@ -294,8 +459,16 @@ export default {
     this.provider = this.getProvider
     if (this.getPricings) {
       this.pricingInstance = JSON.parse(JSON.stringify(this.getPricings))
+      console.log(this.pricingInstance)
       this.priceModels = this.pricingInstance.prices
-      console.log('priceModels: ', this.pricingInstance)
+      this.dropInshort = this.priceModels['dropIn-short'].price_cents !== null ? this.priceModels['dropIn-short'].price_cents / 100 : ''
+      this.dropInprimary = this.priceModels['dropIn-primary'].price_cents !== null ? this.priceModels['dropIn-primary'].price_cents / 100 : ''
+      this.dropInlong = this.priceModels['dropIn-long'].price_cents !== null ? this.priceModels['dropIn-long'].price_cents / 100 : ''
+      this.pack5 = this.priceModels['pack-5'].price_cents !== null ? this.priceModels['pack-5'].price_cents / 100 : ''
+      this.pack10 = this.priceModels['pack-10'].price_cents !== null ? this.priceModels['pack-10'].price_cents / 100 : ''
+      this.membership = this.priceModels['membership'].price_cents !== null ? this.priceModels['membership'].price_cents / 100 : ''
+      this.singlediscount = this.pricingInstance.discounts.single
+      this.multidiscount = this.pricingInstance.discounts.multi
     }
   }
 }
@@ -324,9 +497,17 @@ $info-color: #76c5ea;
   }
   input {
     border-width: 1px;
+    padding-right: 0;
+    font-size: 13px;
+  }
+  .dollar-sign {
+    position: absolute;
+    margin-left: -13px;
+    margin-top: 17px;
   }
   select {
     border: 1px solid grey;
+    width: 90%;
     @media only screen and (max-width: 768px) {
       width: 100% !important;
     }
@@ -336,6 +517,9 @@ $info-color: #76c5ea;
       padding-left: 0px;
       padding-right: 0px;
     }
+  }
+  .input-group {
+    width: 90%;
   }
   .table-body {
     padding-left: 5%;
@@ -354,13 +538,11 @@ $info-color: #76c5ea;
       padding: 0;
       height: 25px;
       input {
-        width: 50%;
+        width: 90%;
         @include media-breakpoint-down(sm) {
-          width: 80%;
+          width: 90%;
         }
         color: #34495e;
-        direction: rtl;
-        text-align: right;
         -webkit-transition: outline 0.3s; /* Safari */
         transition: outline 0.3s;
         &:focus {

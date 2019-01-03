@@ -119,6 +119,13 @@ export default {
         {
           label: 'Pricing',
           slot: 'page3',
+          onNext: () => {
+            // manual validation occur
+            const that = this.$refs.registerStepThree
+            Object.keys(that.formFields).map(field => {
+              that.validateFormField(field)
+            })
+          },
           isValid: async () => {
             this.nextBtn.loading = true
             const {pricings: pricing} = this.formData

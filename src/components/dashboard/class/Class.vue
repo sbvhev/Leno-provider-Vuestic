@@ -12,18 +12,52 @@
         <textarea row="5" col="50" class="edit-content" maxlength="500" v-model="generalInfo.description" @keydown="onKeyDown" v-else></textarea>
         <div class="d-flex flex-row justify-content-between align-items-end">
           <div>
-            <h6 class="d-inline pr-3">Price</h6>
-            <custom-input :value="inputValue" @inputChange="onInputChange"></custom-input>
+            <h6 class="price-header">Drop-in Price Override:</h6>
+            <p v-if="!!price" class="dollar-sign">$</p>
+            <p v-if="!isEdit" class="price-content" v-bind:style=
+            "{opacity: !price ? 0.5 : 1}">{{!!price ? price : 'None'}}</p>
+            <fieldset v-else>
+              <div
+                class="form-group with-icon-right"
+                :class="{'has-error': errors.has('price')}"
+              >
+                <div class="input-group">
+                  <input
+                    name="price"
+                    data-vv-as="price"
+                    v-model="price"
+                    placeholder="None"
+                    @keydown="onPriceKeyDown"
+                  >
+                  <i class="bar"></i>
+                </div>
+              </div>
+            </fieldset>
           </div>
-          <a href="#" class="text-info">Advanced pricing</a>
+          <div
+            class="d-flex justify-content-center flex-row align-items-center flex-wrap"
+          >
+            <div class="font-weight-bold text-center mr-1">Show on LEON?</div>
+            <div>
+              <toggle-switch
+                :locationIsOn="priceIsOn"
+                @checkChange="onCheckChange"
+              ></toggle-switch>
+            </div>
+          </div>
         </div>
       </vuestic-widget>
 
       <div class="row">
         <div class="col-md-6 col-12">
-          <vuestic-widget class="business-posts p-2" :headerText="'Photos'">
-            <vuestic-social-news class="vuestic-social-news" :news="news" :url="'http://instagram.com/smartapant'" btnText="upload" headerText="Photos" :multiple="false"></vuestic-social-news>
-            
+          <vuestic-widget class="business-posts multiple-upload p-2" :headerText="'Photos'">
+            <vuestic-file-upload
+                type="gallery"
+                :file-types="'.png, .jpg, .jpeg, .gif'"
+                v-model="photos"
+                :multiple="true"
+                :sort="'class'"
+            />
           </vuestic-widget>
           <table-widget headerText="Instructors" endpoint="classDescription/instructors.php" :parameters="{classDescriptionId: classId}"></table-widget>
         </div>
@@ -53,6 +87,7 @@ import TableWidget from '../elements/TableWidget.vue'
 import CustomInput from '../elements/CustomInput.vue'
 import CustomClass from './elements/CustomClass.vue'
 import Notification from '@/components/Notification'
+import ToggleSwitch from '../setup-profile-tab/elements/ToggleSwitch.vue'
 import Proxy from '@/proxies/Proxy'
 
 export default {
@@ -61,10 +96,12 @@ export default {
     TableWidget,
     CustomInput,
     CustomClass,
-    Notification
+    Notification,
+    ToggleSwitch
   },
   data () {
     return {
+      localIsOn: false,
       news: [
         {
           photoURL: 'https://i.imgur.com/PiTDDcA.png'
@@ -100,6 +137,7 @@ export default {
           photoURL: 'https://i.imgur.com/ZXRIHfk.png'
         }
       ],
+      photos: [],
       inputValue: 'input...',
       classId: this.$route.params.classId,
       leonInfo: null,
@@ -108,13 +146,36 @@ export default {
       isLoaded: false,
       isEdit: false,
       btnText: 'Edit',
-      widgetHeaderText: ''
+      widgetHeaderText: '',
+      priceIsOn: false,
+      price: ''
     }
   },
   created () {
     this.initalization()
   },
   methods: {
+    onPriceKeyDown (e) {
+      if ((e.keyCode > 31 && (e.keyCode < 48 || e.keyCode > 57)) && e.keyCode !== 46) {
+        e.preventDefault()
+      }
+    },
+    async onCheckChange (e) {
+      this.localIsOn = !this.localIsOn
+      const data = this.$refs.widgetHeader.$data
+      await this.getDatasFromEndpoint('classDescription/save/generalInfo.php', {
+        name: data.editedHeaderText,
+        description: this.generalInfo.description,
+        showOnLeon: this.localIsOn,
+        classDescriptionId: this.classId
+      })
+
+      this.$store.dispatch('auth/notification', {
+        type: 'SUCCESS',
+        title: 'SUCCESS',
+        message: 'SUCCESS!'
+      })
+    },
     onKeyDown (e) {
       if (e.key === 'Enter') {
         e.preventDefault()
@@ -123,8 +184,10 @@ export default {
     async initalization () {
       this.isLoaded = false
       this.leonInfo = await this.getDatasFromEndpoint('classDescription/leonInfo.php', {classDescriptionId: this.classId})
-      this.inputValue = await this.getDatasFromEndpoint('classDescription/price.php', {classDescriptionId: this.classId})
       this.generalInfo = await this.getDatasFromEndpoint('classDescription/generalInfo.php', {classDescriptionId: this.classId})
+      console.log('showOnLeon:', this.generalInfo.showOnLeon)
+      this.priceIsOn = this.generalInfo.showOnLeon
+      this.price = this.generalInfo.overridePrice_cents !== null ? this.generalInfo.overridePrice_cents / 100 : null
       this.isLoaded = true
     },
     onInputChange (val) {
@@ -136,8 +199,12 @@ export default {
         const data = this.$refs.widgetHeader.$data
         await this.getDatasFromEndpoint('classDescription/save/generalInfo.php', {
           name: data.editedHeaderText,
-          description: this.generalInfo.description
+          description: this.generalInfo.description,
+          classDescriptionId: this.classId,
+          showOnLeon: this.localIsOn,
+          overridePrice_cents: (this.price !== null || this.price !== '') ? this.price * 100 : null
         })
+
         this.$store.dispatch('auth/notification', {
           type: 'SUCCESS',
           title: 'SUCCESS',
@@ -185,6 +252,12 @@ export default {
     }
   }
 
+  .multiple-upload {
+    .widget-body {
+      padding: 0 1.5625rem !important;
+    }
+  }
+
   .class-description {
     .widget {
       max-height: 96%;
@@ -194,6 +267,21 @@ export default {
 
   p {
     max-width: 800px;
+  }
+
+  .price-content {
+    margin-left: 190px;
+    margin-top: 13px;
+  }
+
+  .price-header {
+    position: absolute;
+    margin-top: 16px;
+  }
+
+  .with-icon-right {
+    margin-bottom: 0px !important;
+    margin-left: 190px;
   }
 
   .vuestic-data-table .vuetable-body tr td:nth-child(2) {
@@ -232,6 +320,11 @@ export default {
     width: 100%;
     padding: 1.5625rem;
     left: 0;
+  }
+  .dollar-sign {
+    position: absolute;
+    margin-left: 179px;
+    margin-top: 13px;
   }
   .leonInfo-div {
     position: relative;
