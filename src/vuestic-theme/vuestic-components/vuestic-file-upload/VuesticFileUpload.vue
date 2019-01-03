@@ -96,7 +96,7 @@
               title: 'SUCCESS',
               message: 'SUCCESS!'
             })
-            const _photos = await self.getDatasFromEndpoint(self.multiple ? 'photos.php' : 'logo.php', self.multiple ? {featureType: sort} : {})
+            const _photos = await self.getDatasFromEndpoint(self.multiple ? 'photos.php' : 'logo.php', self.multiple ? {featureType: this.sort} : {})
             if(self.multiple) {
               self.files = _photos
             } else {

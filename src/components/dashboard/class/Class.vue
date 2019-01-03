@@ -309,6 +309,9 @@ export default {
     position: absolute;
     right: 50px;
     top: 110px;
+    @media only screen and (max-width: 768px) {
+      top: 141px;
+    }
   }
 
   .leonInfo-explanation {

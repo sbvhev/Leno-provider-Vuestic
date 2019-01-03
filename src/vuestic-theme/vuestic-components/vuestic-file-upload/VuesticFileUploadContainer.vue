@@ -55,6 +55,8 @@
   }
 
   .vuestic-file-upload-main {
+    overflow-y: scroll;
+    overflow-x: hidden;
     max-height: 300px;
     margin-top: -50px;
     margin-left: 15px;

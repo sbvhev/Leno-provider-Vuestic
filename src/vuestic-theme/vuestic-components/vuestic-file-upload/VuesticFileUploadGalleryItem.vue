@@ -64,7 +64,7 @@
         }, 2000)
       },
       async selectImage () {
-        await this.getDatasFromEndpoint('photo/feature.php', {imageKey: this.file.image.imageKey, featureType: sort})
+        await this.getDatasFromEndpoint('photo/feature.php', {imageKey: this.file.image.imageKey, featureType: this.sort})
         this.featured = true
 
         setTimeout(() => {
