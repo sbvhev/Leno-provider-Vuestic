@@ -185,10 +185,10 @@ export default {
     const {mindbodyActivationLink, siteId, ...providerData} = this.provider
     const {payment} = await new Proxy('getPayment.php?').submit('post', {...providerData})
     this.address1 = (payment.address1 === null) ? '' : payment.address1
-    this.address2 = (payment.address2 === null) ? '' : payment.address1
-    this.city = (payment.city === null) ? '' : payment.address1
-    this.state = (payment.state === null) ? '' : payment.address1
-    this.zipcode = (payment.zipcode === null) ? '' : payment.address1
+    this.address2 = (payment.address2 === null) ? '' : payment.address2
+    this.city = (payment.city === null) ? '' : payment.city
+    this.state = (payment.state === null) ? '' : payment.state
+    this.zipcode = (payment.zipcode === null) ? '' : payment.zipcode
   },
   computed: {
     getFormData () {
@@ -250,7 +250,7 @@ export default {
       if (validOk) {
         const {address1, address2, city, state, zipcode} = that.$data
         const {mindbodyActivationLink, siteId, ...providerData} = this.provider
-        const {success, error} = await new Proxy('savePayment.php?').submit('post', {payment: {address1, address2, city, state, zipcode}, ...providerData})
+        const {success, error} = await new Proxy('savePayment.php?').submit('post', {payment: {address1, address2: address2 || null, city, state, zipcode}, ...providerData})
 
         if (success) {
           this.$store.dispatch('auth/notification', {

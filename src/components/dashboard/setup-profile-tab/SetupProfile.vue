@@ -173,7 +173,7 @@ export default {
             if (validOk) {
               const {address1, address2, city, state, zipcode} = that.$data
               const {mindbodyActivationLink, siteId, ...providerData} = this.provider
-              const {success, error} = await new Proxy('savePayment.php?').submit('post', {payment: {address1, address2, city, state, zipcode}, ...providerData})
+              const {success, error} = await new Proxy('savePayment.php?').submit('post', {payment: {address1, address2: address2 || null, city, state, zipcode}, ...providerData})
 
               if (success) {
                 this.$store.dispatch('auth/notification', {

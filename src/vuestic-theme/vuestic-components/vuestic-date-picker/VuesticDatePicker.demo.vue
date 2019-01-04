@@ -57,7 +57,7 @@
     },
     methods: {
       doSomethingOnChange (input) {
-        console.log('input', input)
+        console.log('input')
       },
     },
   }

@@ -102,7 +102,6 @@ export default {
   },
   data () {
     return {
-      localIsOn: false,
       news: [
         {
           photoURL: 'https://i.imgur.com/PiTDDcA.png'
@@ -149,6 +148,7 @@ export default {
       btnText: 'Edit',
       widgetHeaderText: '',
       priceIsOn: false,
+      localIsOn: this.priceIsOn,
       price: ''
     }
   },
@@ -188,6 +188,7 @@ export default {
       this.leonInfo = await this.getDatasFromEndpoint('classDescription/leonInfo.php', {classDescriptionId: this.classId})
       this.generalInfo = await this.getDatasFromEndpoint('classDescription/generalInfo.php', {classDescriptionId: this.classId})
       this.priceIsOn = this.generalInfo.showOnLeon
+      this.localIsOn = this.priceIsOn
       this.price = this.generalInfo.overridePrice_cents !== null ? this.generalInfo.overridePrice_cents / 100 : null
       this.isLoaded = true
     },

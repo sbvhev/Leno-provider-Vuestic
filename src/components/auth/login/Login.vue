@@ -117,6 +117,8 @@ export default {
 
   .wizard-next {
     border-radius: 25px;
+    padding-right: 30px;
+    padding-left: 30px;
   }
 }
 </style>

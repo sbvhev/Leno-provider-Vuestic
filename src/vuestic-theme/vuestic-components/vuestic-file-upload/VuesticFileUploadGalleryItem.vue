@@ -112,10 +112,7 @@
           this.showToast()
         }
       },
-    },
-    mounted () {
-      console.log('file: ', this.file)
-    },
+    }
   }
 </script>
 

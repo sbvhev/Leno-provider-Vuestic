@@ -26,7 +26,7 @@
         </vuestic-widget>
         <vuestic-widget class="class-header-card p-2" :headerText="'Studio Bio'">
           <div class="d-flex flex-row justify-content-between">
-            <p class="length-show" v-if="isEdit">{{`${providerDescription.length}/500`}}</p>
+            <p class="length-show" v-if="isEdit">{{`${providerDescription? providerDescription.length: 0}/500`}}</p>
             <a href="#" class="text-info save-edit" @click.prevent="onClickEdit">{{btnText}}</a>
           </div>
           <p class="pt-3 no-bio" v-if="!providerDescription && !isEdit">No bio</p>

@@ -124,7 +124,6 @@
             a.isFeatured = true; 
           else a.isFeatured = false;
            return a})
-        console.log("this.files: ", this.files)
       },
       removeSingleFile () {
         this.files = []

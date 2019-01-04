@@ -54,7 +54,7 @@
                     </div>
                     <div class="col-9 text-left widget-element pl-1">
                       <h6>Short Classes (<45m)</h6>
-                      <p>{{parseInt(this.pricingInstance.prices['dropIn-short'].percentage)}}% of your scheduled classes fall in this category</p>
+                      <p>{{this.pricingInstance? parseInt(this.pricingInstance.prices['dropIn-short'].percentage): ''}}% of your scheduled classes fall in this category</p>
                     </div>
                   </div>
                   <div v-bind:class="['pt-3 pb-3', 'row']">
@@ -402,7 +402,6 @@ export default {
     },
     handleInput (e, key) {
       this.priceModels[key].price_cents = e.target.value * 100
-      console.log('aaaaaaa->', e.target.value !== '' ? e.target.value : null)
       this.$store.commit('auth/CHANGEPRICEISON', { key, value: e.target.value !== '' ? e.target.value : null })
     },
     onKeyDown (e) {
@@ -459,7 +458,6 @@ export default {
     this.provider = this.getProvider
     if (this.getPricings) {
       this.pricingInstance = JSON.parse(JSON.stringify(this.getPricings))
-      console.log(this.pricingInstance)
       this.priceModels = this.pricingInstance.prices
       this.dropInshort = this.priceModels['dropIn-short'].price_cents !== null ? this.priceModels['dropIn-short'].price_cents / 100 : ''
       this.dropInprimary = this.priceModels['dropIn-primary'].price_cents !== null ? this.priceModels['dropIn-primary'].price_cents / 100 : ''

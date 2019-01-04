@@ -32,6 +32,7 @@ export const register = async ({ commit }, user) => {
    * Normally you would use a proxy to register the user:
    */
   const proxy = new Proxy('createAccount.php?', user)
+  const {siteId} = this.$route.params
 
   try {
     const response = await proxy.submit('post')
@@ -42,6 +43,12 @@ export const register = async ({ commit }, user) => {
         message: response.error
       })
     } else {
+      const { provider: {
+        mindbodyActivationLink,
+        providerAccessToken,
+        providerId,
+      }} = response
+      commit(types.PROVIDER, {mindbodyActivationLink, providerAccessToken, providerId, siteId})
       commit(types.LOGIN, response)
       await store.dispatch('account/me', response)
       Vue.router.push({ name: 'dashboard' })

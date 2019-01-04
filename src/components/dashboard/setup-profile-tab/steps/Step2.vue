@@ -109,7 +109,6 @@ export default {
       const {success, error} = await new Proxy('saveLocations.php?').submit('post', {locations, ...providerData})
       if (success) {
         const {pricing, success, error} = await new Proxy('getPricing.php?').submit('post', providerData)
-        console.log('pricings:', pricing)
         if (success) {
           this.$store.commit('auth/FORMDATA', {key: 'pricing', value: pricing})
           this.$store.dispatch('auth/notification', {

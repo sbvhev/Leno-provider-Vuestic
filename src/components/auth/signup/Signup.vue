@@ -246,7 +246,7 @@ export default {
             providerId,
           }} = res
           this.$store.commit('auth/PROVIDER', {mindbodyActivationLink, providerAccessToken, providerId, siteId})
-          this.$store.commit('auth/LOGIN', res.provider)
+          this.$store.dispatch('auth/login', {emailAddress: data.emailAddress, password: data.password1})
           this.$router.push({ name: 'dashboard' })
           this.asyncBtn.loading = false
           return true
