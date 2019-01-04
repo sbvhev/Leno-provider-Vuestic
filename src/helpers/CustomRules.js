@@ -10,10 +10,10 @@ Validator.extend('phoneRules', {
 
 Validator.extend('passwordRules', {
   getMessage: field =>
-    `The passwords should be contain at least 1 letter, 1 number, and 1 punctuation[like !or@].`,
+    `Passwords should contain at least 1 letter, 1 number, and 1 punctuation[like !or@].`,
   validate: value => {
     const strongRegex = new RegExp(
-      '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})'
+      '^(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*])'
     )
     return strongRegex.test(value)
   }

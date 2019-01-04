@@ -239,24 +239,24 @@ export default {
       if (this.formValid()) {
         this.asyncBtn.loading = true
         const res = await new Proxy('createAccount.php?').submit('post', data)
-        const { provider: {
-          mindbodyActivationLink,
-          providerAccessToken,
-          providerId,
-        }} = res
         if (res.success) {
+          const { provider: {
+            mindbodyActivationLink,
+            providerAccessToken,
+            providerId,
+          }} = res
           this.$store.commit('auth/PROVIDER', {mindbodyActivationLink, providerAccessToken, providerId, siteId})
           this.$store.commit('auth/LOGIN', res.provider)
           this.$router.push({ name: 'dashboard' })
           this.asyncBtn.loading = false
           return true
         } else {
-          const {displayError, error} = res
+          const {error} = res
           this.asyncBtn.loading = false
           this.$store.dispatch('auth/notification', {
             type: 'ERROR',
-            title: error,
-            message: displayError
+            title: 'ERROR',
+            message: error
           })
           return false
         }

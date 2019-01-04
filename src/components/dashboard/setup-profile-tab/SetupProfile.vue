@@ -121,25 +121,33 @@ export default {
           slot: 'page3',
           onNext: () => {
             // manual validation occur
+
+          },
+          isValid: async () => {
             const that = this.$refs.registerStepThree
             Object.keys(that.formFields).map(field => {
               that.validateFormField(field)
             })
-          },
-          isValid: async () => {
-            this.nextBtn.loading = true
-            const {pricings: pricing} = this.formData
-            const {mindbodyActivationLink, siteId, ...providerData} = this.provider
-            const {success, error} = await new Proxy('savePricing.php?').submit('post', { pricing, ...providerData })
 
-            if (success) {
-              this.nextBtn.loading = false
-              return true
-            } else {
-              this.showToast()
-              console.log(error)
-              this.nextBtn.loading = false
-              return false
+            const validOk = Object.keys(that.formFields).every(field => {
+              return that.isFormFieldValid(field)
+            })
+            if (validOk) {
+              this.nextBtn.loading = true
+              const {pricings: pricing} = this.formData
+              console.log('pricing: ', pricing)
+              const {mindbodyActivationLink, siteId, ...providerData} = this.provider
+              const {success, error} = await new Proxy('savePricing.php?').submit('post', { pricing, ...providerData })
+
+              if (success) {
+                this.nextBtn.loading = false
+                return true
+              } else {
+                this.showToast()
+                console.log(error)
+                this.nextBtn.loading = false
+                return false
+              }
             }
           }
         },
