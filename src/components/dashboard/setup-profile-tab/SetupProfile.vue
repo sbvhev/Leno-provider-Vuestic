@@ -135,7 +135,6 @@ export default {
             if (validOk) {
               this.nextBtn.loading = true
               const {pricings: pricing} = this.formData
-              console.log('pricing: ', pricing)
               const {mindbodyActivationLink, siteId, ...providerData} = this.provider
               const {success, error} = await new Proxy('savePricing.php?').submit('post', { pricing, ...providerData })
 
@@ -172,9 +171,9 @@ export default {
             })
 
             if (validOk) {
-              const data = that.$data
+              const {address1, address2, city, state, zipcode} = that.$data
               const {mindbodyActivationLink, siteId, ...providerData} = this.provider
-              const {success, error} = await new Proxy('savePayment.php?').submit('post', {data, providerData})
+              const {success, error} = await new Proxy('savePayment.php?').submit('post', {payment: {address1, address2, city, state, zipcode}, ...providerData})
 
               if (success) {
                 this.$store.dispatch('auth/notification', {

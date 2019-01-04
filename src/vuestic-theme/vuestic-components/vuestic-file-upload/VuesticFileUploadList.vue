@@ -46,7 +46,7 @@
         type: String
       },
       files: {
-        default: null
+        default: []
       },
       multiple: {
         type: Boolean,
@@ -64,12 +64,15 @@
     },
     methods: {
       convertFile (file) {
-        return {
-          name: file.name,
-          size: this.formatSize(file.size),
-          date: this.formatDate(file.lastModifiedDate),
-          image: file
+        if (file) {
+          return {
+            name: file.name,
+            size: this.formatSize(file.size),
+            date: this.formatDate(file.lastModifiedDate),
+            image: file
+          }
         }
+        
       },
       formatSize (bytes) {
         if (bytes === 0) return '0 Bytes'

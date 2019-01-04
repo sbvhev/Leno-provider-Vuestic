@@ -1,6 +1,6 @@
 <template>
   <div class="col-xl-4 col-lg-4 col-sm-5 photo-gallery">
-    <div class="file-upload-gallery-item">
+    <div class="file-upload-gallery-item" v-if="!!file.image.imageSrc">
       <img :src="file.image.imageSrc" alt="" class="file-upload-gallery-item-image" v-bind:style="{opacity: multiple ? (featured ? 1 : 0.25) : 1}">
         <div v-bind:class="{ 'file-upload-gallery-item-overlay': multiple}">
           <button v-if="multiple" type="button"
@@ -35,7 +35,16 @@
     },
     props: {
       file: {
-        default: {}
+        type: Object,
+        default: function () {
+          return {
+            image: {
+              imageKey: '',
+              imageSrc: '',
+              isFeatured: false
+            }
+          }
+        }
       },
       multiple: {
         type: Boolean,

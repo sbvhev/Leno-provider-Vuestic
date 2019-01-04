@@ -178,10 +178,17 @@ export default {
       provider: ''
     }
   },
-  created () {
+  async created () {
     this.isDashboard = this.$route.path.includes('dashboard')
     this.formData = this.getFormData
     this.provider = this.getProvider
+    const {mindbodyActivationLink, siteId, ...providerData} = this.provider
+    const {payment} = await new Proxy('getPayment.php?').submit('post', {...providerData})
+    this.address1 = (payment.address1 === null) ? '' : payment.address1
+    this.address2 = (payment.address2 === null) ? '' : payment.address1
+    this.city = (payment.city === null) ? '' : payment.address1
+    this.state = (payment.state === null) ? '' : payment.address1
+    this.zipcode = (payment.zipcode === null) ? '' : payment.address1
   },
   computed: {
     getFormData () {
@@ -241,9 +248,9 @@ export default {
       })
 
       if (validOk) {
-        const data = that.$data
+        const {address1, address2, city, state, zipcode} = that.$data
         const {mindbodyActivationLink, siteId, ...providerData} = this.provider
-        const {success, error} = await new Proxy('savePayment.php?').submit('post', {...data, ...providerData})
+        const {success, error} = await new Proxy('savePayment.php?').submit('post', {payment: {address1, address2, city, state, zipcode}, ...providerData})
 
         if (success) {
           this.$store.dispatch('auth/notification', {
