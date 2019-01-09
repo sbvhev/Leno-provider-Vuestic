@@ -1,5 +1,5 @@
 <template>
-  <form class="register-form step4">
+  <form class="register-form step4" @submit.prevent="save()">
     <h1 class="text-center">Get paid by LEON</h1>
     <h5 class="text-center">This will allow LEON to pay you directly for any services or memberships purchased through the platform.</h5>
     <div class="row">
@@ -41,7 +41,6 @@
                 name="address2"
                 data-vv-as="Address2"
                 v-model="address2"
-                required
               >
               <i class="fa fa-check valid-icon icon-right input-icon"></i>
               <label class="control-label">Address2</label>
@@ -139,9 +138,9 @@
                 :loading="nextBtn.loading"
                 :key="nextBtn.dataStyle"
                 :data-style="nextBtn.dataStyle"
+                type="submit"
                 class="btn btn-primary wizard-next pull-right"
                 v-if="!isDashboard"
-                @click.prevent="save()"
               >Save</vue-ladda>
             </div>
           </div>
@@ -238,35 +237,25 @@ export default {
       }
     },
     async save () {
-      let that = this
-      Object.keys(that.formFields).map(field => {
-        that.validateFormField(field)
-      })
-      // validation check
-      const validOk = Object.keys(that.formFields).every(field => {
-        return that.isFormFieldValid(field)
-      })
+      this.nextBtn.loading = true
+      const {address1, address2, city, state, zipcode} = this.$data
+      const {mindbodyActivationLink, siteId, ...providerData} = this.provider
+      const {success, error} = await new Proxy('savePayment.php?').submit('post', {payment: {address1, address2: address2 || null, city, state, zipcode}, ...providerData})
 
-      if (validOk) {
-        const {address1, address2, city, state, zipcode} = that.$data
-        const {mindbodyActivationLink, siteId, ...providerData} = this.provider
-        const {success, error} = await new Proxy('savePayment.php?').submit('post', {payment: {address1, address2: address2 || null, city, state, zipcode}, ...providerData})
-
-        if (success) {
-          this.$store.dispatch('auth/notification', {
-            type: 'SUCCESS',
-            title: 'SUCCESS!',
-            message: 'SUCCESS'})
-          this.$store.commit('auth/COMPLETE_SETUP_PROFILE', true)
-          return true
-        } else {
-          this.showToast()
-          console.log(error)
-          return false
-        }
+      if (success) {
+        this.nextBtn.loading = false
+        this.$store.dispatch('auth/notification', {
+          type: 'SUCCESS',
+          title: 'SUCCESS!',
+          message: 'SUCCESS'})
+        this.$store.commit('auth/COMPLETE_SETUP_PROFILE', true)
+        return true
+      } else {
+        this.nextBtn.loading = false
+        this.showToast()
+        console.log(error)
+        return false
       }
-
-      return false
     },
     showToast (errMessage = 'Oops, Please try again later.') {
       this.$store.dispatch('auth/notification', {

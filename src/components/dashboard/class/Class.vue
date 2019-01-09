@@ -73,7 +73,8 @@
             </div>
             <div v-if="!leonInfo.canEdit" class="d-flex flex-row justify-content-between align-items-end pt-4 bottom-div-leoninfo">
               <h6 class="d-inline pr-3">Need an edit?</h6>
-              <button href="#" class="btn btn-primary btn-micro">Contact us</button>
+              <a href="mailto:support@myleon.co?subject=Provider%20Support" class="for-desktop btn-primary btn btn-micro">Contact us at support@myleon.co</a>
+              <a href="mailto:support@myleon.co?subject=Provider%20Support" class="for-mobile btn-primary btn btn-micro">Contact us at</a>
             </div>
           </vuestic-widget>
         </div>
@@ -325,6 +326,32 @@ export default {
     width: 100%;
     padding: 1.5625rem;
     left: 0;
+    .for-desktop {
+      display: inline;
+    }
+    .for-mobile {
+      display: none;
+    }
+    @media only screen and (max-width: 768px) {
+      h6 {
+        font-size: 0.6rem;
+      }
+      .for-desktop {
+        display: none;
+      }
+      .for-mobile {
+        display: inline;
+      }
+      padding: 0.5rem;
+      position: relative;
+      font-size: 0.6rem;
+    }
+    @media only screen and (max-width: 1380px) {
+      font-size: 0.6rem;
+    }
+    @media only screen and (max-width: 1260px) {
+      font-size: 0.5rem;
+    }
   }
   .dollar-sign {
     position: absolute;

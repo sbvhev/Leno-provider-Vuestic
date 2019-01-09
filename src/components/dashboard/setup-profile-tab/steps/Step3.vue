@@ -1,5 +1,5 @@
 <template>
-  <form class="register-form step3">
+  <form class="register-form step3" @submit.prevent="save()">
     <h1 class="text-center">Set your pricing category and pricing options</h1>
     <h5 class="text-center justify-center align-center mt-5">LEON allows you to sell single class, multi class, unlimited memberships and even an intro option directly on the platform! Simply toggle on or off which pricing category you wish to offer.</h5>
     <div class="row justify-center align-center mt-5">
@@ -297,9 +297,9 @@
             :loading="nextBtn.loading"
             :key="nextBtn.dataStyle"
             :data-style="nextBtn.dataStyle"
+            type="submit"
             class="btn btn-primary wizard-next"
             v-if="!isDashboard"
-            @click.prevent="save()"
           >Save</vue-ladda>
           </div>
         </div>
@@ -389,6 +389,7 @@ export default {
         isValid =
           this.formFields[field].validated && this.formFields[field].valid
       }
+      console.log('isVAlid', isValid)
       return isValid
     },
     validateFormField (fieldName) {
@@ -413,35 +414,24 @@ export default {
       this.$store.commit('auth/CHANGEDISCOUNT', { key: type, value: e.target.value })
     },
     async save () {
-      let that = this
-      Object.keys(that.formFields).map(field => {
-        that.validateFormField(field)
-      })
-      // validation check
-      const validOk = Object.keys(that.formFields).every(field => {
-        return that.isFormFieldValid(field)
-      })
+      this.nextBtn.loading = true
+      const {pricings: pricing} = this.getFormData
+      const {mindbodyActivationLink, siteId, ...providerData} = this.provider
+      const {success, error} = await new Proxy('savePricing.php?').submit('post', { pricing, ...providerData })
 
-      if (validOk) {
-        this.nextBtn.loading = true
-        const {pricings: pricing} = this.getFormData
-        const {mindbodyActivationLink, siteId, ...providerData} = this.provider
-        const {success, error} = await new Proxy('savePricing.php?').submit('post', { pricing, ...providerData })
-
-        if (success) {
-          this.nextBtn.loading = false
-          this.$store.dispatch('auth/notification', {
-            type: 'SUCCESS',
-            title: 'SUCCESS!',
-            message: 'SUCCESS!'
-          })
-          return true
-        } else {
-          this.showToast()
-          console.log(error)
-          this.nextBtn.loading = false
-          return false
-        }
+      if (success) {
+        this.nextBtn.loading = false
+        this.$store.dispatch('auth/notification', {
+          type: 'SUCCESS',
+          title: 'SUCCESS!',
+          message: 'SUCCESS!'
+        })
+        return true
+      } else {
+        this.showToast()
+        console.log(error)
+        this.nextBtn.loading = false
+        return false
       }
     },
     showToast (errMessage = 'Oops, Please try again later.') {

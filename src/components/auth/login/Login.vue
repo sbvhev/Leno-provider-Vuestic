@@ -85,6 +85,11 @@ export default {
       await this.$store.dispatch('auth/login', this.user)
       this.loginBtn.loading = false
     },
+  },
+  updated () {
+    window.Intercom('boot', {
+      app_id: 'l1psnmst'
+    })
   }
 }
 </script>

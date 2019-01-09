@@ -60,7 +60,7 @@ export default {
         this.btnText = 'Edit'
         await this.getDatasFromEndpoint('classDescription/save/leonInfo.php', {
           infoId: this.infoId,
-          description: this._contentText
+          description: (this._contentText === null) ? '' : this._contentText
         })
       } else {
         this.btnText = 'Save'

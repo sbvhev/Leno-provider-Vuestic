@@ -62,6 +62,14 @@ export default {
       isLoading: 'shared/isLoading',
       isSetupProfile: 'auth/setupProfile'
     })
+  },
+  updated () {
+    window.Intercom('boot', {
+      app_id: 'l1psnmst',
+      name: 'Devraj Gajurel', // Full name
+      email: 'devgajurel.dev@gmail.com', // Email address
+      created_at: '2019/1/3' // Signup date
+    })
   }
 }
 </script>
